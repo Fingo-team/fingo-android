@@ -1,4 +1,4 @@
-package com.teamfingo.android.fingo.recommand;
+package com.teamfingo.android.fingo.recommend;
 
 
 import android.os.Bundle;
@@ -12,10 +12,10 @@ import com.teamfingo.android.fingo.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragmentRecommand extends Fragment {
+public class FragmentRecommend extends Fragment {
 
 
-    public FragmentRecommand() {
+    public FragmentRecommend() {
         // Required empty public constructor
     }
 
