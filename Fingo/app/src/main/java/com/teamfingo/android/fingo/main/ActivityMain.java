@@ -1,9 +1,11 @@
-package com.teamfingo.android.fingo;
+package com.teamfingo.android.fingo.main;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import com.teamfingo.android.fingo.R;
+
+public class ActivityMain extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
