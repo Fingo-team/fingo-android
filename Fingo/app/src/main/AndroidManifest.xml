@@ -2,12 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.teamfingo.android.fingo">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        <!--facebook SDK 를 이용하기 위한 APP ID 를 meta-data 로 설정-->
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+
 
         <activity android:name=".splash.ActivitySplash">
             <intent-filter>
@@ -20,6 +26,7 @@
         <activity android:name=".main.ActivityMain"/>
         <activity android:name=".login.ActivityLogin" />
         <activity android:name=".search.ActivitySearch"></activity>
+
     </application>
 
 </manifest>
