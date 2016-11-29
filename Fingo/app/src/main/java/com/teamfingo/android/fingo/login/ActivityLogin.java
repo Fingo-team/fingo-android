@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 import com.teamfingo.android.fingo.R;
 
 /**
@@ -35,9 +34,8 @@ public class ActivityLogin extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //
+        // Freagment Login Main 이 생성되기 이전에 facebook SDK 를 초기화 함.
         FacebookSdk.sdkInitialize(getApplicationContext());
-        AppEventsLogger.activateApp(this);
 
         // ActivityLogin 의 첫 화면을 FragmentLoginMain 으로 보여 준다.
         fragmentLoginMain = new FragmentLoginMain();
