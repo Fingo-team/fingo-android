@@ -14,7 +14,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@mipmap/fingo"
+        app:srcCompat="@mipmap/fingo_logo"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/imageView" />
