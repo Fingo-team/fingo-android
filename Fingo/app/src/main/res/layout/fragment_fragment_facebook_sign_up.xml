@@ -4,10 +4,14 @@
     android:layout_height="match_parent"
     tools:context="com.teamfingo.android.fingo.login.FragmentFacebookSignUp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <!--TODO Facebook Login 기능이 연동된 Custom Button 구현 필요-->
+    <!--Facebook SDK 에서 제공하는 로그인 버튼-->
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp" />
 
 </FrameLayout>

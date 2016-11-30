@@ -11,6 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
+        <!--facebook SDK 를 이용하기 위한 APP ID 를 meta-data 로 설정-->
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+
+
         <activity android:name=".splash.ActivitySplash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,6 +26,7 @@
         <activity android:name=".main.ActivityMain"/>
         <activity android:name=".login.ActivityLogin" />
         <activity android:name=".search.ActivitySearch"></activity>
+
     </application>
 
 </manifest>
