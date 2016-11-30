@@ -4,6 +4,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="icon_search">검색</string>
     <string name="facebook_app_id"> 638541519685008</string>
 
 </resources>
