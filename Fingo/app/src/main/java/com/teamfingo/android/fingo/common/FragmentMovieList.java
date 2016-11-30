@@ -31,11 +31,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class FragmentMovieList extends Fragment {
 
     private static String FINGO_BASE_URL = "http://eb-fingo-real.ap-northeast-2.elasticbeanstalk.com/";
+    private static String AUTHORIZATION = "token 0fe12e037aa03fa6d4914c01adbf6ae914c6043e";
 
     ListView mListView;
     ListAdapter mListAdapter;
 
-    ArrayList<BoxOfficeRanking.Movie> mMovies = new ArrayList<>();
+    ArrayList<BoxOfficeRanking.Data> mMovies = new ArrayList<>();
 
     ImageView imgViewMoviePoster;
     TextView tvMovieTitle;
@@ -65,7 +66,7 @@ public class FragmentMovieList extends Fragment {
                 .build();
 
         FingoService service = retrofit.create(FingoService.class);
-        Call<BoxOfficeRanking> boxOfficeRankingCall = service.getBoxOfficeRanking();
+        Call<BoxOfficeRanking> boxOfficeRankingCall = service.getBoxOfficeRanking(AUTHORIZATION);
 
         boxOfficeRankingCall.enqueue(new Callback<BoxOfficeRanking>() {
 
@@ -75,7 +76,8 @@ public class FragmentMovieList extends Fragment {
                 if (response.isSuccessful()) {
                     Log.d("aaaa", "response ==== "+response);
                     BoxOfficeRanking dataList = response.body();
-                    for (BoxOfficeRanking.Movie movie : dataList.getMovie()) {
+                    Log.d("aaa", "dataList ==== "+dataList.toString());
+                    for (BoxOfficeRanking.Data movie : dataList.getData()) {
                         mMovies.add(movie);
                     }
                 }
@@ -118,9 +120,15 @@ public class FragmentMovieList extends Fragment {
             convertView = View.inflate(getActivity(), R.layout.movie_list_item, null);
 
             imgViewMoviePoster = (ImageView) convertView.findViewById(R.id.imageView_movie_poster);
-            Glide.with(getContext()).load(mMovies.get(position).getImg());
+            Glide.with(getContext()).load(mMovies.get(position).getMovie().getImg()).into(imgViewMoviePoster);
             tvMovieTitle = (TextView) convertView.findViewById(R.id.textView_movie_title);
-            tvMovieTitle.setText(mMovies.get(position).getTitle());
+            tvMovieTitle.setText(mMovies.get(position).getMovie().getTitle());
+            tvAverageScore = (TextView) convertView.findViewById(R.id.textView_average_score);
+            tvAverageScore.setText(mMovies.get(position).getMovie().getScore());
+            tvTotalAttendance = (TextView) convertView.findViewById(R.id.textView_total_attendance);
+            tvTotalAttendance.setText(mMovies.get(position).getMovie().getGenre());
+            tvReleaseDate = (TextView) convertView.findViewById(R.id.textView_release_date);
+            tvReleaseDate.setText(mMovies.get(position).getMovie().getFirst_run_date());
 
 
             return convertView;
