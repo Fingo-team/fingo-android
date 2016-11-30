@@ -4,32 +4,10 @@ package com.teamfingo.android.fingo.model;
  * Created by Jaemin on 2016. 11. 29..
  */
 
-public class BoxOfficeRanking
-{
-    private Data[] data;
-
-    public Data[] getData ()
-    {
-        return data;
-    }
-
-    public void setData (Data[] data)
-    {
-        this.data = data;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "ClassPojo [data = "+data+"]";
-    }
-}
-
-class Data
-{
+public class BoxOfficeRanking {
     private String rank;
 
-    private Movie movie;
+    private Movie[] movie;
 
     public String getRank ()
     {
@@ -41,12 +19,12 @@ class Data
         this.rank = rank;
     }
 
-    public Movie getMovie ()
+    public Movie[] getMovie ()
     {
         return movie;
     }
 
-    public void setMovie (Movie movie)
+    public void setMovie (Movie[] movie)
     {
         this.movie = movie;
     }
@@ -56,109 +34,97 @@ class Data
     {
         return "ClassPojo [rank = "+rank+", movie = "+movie+"]";
     }
-}
 
-class Movie
-{
-    private String genre;
-
-    private String nation_code;
-
-    private String title;
-
-    private String movie_img;
-
-    private String score;
-
-    private String first_run_date;
-
-    private String code;
-
-    private String viewer;
-
-    public String getGenre ()
+    public class Movie
     {
-        return genre;
-    }
+        private String genre;
 
-    public void setGenre (String genre)
-    {
-        this.genre = genre;
-    }
+        private String id;
 
-    public String getNation_code ()
-    {
-        return nation_code;
-    }
+        private String nation_code;
 
-    public void setNation_code (String nation_code)
-    {
-        this.nation_code = nation_code;
-    }
+        private String title;
 
-    public String getTitle ()
-    {
-        return title;
-    }
+        private String score;
 
-    public void setTitle (String title)
-    {
-        this.title = title;
-    }
+        private String img;
 
-    public String getMovie_img ()
-    {
-        return movie_img;
-    }
+        private String first_run_date;
 
-    public void setMovie_img (String movie_img)
-    {
-        this.movie_img = movie_img;
-    }
+        public String getGenre ()
+        {
+            return genre;
+        }
 
-    public String getScore ()
-    {
-        return score;
-    }
+        public void setGenre (String genre)
+        {
+            this.genre = genre;
+        }
 
-    public void setScore (String score)
-    {
-        this.score = score;
-    }
+        public String getId ()
+        {
+            return id;
+        }
 
-    public String getFirst_run_date ()
-    {
-        return first_run_date;
-    }
+        public void setId (String id)
+        {
+            this.id = id;
+        }
 
-    public void setFirst_run_date (String first_run_date)
-    {
-        this.first_run_date = first_run_date;
-    }
+        public String getNation_code ()
+        {
+            return nation_code;
+        }
 
-    public String getCode ()
-    {
-        return code;
-    }
+        public void setNation_code (String nation_code)
+        {
+            this.nation_code = nation_code;
+        }
 
-    public void setCode (String code)
-    {
-        this.code = code;
-    }
+        public String getTitle ()
+        {
+            return title;
+        }
 
-    public String getViewer ()
-    {
-        return viewer;
-    }
+        public void setTitle (String title)
+        {
+            this.title = title;
+        }
 
-    public void setViewer (String viewer)
-    {
-        this.viewer = viewer;
-    }
+        public String getScore ()
+        {
+            return score;
+        }
 
-    @Override
-    public String toString()
-    {
-        return "ClassPojo [genre = "+genre+", nation_code = "+nation_code+", title = "+title+", movie_img = "+movie_img+", score = "+score+", first_run_date = "+first_run_date+", code = "+code+", viewer = "+viewer+"]";
+        public void setScore (String score)
+        {
+            this.score = score;
+        }
+
+        public String getImg ()
+        {
+            return img;
+        }
+
+        public void setImg (String img)
+        {
+            this.img = img;
+        }
+
+        public String getFirst_run_date ()
+        {
+            return first_run_date;
+        }
+
+        public void setFirst_run_date (String first_run_date)
+        {
+            this.first_run_date = first_run_date;
+        }
+
+        @Override
+        public String toString()
+        {
+            return "ClassPojo [genre = "+genre+", id = "+id+", nation_code = "+nation_code+", title = "+title+", score = "+score+", img = "+img+", first_run_date = "+first_run_date+"]";
+        }
     }
 }
