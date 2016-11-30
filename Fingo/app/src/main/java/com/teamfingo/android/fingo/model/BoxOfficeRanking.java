@@ -5,34 +5,55 @@ package com.teamfingo.android.fingo.model;
  */
 
 public class BoxOfficeRanking {
-    private String rank;
+    private Data[] data;
 
-    private Movie[] movie;
-
-    public String getRank ()
+    public Data[] getData ()
     {
-        return rank;
+        return data;
     }
 
-    public void setRank (String rank)
+    public void setData (Data[] data)
     {
-        this.rank = rank;
-    }
-
-    public Movie[] getMovie ()
-    {
-        return movie;
-    }
-
-    public void setMovie (Movie[] movie)
-    {
-        this.movie = movie;
+        this.data = data;
     }
 
     @Override
     public String toString()
     {
-        return "ClassPojo [rank = "+rank+", movie = "+movie+"]";
+        return "ClassPojo [data = "+data+"]";
+    }
+
+    public class Data
+    {
+        private String rank;
+
+        private Movie movie;
+
+        public String getRank ()
+        {
+            return rank;
+        }
+
+        public void setRank (String rank)
+        {
+            this.rank = rank;
+        }
+
+        public Movie getMovie ()
+        {
+            return movie;
+        }
+
+        public void setMovie (Movie movie)
+        {
+            this.movie = movie;
+        }
+
+        @Override
+        public String toString()
+        {
+            return "ClassPojo [rank = "+rank+", movie = "+movie+"]";
+        }
     }
 
     public class Movie

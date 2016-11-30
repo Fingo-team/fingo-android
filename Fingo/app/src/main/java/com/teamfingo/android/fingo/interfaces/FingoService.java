@@ -4,7 +4,7 @@ import com.teamfingo.android.fingo.model.BoxOfficeRanking;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
+import retrofit2.http.Header;
 
 /**
  * Created by Jaemin on 2016. 11. 29..
@@ -15,7 +15,6 @@ import retrofit2.http.Headers;
 
 public interface FingoService {
 
-    @Headers("Authorization: token 0fe12e037aa03fa6d4914c01adbf6ae914c6043e")
     @GET("/api/v1.0/movie/boxoffice/")
-    Call<BoxOfficeRanking> getBoxOfficeRanking();
+    Call<BoxOfficeRanking> getBoxOfficeRanking(@Header("Authorization") String authorization);
 }
