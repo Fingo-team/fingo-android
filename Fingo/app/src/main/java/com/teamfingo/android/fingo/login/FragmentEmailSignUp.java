@@ -1,7 +1,6 @@
 package com.teamfingo.android.fingo.login;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,7 +15,6 @@ import android.widget.Toast;
 
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.interfaces.FingoService;
-import com.teamfingo.android.fingo.main.ActivityMain;
 import com.teamfingo.android.fingo.model.FingoAccessToken;
 
 import retrofit2.Call;
@@ -109,7 +107,7 @@ public class FragmentEmailSignUp extends Fragment {
         FingoService fingoService = retrofit.create(FingoService.class);
         Call<FingoAccessToken> fingoAccessTokenCall = fingoService.createEmailUser(mEmail, mPassword, mUserName);
 
-
+        // TODO 이미 존재하는 회원 인지를 체크하는 로직 필요
         fingoAccessTokenCall.enqueue(new Callback<FingoAccessToken>() {
             @Override
             public void onResponse(Call<FingoAccessToken> call, Response<FingoAccessToken> response) {
@@ -121,13 +119,10 @@ public class FragmentEmailSignUp extends Fragment {
                     Toast.makeText(getContext(), "회원 가입에 성공 하였습니다!!", Toast.LENGTH_SHORT).show();
 
                     replaceFragment(new FragmentLoginMain());
-                    Intent intent = new Intent(getActivity(), ActivityMain.class);
-                    startActivity(intent);
 
                 }
                 else
                     Toast.makeText(getContext(), "회원 가입에 실패 하였습니다!!", Toast.LENGTH_SHORT).show();
-
             }
 
             @Override
@@ -135,7 +130,6 @@ public class FragmentEmailSignUp extends Fragment {
                 t.printStackTrace();
             }
         });
-
     }
 
     private void replaceFragment(Fragment fragment) {
