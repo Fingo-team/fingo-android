@@ -117,7 +117,6 @@ public class FragmentEmailSignUp extends Fragment {
                     Log.e("CHECK TOKEN", ">>>>>>>>" + sToken);
 
                     Toast.makeText(getContext(), "회원 가입에 성공 하였습니다!!", Toast.LENGTH_SHORT).show();
-
                     replaceFragment(new FragmentLoginMain());
 
                 }
@@ -133,7 +132,7 @@ public class FragmentEmailSignUp extends Fragment {
     }
 
     private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getChildFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.activity_login, fragment);
         transaction.commit();
