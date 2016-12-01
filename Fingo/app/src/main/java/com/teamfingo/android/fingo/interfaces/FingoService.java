@@ -17,4 +17,9 @@ public interface FingoService {
 
     @GET("/api/v1.0/movie/boxoffice/")
     Call<BoxOfficeRanking> getBoxOfficeRanking(@Header("Authorization") String authorization);
+
+    // SignUp function
+
+    // Search function
+
 }
