@@ -4,13 +4,24 @@ package com.teamfingo.android.fingo.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.teamfingo.android.fingo.R;
+import com.teamfingo.android.fingo.interfaces.FingoService;
 import com.teamfingo.android.fingo.main.ActivityMain;
+import com.teamfingo.android.fingo.model.FingoAccessToken;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  *
@@ -30,6 +41,20 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
     Button btnEmailLogin;
     Button btnFacebookLogin;
 
+    EditText etEmail;
+    EditText etPassword;
+
+    String mEmail;
+    String mPassword;
+
+    private String sToken;
+
+    public String getsToken() {
+        return sToken;
+    }
+
+    private String BASE_URL = "http://eb-fingo-real.ap-northeast-2.elasticbeanstalk.com/";
+
     public FragmentLogin() {
         // Required empty public constructor
 
@@ -47,6 +72,9 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
         btnFacebookLogin = (Button) view.findViewById(R.id.button_facebook_login);
         btnFacebookLogin.setOnClickListener(this);
 
+        etEmail = (EditText) view.findViewById(R.id.editText_Login_Email);
+        etPassword = (EditText) view.findViewById(R.id.editText_Login_Password);
+
         return view;
 
     }
@@ -60,10 +88,51 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 
             // 버튼 클릭 시 ActivityMain 으로 이동
             case R.id.button_email_login:
-                Intent intent = new Intent(getContext(), ActivityMain.class);
-                startActivity(intent);
+
+                mEmail = etEmail.getText().toString();
+                mPassword = etPassword.getText().toString();
+
+                callFingoAPI();
 
                 break;
         }
+    }
+
+    private void callFingoAPI() {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        Log.e("CHECK!!", "=========="+mEmail);
+        Log.e("CHECK!!", "=========="+mPassword);
+
+        FingoService fingoService = retrofit.create(FingoService.class);
+        Call<FingoAccessToken> fingoAccessTokenCall = fingoService.userLogin(mEmail, mPassword);
+
+        fingoAccessTokenCall.enqueue(new Callback<FingoAccessToken>() {
+            @Override
+            public void onResponse(Call<FingoAccessToken> call, Response<FingoAccessToken> response) {
+                if(response.isSuccessful()){
+
+                    sToken = response.body().getToken();
+                    Log.e("CHECK TOKEN", ">>>>>>>>" + sToken);
+
+                    Intent intent = new Intent(getActivity(), ActivityMain.class);
+                    startActivity(intent);
+
+                }
+                else
+                    Toast.makeText(getContext(), "로그인에 실패 하였습니다!!", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onFailure(Call<FingoAccessToken> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
     }
 }
