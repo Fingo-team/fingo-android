@@ -28,12 +28,12 @@ public interface FingoService {
     // SignUp function
     @FormUrlEncoded
     @POST("/api/v1.0/user/signup/")
-    Call<FingoAccessToken> createUser(@Field("email") String email, @Field("password") String password, @Field("nickname") String nickname);
+    Call<FingoAccessToken> createEmailUser(@Field("email") String email, @Field("password") String password, @Field("nickname") String nickname);
 
     // SignUp function
     @FormUrlEncoded
     @POST("/api/v1.0/user/login/")
-    Call<FingoAccessToken> userLogin(@Field("email") String email, @Field("password") String password);
+    Call<FingoAccessToken> userEmailLogin(@Field("email") String email, @Field("password") String password);
 
     // Search function
     @GET("/api/v1.0/movie/search/")
