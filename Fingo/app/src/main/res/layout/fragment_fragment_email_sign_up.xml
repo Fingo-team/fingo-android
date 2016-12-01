@@ -1,13 +1,81 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.teamfingo.android.fingo.login.FragmentEmailSignUp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="50dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@android:drawable/sym_def_app_icon"
+            android:id="@+id/imageView3"
+            android:scaleType="center" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/editText_userName"
+            android:hint="이름 (홍길동)"
+            android:layout_marginTop="20dp"
+            android:selectAllOnFocus="false"
+            android:singleLine="false"
+            android:textSize="15dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/editText_email"
+            android:hint="이메일 (example@gmail.com)"
+            android:textSize="15dp"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/editText_password"
+            android:hint="비밀번호 (8자 이상)"
+            android:textSize="15dp"
+            android:inputType="textPassword" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <CheckBox
+                android:text="서비스 이용약관, 개인정보 취급 방침에 동의합니다."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBox"
+                android:layout_weight="1"
+                style="@android:style/Widget.Holo.Light.CompoundButton.CheckBox"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:textStyle="normal|italic"
+                android:textColor="@color/com_facebook_device_auth_text"
+                android:textColorLink="@android:color/holo_red_light" />
+        </LinearLayout>
+
+        <Button
+            android:text="가입완료"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_signUp" />
+
+    </LinearLayout>
+</RelativeLayout>

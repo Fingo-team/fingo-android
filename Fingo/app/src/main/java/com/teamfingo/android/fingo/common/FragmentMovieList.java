@@ -84,7 +84,6 @@ public class FragmentMovieList extends Fragment {
                         mRanks.add(data);
                     }
                 }
-
                 mListAdapter.notifyDataSetChanged();
             }
 

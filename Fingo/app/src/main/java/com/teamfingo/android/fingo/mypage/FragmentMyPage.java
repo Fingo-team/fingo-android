@@ -16,6 +16,10 @@ import com.teamfingo.android.fingo.R;
 public class FragmentMyPage extends Fragment {
 
     Button btnFacebookLogout;
+    Button btnLogout;
+
+    private String BASE_URL = "http://eb-fingo-real.ap-northeast-2.elasticbeanstalk.com/";
+
 
     public FragmentMyPage() {
         // Required empty public constructor
@@ -40,7 +44,49 @@ public class FragmentMyPage extends Fragment {
 
             }
         });
+
+        btnLogout = (Button) view.findViewById(R.id.button_logout);
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                callFingoAPI();
+            }
+        });
         return view;
     }
+
+//    private void callFingoAPI() {
+//
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(BASE_URL)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//
+//        FingoService fingoService = retrofit.create(FingoService.class);
+//        Call<Void> fingoLogoutCall = fingoService.userEmailLogout(FragmentLogin. getsToken);
+//        fingoLogoutCall.enqueue(new Callback<Void>() {
+//            @Override
+//            public void onResponse(Call<Void> call, Response<Void> response) {
+//
+//                Log.e("Check Login Status", ">>>>>>>>"+response.message());
+//
+//                if(response.isSuccessful()) {
+//                    Log.e("Check Login Status", ">>>> 로그아웃 성공!!");
+//                    Intent intent = new Intent(getActivity(), ActivityLogin.class);
+//                    startActivity(intent);
+//                    getActivity().finish();
+//                }
+//
+//                else
+//                    Log.e("Check Login Status", ">>>> 로그아웃 실패!!");
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Void> call, Throwable t) {
+//
+//            }
+//        });
+//
+//    }
 
 }
