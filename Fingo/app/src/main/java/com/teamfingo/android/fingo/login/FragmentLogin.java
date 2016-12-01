@@ -109,7 +109,7 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
         Log.e("CHECK!!", "=========="+mPassword);
 
         FingoService fingoService = retrofit.create(FingoService.class);
-        Call<FingoAccessToken> fingoAccessTokenCall = fingoService.userLogin(mEmail, mPassword);
+        Call<FingoAccessToken> fingoAccessTokenCall = fingoService.userEmailLogin(mEmail, mPassword);
 
         fingoAccessTokenCall.enqueue(new Callback<FingoAccessToken>() {
             @Override

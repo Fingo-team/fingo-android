@@ -7,11 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.login.ActivityLogin;
+import com.teamfingo.android.fingo.main.ActivityMain;
 
 public class ActivitySplash extends AppCompatActivity {
 
     // SplashActivity 지속시간 설정
     private static int SPLASH_DISPLAY_LENGTH = 2000;
+
+    public static Boolean sLoginStatus = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,7 @@ public class ActivitySplash extends AppCompatActivity {
 
                 // @TODO 현재 화면에서 로그인 인증여부에 따라 로그인화면 또는 메인 화면으로 분기하도록 구현해야 함.
 
+                if(sLoginStatus==false){
                 // splash Activity 에서 login Activity 로 이동
                 Intent intent = new Intent(ActivitySplash.this, ActivityLogin.class);
                 ActivitySplash.this.startActivity(intent);
@@ -33,7 +37,21 @@ public class ActivitySplash extends AppCompatActivity {
                 overridePendingTransition(android.support.design.R.anim.abc_fade_in, android.support.design.R.anim.abc_fade_out);
                 finish();
 
-                ActivitySplash.this.finish();
+//                ActivitySplash.this.finish();
+                }
+
+                else{
+                    // splash Activity 에서 login Activity 로 이동
+                    Intent intent = new Intent(ActivitySplash.this, ActivityMain.class);
+                    startActivity(intent);
+
+                    // Activity 화면 이동 시 애니메이션 설정
+                    overridePendingTransition(android.support.design.R.anim.abc_fade_in, android.support.design.R.anim.abc_fade_out);
+                    finish();
+
+//                    ActivitySplash.this.finish();
+                }
+
             }
             // 스플래시 화면 지속시간 설정
         }, SPLASH_DISPLAY_LENGTH);

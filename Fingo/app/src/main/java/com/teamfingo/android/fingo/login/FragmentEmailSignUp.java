@@ -105,7 +105,7 @@ public class FragmentEmailSignUp extends Fragment {
         Log.e("CHECK!!", "=========="+mUserName);
 
         FingoService fingoService = retrofit.create(FingoService.class);
-        Call<FingoAccessToken> fingoAccessTokenCall = fingoService.createUser(mEmail, mPassword, mUserName);
+        Call<FingoAccessToken> fingoAccessTokenCall = fingoService.createEmailUser(mEmail, mPassword, mUserName);
 
 
         fingoAccessTokenCall.enqueue(new Callback<FingoAccessToken>() {
