@@ -49,7 +49,7 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 
     private String sToken;
 
-    public String getsToken() {
+    public final String getsToken() {
         return sToken;
     }
 

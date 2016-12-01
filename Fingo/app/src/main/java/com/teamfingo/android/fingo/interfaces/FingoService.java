@@ -30,10 +30,14 @@ public interface FingoService {
     @POST("/api/v1.0/user/signup/")
     Call<FingoAccessToken> createEmailUser(@Field("email") String email, @Field("password") String password, @Field("nickname") String nickname);
 
-    // SignUp function
+    // email login function
     @FormUrlEncoded
     @POST("/api/v1.0/user/login/")
     Call<FingoAccessToken> userEmailLogin(@Field("email") String email, @Field("password") String password);
+
+    // email logout function
+    @POST("/api/v1.0/user/logout/")
+    Call<Void> userEmailLogout(@Header("Authorization") String authorization);
 
     // Search function
     @GET("/api/v1.0/movie/search/")
