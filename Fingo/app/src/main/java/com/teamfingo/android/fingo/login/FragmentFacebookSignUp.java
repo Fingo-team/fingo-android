@@ -44,7 +44,6 @@ public class FragmentFacebookSignUp extends Fragment {
 
     CallbackManager mCallbackManager;
 
-    //TODO Facebook API 로 부터 전달받은 토큰을 클라이언트와 서버에서 어떻게 관리 해 줄 것인지에 관해 논의 필요
     //TODO 서버에서는 AccessToken 과 프로필 이미지만을 전달 받는것으로 한다.
 
     public FragmentFacebookSignUp() {
@@ -56,7 +55,6 @@ public class FragmentFacebookSignUp extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

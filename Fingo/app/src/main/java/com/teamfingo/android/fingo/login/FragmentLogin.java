@@ -2,6 +2,7 @@ package com.teamfingo.android.fingo.login;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -22,6 +23,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static android.content.Context.MODE_PRIVATE;
+
 
 /**
  *
@@ -46,12 +50,6 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 
     String mEmail;
     String mPassword;
-
-    private String sToken;
-
-    public final String getsToken() {
-        return sToken;
-    }
 
     private String BASE_URL = "http://eb-fingo-real.ap-northeast-2.elasticbeanstalk.com/";
 
@@ -116,8 +114,10 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
             public void onResponse(Call<FingoAccessToken> call, Response<FingoAccessToken> response) {
                 if(response.isSuccessful()){
 
-                    sToken = response.body().getToken();
-                    Log.e("CHECK TOKEN", ">>>>>>>>" + sToken);
+                    String token = response.body().getToken();
+                    Log.e("CHECK TOKEN", ">>>>>>>>" + token);
+
+                    savePreferences(token);
 
                     Intent intent = new Intent(getActivity(), ActivityMain.class);
                     startActivity(intent);
@@ -135,4 +135,19 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
         });
 
     }
+
+    // 값 저장하기
+    private void savePreferences(String token){
+        SharedPreferences pref = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("Token", token);
+        editor.commit();
+    }
+
+    // 값 불러오기
+    private void getPreferences(){
+        SharedPreferences pref = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+        pref.getString("hi", "");
+    }
+
 }
