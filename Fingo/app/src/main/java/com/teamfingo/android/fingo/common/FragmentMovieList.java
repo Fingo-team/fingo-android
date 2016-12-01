@@ -3,10 +3,13 @@ package com.teamfingo.android.fingo.common;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -31,12 +34,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class FragmentMovieList extends Fragment {
 
     private static String FINGO_BASE_URL = "http://eb-fingo-real.ap-northeast-2.elasticbeanstalk.com/";
-    private static String AUTHORIZATION = "token 0fe12e037aa03fa6d4914c01adbf6ae914c6043e";
+    private static String AUTHORIZATION = "token 41059ad0ec56dbc9bfd1e7dc633cef2a6de69d48";
 
     ListView mListView;
     ListAdapter mListAdapter;
 
-    ArrayList<BoxOfficeRanking.Data> mMovies = new ArrayList<>();
+    ArrayList<BoxOfficeRanking.Data> mRanks = new ArrayList<>();
 
     ImageView imgViewMoviePoster;
     TextView tvMovieTitle;
@@ -55,7 +58,7 @@ public class FragmentMovieList extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_movie_list, container, false);
 
-        mListView = (ListView) view.findViewById(R.id.movie_detail_list_view);
+        mListView = (ListView) view.findViewById(R.id.movie_list_listview);
         mListAdapter = new ListAdapter();
         mListView.setAdapter(mListAdapter);
 
@@ -75,10 +78,10 @@ public class FragmentMovieList extends Fragment {
 
                 if (response.isSuccessful()) {
                     Log.d("aaaa", "response ==== "+response);
-                    BoxOfficeRanking dataList = response.body();
-                    Log.d("aaa", "dataList ==== "+dataList.toString());
-                    for (BoxOfficeRanking.Data movie : dataList.getData()) {
-                        mMovies.add(movie);
+                    BoxOfficeRanking boxOfficeRanking = response.body();
+                    Log.d("aaa", "dataList ==== "+boxOfficeRanking.toString());
+                    for (BoxOfficeRanking.Data data : boxOfficeRanking.getData()) {
+                        mRanks.add(data);
                     }
                 }
 
@@ -101,12 +104,12 @@ public class FragmentMovieList extends Fragment {
 
         @Override
         public int getCount() {
-            return mMovies.size();
+            return mRanks.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return mMovies.get(position);
+            return mRanks.get(position);
         }
 
         @Override
@@ -120,15 +123,15 @@ public class FragmentMovieList extends Fragment {
             convertView = View.inflate(getActivity(), R.layout.movie_list_item, null);
 
             imgViewMoviePoster = (ImageView) convertView.findViewById(R.id.imageView_movie_poster);
-            Glide.with(getContext()).load(mMovies.get(position).getMovie().getImg()).into(imgViewMoviePoster);
+            Glide.with(getContext()).load(mRanks.get(position).getMovie().getImg()).into(imgViewMoviePoster);
             tvMovieTitle = (TextView) convertView.findViewById(R.id.textView_movie_title);
-            tvMovieTitle.setText(mMovies.get(position).getMovie().getTitle());
+            tvMovieTitle.setText(mRanks.get(position).getMovie().getTitle());
             tvAverageScore = (TextView) convertView.findViewById(R.id.textView_average_score);
-            tvAverageScore.setText(mMovies.get(position).getMovie().getScore());
+            tvAverageScore.setText(mRanks.get(position).getMovie().getScore());
             tvTotalAttendance = (TextView) convertView.findViewById(R.id.textView_total_attendance);
-            tvTotalAttendance.setText(mMovies.get(position).getMovie().getGenre());
+            tvTotalAttendance.setText(mRanks.get(position).getMovie().getGenre());
             tvReleaseDate = (TextView) convertView.findViewById(R.id.textView_release_date);
-            tvReleaseDate.setText(mMovies.get(position).getMovie().getFirst_run_date());
+            tvReleaseDate.setText(mRanks.get(position).getMovie().getFirst_run_date());
 
 
             return convertView;
