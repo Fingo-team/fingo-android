@@ -38,20 +38,20 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
             android:ems="10"
             android:id="@+id/editText_email"
             android:hint="이메일 (example@gmail.com)"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            android:inputType="textEmailAddress" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
             android:ems="10"
             android:id="@+id/editText_password"
             android:hint="비밀번호 (8자 이상)"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            android:inputType="textPassword" />
 
         <LinearLayout
             android:orientation="horizontal"
