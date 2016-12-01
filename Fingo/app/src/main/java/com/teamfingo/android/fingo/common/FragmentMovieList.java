@@ -96,6 +96,17 @@ public class FragmentMovieList extends Fragment {
 
         });
 
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String movieId = mRanks.get(position).getMovie().getId();
+                Fragment fragment = FragmentMovieDetail.newInstance(movieId);
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.container, fragment);
+                transaction.commit();
+            }
+        });
 
         return view;
     }
