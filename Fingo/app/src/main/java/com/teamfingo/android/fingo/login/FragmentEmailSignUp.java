@@ -4,6 +4,8 @@ package com.teamfingo.android.fingo.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -116,6 +118,9 @@ public class FragmentEmailSignUp extends Fragment {
                     sToken = response.body().getToken();
                     Log.e("CHECK TOKEN", ">>>>>>>>" + sToken);
 
+                    Toast.makeText(getContext(), "회원 가입에 성공 하였습니다!!", Toast.LENGTH_SHORT).show();
+
+                    replaceFragment(new FragmentLoginMain());
                     Intent intent = new Intent(getActivity(), ActivityMain.class);
                     startActivity(intent);
 
@@ -133,4 +138,10 @@ public class FragmentEmailSignUp extends Fragment {
 
     }
 
+    private void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.activity_login, fragment);
+        transaction.commit();
+    }
 }
