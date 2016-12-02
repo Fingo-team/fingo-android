@@ -107,7 +107,9 @@ public class FragmentEmailSignUp extends Fragment {
         FingoService fingoService = retrofit.create(FingoService.class);
         Call<FingoAccessToken> fingoAccessTokenCall = fingoService.createEmailUser(mEmail, mPassword, mUserName);
 
-        // TODO 이미 존재하는 회원 인지를 체크하는 로직 필요
+        // TODO 이미 존재하는 회원 인지를 체크하는 로직 필요 - 부분적으로 해결!
+        // TODO Rx를 이용해 실시간으로 valid 여부 체크!
+
         fingoAccessTokenCall.enqueue(new Callback<FingoAccessToken>() {
             @Override
             public void onResponse(Call<FingoAccessToken> call, Response<FingoAccessToken> response) {

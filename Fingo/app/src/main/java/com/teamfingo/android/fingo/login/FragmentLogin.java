@@ -147,7 +147,7 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
     // 값 불러오기
     private void getPreferences(){
         SharedPreferences pref = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
-        pref.getString("hi", "");
+        pref.getString("Token", "");
     }
 
 }
