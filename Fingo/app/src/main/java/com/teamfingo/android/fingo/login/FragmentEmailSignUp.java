@@ -121,7 +121,8 @@ public class FragmentEmailSignUp extends Fragment {
 
                 }
                 else
-                    Toast.makeText(getContext(), "회원 가입에 실패 하였습니다!!", Toast.LENGTH_SHORT).show();
+                // TODO 어떤 정보의 중복으로 인해 회원가입이 되지 않는것인지 출력되는 메세지 세분화가 필요
+                    Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -132,7 +133,7 @@ public class FragmentEmailSignUp extends Fragment {
     }
 
     private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getChildFragmentManager();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.activity_login, fragment);
         transaction.commit();
