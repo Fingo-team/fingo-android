@@ -30,7 +30,6 @@ public class FragmentMyPage extends Fragment {
 
     private String BASE_URL = "http://eb-fingo-real.ap-northeast-2.elasticbeanstalk.com/";
 
-
     public FragmentMyPage() {
         // Required empty public constructor
     }
@@ -59,6 +58,10 @@ public class FragmentMyPage extends Fragment {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("Check Token Status",FingoAccessToken.getAccessToken(getContext()));
+                FingoAccessToken.RemoveAccessToken(getContext());
+                Log.e("Check Token Status",FingoAccessToken.getAccessToken(getContext()));
+
                 callFingoAPI();
             }
         });
@@ -73,11 +76,12 @@ public class FragmentMyPage extends Fragment {
                 .build();
 
         FingoService fingoService = retrofit.create(FingoService.class);
-        Call<Void> fingoLogoutCall = fingoService.userEmailLogout(FingoAccessToken.getAccessToken(this.getContext()));
+        Call<Void> fingoLogoutCall = fingoService.userEmailLogout("token "+FingoAccessToken.getAccessToken(getContext()));
         fingoLogoutCall.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
 
+                FingoAccessToken.getAccessToken(getContext());
                 Log.e("Check Login Status", ">>>>>>>>" + response.message());
 
                 if (response.isSuccessful()) {
