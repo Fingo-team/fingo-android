@@ -12,7 +12,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class FingoAccessToken {
 
     // 값 저장하기
-    private void setAccessToken(Context context, String token){
+    public static void setAccessToken(Context context, String token){
         SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("Token", token);
@@ -26,7 +26,7 @@ public class FingoAccessToken {
     }
 
     // 값(Key Data) 삭제하기
-    private void RemoveAccessToken(Context context){
+    public static void RemoveAccessToken(Context context){
         SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.remove("Token");
