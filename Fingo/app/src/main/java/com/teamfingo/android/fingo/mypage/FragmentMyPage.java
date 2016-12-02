@@ -81,11 +81,17 @@ public class FragmentMyPage extends Fragment {
                 Log.e("Check Login Status", ">>>>>>>>" + response.message());
 
                 if (response.isSuccessful()) {
+
+                    FingoAccessToken.RemoveAccessToken(getContext());
+                    Log.e("Check Token Status",FingoAccessToken.getAccessToken(getContext()));
                     Log.e("Check Login Status", ">>>> 로그아웃 성공!!");
+
                     Intent intent = new Intent(getView().getContext(), ActivityLogin.class);
                     startActivity(intent);
                     getActivity().finish();
-                } else
+
+                }
+                else
                     Log.e("Check Login Status", ">>>> 로그아웃 실패!!");
             }
 
