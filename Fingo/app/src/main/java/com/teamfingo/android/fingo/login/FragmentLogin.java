@@ -112,9 +112,8 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
                 if(response.isSuccessful()){
 
                     String token = response.body().getToken();
+                    com.teamfingo.android.fingo.Utils.FingoAccessToken.setAccessToken(getContext(), token);
                     Log.e("CHECK TOKEN", ">>>>>>>>" + token);
-
-
 
                     Intent intent = new Intent(getActivity(), ActivityMain.class);
                     startActivity(intent);
