@@ -2,7 +2,6 @@ package com.teamfingo.android.fingo.login;
 
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -23,8 +22,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -115,9 +112,8 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
                 if(response.isSuccessful()){
 
                     String token = response.body().getToken();
+                    com.teamfingo.android.fingo.Utils.FingoAccessToken.setAccessToken(getContext(), token);
                     Log.e("CHECK TOKEN", ">>>>>>>>" + token);
-
-                    savePreferences(token);
 
                     Intent intent = new Intent(getActivity(), ActivityMain.class);
                     startActivity(intent);
@@ -136,18 +132,5 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 
     }
 
-    // 값 저장하기
-    private void savePreferences(String token){
-        SharedPreferences pref = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString("Token", token);
-        editor.commit();
-    }
-
-    // 값 불러오기
-    private void getPreferences(){
-        SharedPreferences pref = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
-        pref.getString("hi", "");
-    }
 
 }

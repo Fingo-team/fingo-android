@@ -107,7 +107,9 @@ public class FragmentEmailSignUp extends Fragment {
         FingoService fingoService = retrofit.create(FingoService.class);
         Call<FingoAccessToken> fingoAccessTokenCall = fingoService.createEmailUser(mEmail, mPassword, mUserName);
 
-        // TODO 이미 존재하는 회원 인지를 체크하는 로직 필요
+        // TODO 이미 존재하는 회원 인지를 체크하는 로직 필요 - 부분적으로 해결!
+        // TODO Rx를 이용해 실시간으로 valid 여부 체크!
+
         fingoAccessTokenCall.enqueue(new Callback<FingoAccessToken>() {
             @Override
             public void onResponse(Call<FingoAccessToken> call, Response<FingoAccessToken> response) {
@@ -121,7 +123,8 @@ public class FragmentEmailSignUp extends Fragment {
 
                 }
                 else
-                    Toast.makeText(getContext(), "회원 가입에 실패 하였습니다!!", Toast.LENGTH_SHORT).show();
+                // TODO 어떤 정보의 중복으로 인해 회원가입이 되지 않는것인지 출력되는 메세지 세분화가 필요
+                    Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -132,7 +135,7 @@ public class FragmentEmailSignUp extends Fragment {
     }
 
     private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getChildFragmentManager();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.activity_login, fragment);
         transaction.commit();

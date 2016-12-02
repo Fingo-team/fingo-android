@@ -1,5 +1,6 @@
 package com.teamfingo.android.fingo.splash;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,36 +15,38 @@ public class ActivitySplash extends AppCompatActivity {
     // SplashActivity 지속시간 설정
     private static int SPLASH_DISPLAY_LENGTH = 2000;
 
-    public static Boolean sLoginStatus = false;
+    private Boolean tokenStatus = false;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        mContext = this;
+
         // postDelayed Handler 를 이용한 화면이동, 애니메이션, 지속시간 설정
-        new Handler().postDelayed(new Runnable(){
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
 
                 // @TODO 현재 화면에서 로그인 인증여부에 따라 로그인화면 또는 메인 화면으로 분기하도록 구현해야 함.
 
-                if(sLoginStatus==false){
-                // splash Activity 에서 login Activity 로 이동
-                Intent intent = new Intent(ActivitySplash.this, ActivityLogin.class);
-                ActivitySplash.this.startActivity(intent);
+//                if (FingoAccessToken.getAccessToken(mContext) == "") {
+                if(tokenStatus==false){
+                    // splash Activity 에서 login Activity 로 이동
+                    Intent intent = new Intent(ActivitySplash.this, ActivityLogin.class);
+                    ActivitySplash.this.startActivity(intent);
 
-                // Activity 화면 이동 시 애니메이션 설정
-                overridePendingTransition(android.support.design.R.anim.abc_fade_in, android.support.design.R.anim.abc_fade_out);
-                finish();
+                    // Activity 화면 이동 시 애니메이션 설정
+                    overridePendingTransition(android.support.design.R.anim.abc_fade_in, android.support.design.R.anim.abc_fade_out);
+                    finish();
 
 //                ActivitySplash.this.finish();
-                }
-
-                else{
+                } else {
                     // splash Activity 에서 login Activity 로 이동
                     Intent intent = new Intent(ActivitySplash.this, ActivityMain.class);
-                    startActivity(intent);
+                    ActivitySplash.this.startActivity(intent);
 
                     // Activity 화면 이동 시 애니메이션 설정
                     overridePendingTransition(android.support.design.R.anim.abc_fade_in, android.support.design.R.anim.abc_fade_out);

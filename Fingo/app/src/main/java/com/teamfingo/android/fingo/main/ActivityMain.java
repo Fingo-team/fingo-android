@@ -1,16 +1,17 @@
 package com.teamfingo.android.fingo.main;
 
-import android.support.v4.app.Fragment;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.RelativeLayout;
 
 import com.teamfingo.android.fingo.R;
+import com.teamfingo.android.fingo.Utils.FingoAccessToken;
 import com.teamfingo.android.fingo.category.FragmentCategory;
 import com.teamfingo.android.fingo.home.FragmentHome;
 import com.teamfingo.android.fingo.mypage.FragmentMyPage;
@@ -39,6 +40,8 @@ public class ActivityMain extends AppCompatActivity {
 
         mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
         container = (RelativeLayout) findViewById(R.id.container);
+
+        Log.e("Preference Check","======================" + FingoAccessToken.getAccessToken(this));
 
         replaceFragment(mFragmentHome);
 
