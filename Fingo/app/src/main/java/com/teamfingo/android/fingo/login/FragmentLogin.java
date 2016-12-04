@@ -123,6 +123,8 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
 
                     Intent intent = new Intent(getActivity(), ActivityMain.class);
                     startActivity(intent);
+
+                    getActivity().finish();
                 }
                 else
                     Toast.makeText(getContext(), "로그인에 실패 하였습니다!!", Toast.LENGTH_SHORT).show();
