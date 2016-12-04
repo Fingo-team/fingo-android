@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.interfaces.FingoService;
 import com.teamfingo.android.fingo.model.BoxOfficeRanking;
+import com.teamfingo.android.fingo.utils.FingoPreferences;
 
 import java.util.ArrayList;
 
@@ -34,7 +35,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class FragmentMovieList extends Fragment {
 
     private static String FINGO_BASE_URL = "http://eb-fingo-real.ap-northeast-2.elasticbeanstalk.com/";
-    private static String AUTHORIZATION = "token 41059ad0ec56dbc9bfd1e7dc633cef2a6de69d48";
+//    private static String AUTHORIZATION = "token 41059ad0ec56dbc9bfd1e7dc633cef2a6de69d48";
 
     ListView mListView;
     ListAdapter mListAdapter;
@@ -62,6 +63,9 @@ public class FragmentMovieList extends Fragment {
         mListAdapter = new ListAdapter();
         mListView.setAdapter(mListAdapter);
 
+        FingoPreferences pref = new FingoPreferences(getContext());
+        String token = pref.getAccessToken();
+
         // Fingo Api 호출
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(FINGO_BASE_URL)
@@ -69,7 +73,7 @@ public class FragmentMovieList extends Fragment {
                 .build();
 
         FingoService service = retrofit.create(FingoService.class);
-        Call<BoxOfficeRanking> boxOfficeRankingCall = service.getBoxOfficeRanking(AUTHORIZATION);
+        Call<BoxOfficeRanking> boxOfficeRankingCall = service.getBoxOfficeRanking(token);
 
         boxOfficeRankingCall.enqueue(new Callback<BoxOfficeRanking>() {
 
@@ -100,8 +104,8 @@ public class FragmentMovieList extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String movieId = mRanks.get(position).getMovie().getId();
                 Fragment fragment = FragmentMovieDetail.newInstance(movieId);
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction().addToBackStack(null);
                 transaction.replace(R.id.container, fragment);
                 transaction.commit();
             }
