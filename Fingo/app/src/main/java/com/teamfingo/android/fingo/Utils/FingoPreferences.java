@@ -59,7 +59,7 @@ public class FingoPreferences {
     }
 
     // 값(Key Data) 삭제하기
-    public static void RemoveAccessToken() {
+    public static void removeAccessToken() {
 
         mEditor.remove(USER_TOKEN);
         mEditor.commit();

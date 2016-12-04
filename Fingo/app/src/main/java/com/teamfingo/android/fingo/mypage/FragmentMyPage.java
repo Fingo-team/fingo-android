@@ -29,6 +29,7 @@ public class FragmentMyPage extends Fragment {
     Button btnLogout;
 
     private String BASE_URL = "http://eb-fingo-real.ap-northeast-2.elasticbeanstalk.com/";
+    private FingoPreferences mPref;
 
     public FragmentMyPage() {
         // Required empty public constructor
@@ -58,13 +59,18 @@ public class FragmentMyPage extends Fragment {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("Check Token Status", FingoPreferences.getAccessToken(getContext()));
-                FingoPreferences.RemoveAccessToken(getContext());
-                Log.e("Check Token Status", FingoPreferences.getAccessToken(getContext()));
+
+                // TODO 만료 직전 토큰 상태 체크 - preference 객체 삭제 필요
+                mPref = new FingoPreferences(getContext());
+
+                Log.e("Check Token Status", mPref.getAccessToken());
+                mPref.removeAccessToken();
+                Log.e("Check Token Status", mPref.getAccessToken());
 
                 callFingoAPI();
             }
         });
+
         return view;
     }
 
@@ -76,21 +82,21 @@ public class FragmentMyPage extends Fragment {
                 .build();
 
         FingoService fingoService = retrofit.create(FingoService.class);
-        Call<Void> fingoLogoutCall = fingoService.userEmailLogout("token "+ FingoPreferences.getAccessToken(getContext()));
+        Call<Void> fingoLogoutCall = fingoService.userEmailLogout("token "+ mPref.getAccessToken());
         fingoLogoutCall.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
 
-                FingoPreferences.getAccessToken(getContext());
+                mPref.getAccessToken();
                 Log.e("Check Login Status", ">>>>>>>>" + response.message());
 
                 if (response.isSuccessful()) {
 
-                    FingoPreferences.RemoveAccessToken(getContext());
-                    Log.e("Check Token Status", FingoPreferences.getAccessToken(getContext()));
+                    mPref.removeAccessToken();
+                    Log.e("Check Token Status", mPref.getAccessToken());
                     Log.e("Check Login Status", ">>>> 로그아웃 성공!!");
 
-                    Intent intent = new Intent(getView().getContext(), ActivityLogin.class);
+                    Intent intent = new Intent(getActivity(), ActivityLogin.class);
                     startActivity(intent);
                     getActivity().finish();
 
