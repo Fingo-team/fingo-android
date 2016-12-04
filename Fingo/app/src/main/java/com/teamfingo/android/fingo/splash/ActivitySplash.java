@@ -29,7 +29,7 @@ public class ActivitySplash extends AppCompatActivity {
             public void run() {
 
                 // @TODO 현재 화면에서 로그인 인증여부에 따라 로그인화면 또는 메인 화면으로 분기하도록 구현해야 함.
-                if (pref.getAccessToken().length() > 4) {
+                if (pref.getAccessToken().length() > 10) {
                     Log.e("SPLASH_TOKEN_EXIST","---"+pref.getAccessToken());
                     // splash Activity 에서 Main Activity 로 이동
                     Intent intent = new Intent(ActivitySplash.this, ActivityMain.class);

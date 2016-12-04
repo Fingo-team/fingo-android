@@ -62,11 +62,6 @@ public class FragmentMyPage extends Fragment {
 
                 // TODO 만료 직전 토큰 상태 체크 - preference 객체 삭제 필요
                 mPref = new FingoPreferences(getContext());
-
-                Log.e("CHECK_TOKEN_BEFORE", mPref.getAccessToken());
-                mPref.removeAccessToken();
-                Log.e("CHECK_TOKEN_AFTER", mPref.getAccessToken());
-
                 callFingoAPI();
             }
         });
@@ -82,7 +77,7 @@ public class FragmentMyPage extends Fragment {
                 .build();
 
         FingoService fingoService = retrofit.create(FingoService.class);
-        Call<Void> fingoLogoutCall = fingoService.userEmailLogout("token "+ mPref.getAccessToken());
+        Call<Void> fingoLogoutCall = fingoService.userEmailLogout(mPref.getAccessToken());
         fingoLogoutCall.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -92,7 +87,9 @@ public class FragmentMyPage extends Fragment {
 
                 if (response.isSuccessful()) {
 
+                    Log.e("CHECK_TOKEN_BEFORE", mPref.getAccessToken());
                     mPref.removeAccessToken();
+                    Log.e("CHECK_TOKEN_AFTER", mPref.getAccessToken());
                     Log.e("Check Token Status", mPref.getAccessToken());
                     Log.e("Check Login Status", ">>>> 로그아웃 성공!!");
 
