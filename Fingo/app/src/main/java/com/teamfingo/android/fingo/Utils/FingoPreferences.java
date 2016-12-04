@@ -25,7 +25,7 @@ public class FingoPreferences {
     private static SharedPreferences mPref;
     private static SharedPreferences.Editor mEditor;
 
-    private static final String PREF_NAME = "com.teamfingo.android.fingo.Utils.pref";
+    private static final String PREF_NAME = "com.teamfingo.android.fingo.utils.pref";
     private static final String PREF_ACCESS_ERROR = "Can not access preference using this key : ";
 
     public static final String USER_TOKEN = "Token";
@@ -50,7 +50,7 @@ public class FingoPreferences {
     public static String getAccessToken() {
 
         try {
-            return mPref.getString(USER_TOKEN, "");
+            return "token " + mPref.getString(USER_TOKEN, "");
         } catch (Exception e) {
 
             return PREF_ACCESS_ERROR + key;
