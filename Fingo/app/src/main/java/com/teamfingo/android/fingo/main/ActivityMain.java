@@ -44,7 +44,7 @@ public class ActivityMain extends AppCompatActivity {
         mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
         container = (RelativeLayout) findViewById(R.id.container);
 
-        Log.e("Preference Check","======================" + mPref.getAccessToken());
+        Log.e("CHECK_TOKEN_MAIN","======================" + mPref.getAccessToken());
         replaceFragment(mFragmentHome);
 
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
