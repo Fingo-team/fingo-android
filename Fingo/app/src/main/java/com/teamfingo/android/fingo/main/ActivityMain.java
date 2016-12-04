@@ -26,6 +26,7 @@ public class ActivityMain extends AppCompatActivity {
 
     TabLayout mTabLayout;
     RelativeLayout container;
+    FingoPreferences mPref;
 
 
     @Override
@@ -38,11 +39,12 @@ public class ActivityMain extends AppCompatActivity {
         mFragmentRecommend = new FragmentRecommend();
         mFragmentMyPage = new FragmentMyPage();
 
+        mPref = new FingoPreferences(this);
+
         mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
         container = (RelativeLayout) findViewById(R.id.container);
 
-        Log.e("Preference Check","======================" + FingoPreferences.getAccessToken(this));
-
+        Log.e("Preference Check","======================" + mPref.getAccessToken());
         replaceFragment(mFragmentHome);
 
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
