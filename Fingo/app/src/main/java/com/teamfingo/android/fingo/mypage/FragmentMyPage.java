@@ -63,9 +63,9 @@ public class FragmentMyPage extends Fragment {
                 // TODO 만료 직전 토큰 상태 체크 - preference 객체 삭제 필요
                 mPref = new FingoPreferences(getContext());
 
-                Log.e("Check Token Status", mPref.getAccessToken());
+                Log.e("CHECK_TOKEN_BEFORE", mPref.getAccessToken());
                 mPref.removeAccessToken();
-                Log.e("Check Token Status", mPref.getAccessToken());
+                Log.e("CHECK_TOKEN_AFTER", mPref.getAccessToken());
 
                 callFingoAPI();
             }
