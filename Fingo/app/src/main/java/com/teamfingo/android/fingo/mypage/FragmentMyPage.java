@@ -12,7 +12,7 @@ import android.widget.Button;
 
 import com.facebook.login.LoginManager;
 import com.teamfingo.android.fingo.R;
-import com.teamfingo.android.fingo.Utils.FingoAccessToken;
+import com.teamfingo.android.fingo.utils.FingoPreferences;
 import com.teamfingo.android.fingo.interfaces.FingoService;
 import com.teamfingo.android.fingo.login.ActivityLogin;
 
@@ -58,9 +58,9 @@ public class FragmentMyPage extends Fragment {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("Check Token Status",FingoAccessToken.getAccessToken(getContext()));
-                FingoAccessToken.RemoveAccessToken(getContext());
-                Log.e("Check Token Status",FingoAccessToken.getAccessToken(getContext()));
+                Log.e("Check Token Status", FingoPreferences.getAccessToken(getContext()));
+                FingoPreferences.RemoveAccessToken(getContext());
+                Log.e("Check Token Status", FingoPreferences.getAccessToken(getContext()));
 
                 callFingoAPI();
             }
@@ -76,18 +76,18 @@ public class FragmentMyPage extends Fragment {
                 .build();
 
         FingoService fingoService = retrofit.create(FingoService.class);
-        Call<Void> fingoLogoutCall = fingoService.userEmailLogout("token "+FingoAccessToken.getAccessToken(getContext()));
+        Call<Void> fingoLogoutCall = fingoService.userEmailLogout("token "+ FingoPreferences.getAccessToken(getContext()));
         fingoLogoutCall.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
 
-                FingoAccessToken.getAccessToken(getContext());
+                FingoPreferences.getAccessToken(getContext());
                 Log.e("Check Login Status", ">>>>>>>>" + response.message());
 
                 if (response.isSuccessful()) {
 
-                    FingoAccessToken.RemoveAccessToken(getContext());
-                    Log.e("Check Token Status",FingoAccessToken.getAccessToken(getContext()));
+                    FingoPreferences.RemoveAccessToken(getContext());
+                    Log.e("Check Token Status", FingoPreferences.getAccessToken(getContext()));
                     Log.e("Check Login Status", ">>>> 로그아웃 성공!!");
 
                     Intent intent = new Intent(getView().getContext(), ActivityLogin.class);

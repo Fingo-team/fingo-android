@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.teamfingo.android.fingo.R;
+import com.teamfingo.android.fingo.utils.FingoPreferences;
 import com.teamfingo.android.fingo.interfaces.FingoService;
 import com.teamfingo.android.fingo.main.ActivityMain;
 import com.teamfingo.android.fingo.model.FingoAccessToken;
@@ -111,13 +112,17 @@ public class FragmentLogin extends Fragment implements View.OnClickListener {
             public void onResponse(Call<FingoAccessToken> call, Response<FingoAccessToken> response) {
                 if(response.isSuccessful()){
 
+                    FingoPreferences pref = new FingoPreferences(getContext());
+
+                    Log.e("CHECK TOKEN_GET_BEFORE", ">>>>>>>>"+pref.getAccessToken());
+
                     String token = response.body().getToken();
-                    com.teamfingo.android.fingo.Utils.FingoAccessToken.setAccessToken(getContext(), token);
-                    Log.e("CHECK TOKEN", ">>>>>>>>" + token);
+                    pref.setAccessToken(token);
+
+                    Log.e("CHECK TOKEN_GET_AFTER", ">>>>>>>>" + token);
 
                     Intent intent = new Intent(getActivity(), ActivityMain.class);
                     startActivity(intent);
-
                 }
                 else
                     Toast.makeText(getContext(), "로그인에 실패 하였습니다!!", Toast.LENGTH_SHORT).show();
