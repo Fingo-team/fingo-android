@@ -1,6 +1,8 @@
 package com.teamfingo.android.fingo.common;
 
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -16,6 +19,7 @@ import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.interfaces.FingoService;
 import com.teamfingo.android.fingo.model.Movie;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,8 +33,6 @@ public class FragmentMovieDetail extends Fragment {
 
     private static String FINGO_BASE_URL = "http://eb-fingo-real.ap-northeast-2.elasticbeanstalk.com/";
     private static String AUTHORIZATION = "token 41059ad0ec56dbc9bfd1e7dc633cef2a6de69d48";
-
-    //Movie mMovie;
 
     ImageView ivMovieBackgroundStillCut;
     ImageView ivMoviePoster;
@@ -48,6 +50,9 @@ public class FragmentMovieDetail extends Fragment {
     ImageView ivStillCut3;
     ImageView ivStillCut4;
     ImageView ivStillCut5;
+    LinearLayout llDirectorandActor;
+
+    LinearLayout.LayoutParams mLayoutParams;
 
     public static FragmentMovieDetail newInstance(String movieId) {
         FragmentMovieDetail fragment = new FragmentMovieDetail();
@@ -84,6 +89,8 @@ public class FragmentMovieDetail extends Fragment {
                     ivMovieBackgroundStillCut = (ImageView) view.findViewById(R.id.imageView_movie_detail_backgroundStillcut);
                     Movie.Stillcut[] stillCutImg = movie.getStillcut();
                     Glide.with(getContext()).load(stillCutImg[1].getImg()).into(ivMovieBackgroundStillCut);
+                    // movie title, movie score가 더 잘 보이게 하기 위해서 배경 이미지를 반투명 처리
+                    ivMovieBackgroundStillCut.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY);
 
                     ivMoviePoster = (ImageView) view.findViewById(R.id.imageView_movie_detail_movie_post);
                     Glide.with(getContext()).load(movie.getImg()).into(ivMoviePoster);
@@ -102,9 +109,9 @@ public class FragmentMovieDetail extends Fragment {
                     btnShare.setText("4");
 
                     tvMovieDate = (TextView) view.findViewById(R.id.textView_date);
-                    tvMovieDate.setText(movie.getFirst_run_date());
+                    tvMovieDate.setText("개봉일: " + movie.getFirst_run_date());
                     tvMovieGenre = (TextView) view.findViewById(R.id.textView_genre);
-                    tvMovieGenre.setText(movie.getGenre());
+                    tvMovieGenre.setText("장르: " + movie.getGenre());
                     tvMovieStory = (TextView) view.findViewById(R.id.textView_story);
                     tvMovieStory.setText(movie.getStory());
 
@@ -118,6 +125,27 @@ public class FragmentMovieDetail extends Fragment {
                     Glide.with(getContext()).load(stillCutImg[3].getImg()).into(ivStillCut4);
                     ivStillCut5 = (ImageView) view.findViewById(R.id.imageView_stillCut5);
                     Glide.with(getContext()).load(stillCutImg[4].getImg()).into(ivStillCut5);
+
+                    llDirectorandActor = (LinearLayout) view.findViewById(R.id.linearLayout_director_and_actor);
+                    mLayoutParams = new LinearLayout.LayoutParams(200, 200);
+                    Movie.Director[] directors = movie.getDirector();
+                    Movie.Actor[] actors = movie.getActor();
+
+                    for (int i=0; i<directors.length; i++) {
+                        CircleImageView civ = new CircleImageView(getContext());
+                        Glide.with(getContext()).load(directors[i].getImg()).into(civ);
+                        civ.setLayoutParams(mLayoutParams);
+                        mLayoutParams.setMargins(40,0,40,0);
+                        llDirectorandActor.addView(civ);
+                    }
+
+                    for (int i=0; i<actors.length; i++) {
+                        CircleImageView civ = new CircleImageView(getContext());
+                        Glide.with(getContext()).load(actors[i].getImg()).into(civ);
+                        civ.setLayoutParams(mLayoutParams);
+                        mLayoutParams.setMargins(40,0,40,0);
+                        llDirectorandActor.addView(civ);
+                    }
                 }
             }
 
@@ -130,5 +158,4 @@ public class FragmentMovieDetail extends Fragment {
 
         return view;
     }
-
 }
