@@ -11,7 +11,7 @@ import android.view.MenuInflater;
 import android.widget.RelativeLayout;
 
 import com.teamfingo.android.fingo.R;
-import com.teamfingo.android.fingo.Utils.FingoAccessToken;
+import com.teamfingo.android.fingo.utils.FingoPreferences;
 import com.teamfingo.android.fingo.category.FragmentCategory;
 import com.teamfingo.android.fingo.home.FragmentHome;
 import com.teamfingo.android.fingo.mypage.FragmentMyPage;
@@ -41,7 +41,7 @@ public class ActivityMain extends AppCompatActivity {
         mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
         container = (RelativeLayout) findViewById(R.id.container);
 
-        Log.e("Preference Check","======================" + FingoAccessToken.getAccessToken(this));
+        Log.e("Preference Check","======================" + FingoPreferences.getAccessToken(this));
 
         replaceFragment(mFragmentHome);
 
