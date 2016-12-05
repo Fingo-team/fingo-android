@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.teamfingo.android.fingo">
+<manifest package="com.teamfingo.android.fingo"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -11,22 +11,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
-        <!--facebook SDK 를 이용하기 위한 APP ID 를 meta-data 로 설정-->
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
-
+        <!-- facebook SDK 를 이용하기 위한 APP ID 를 meta-data 로 설정 -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
 
         <activity android:name=".splash.ActivitySplash">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity android:name=".main.ActivityMain"/>
-        <activity android:name=".login.ActivityLogin" />
-        <activity android:name=".search.ActivitySearch"></activity>
-
+        <activity android:name=".login.ActivityLogin"/>
+        <activity android:name=".search.ActivitySearch"/>
+        <activity android:name=".category.ActivityMovieDetail">
+        </activity>
     </application>
 
 </manifest>
