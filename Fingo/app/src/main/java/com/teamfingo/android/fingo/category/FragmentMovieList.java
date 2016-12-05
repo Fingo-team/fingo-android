@@ -1,4 +1,4 @@
-package com.teamfingo.android.fingo.common;
+package com.teamfingo.android.fingo.category;
 
 
 import android.content.Intent;
@@ -16,8 +16,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.teamfingo.android.fingo.R;
+import com.teamfingo.android.fingo.common.ActivityMovieDetail;
 import com.teamfingo.android.fingo.interfaces.FingoService;
-import com.teamfingo.android.fingo.category.ActivityMovieDetail;
 import com.teamfingo.android.fingo.model.BoxOfficeRanking;
 import com.teamfingo.android.fingo.utils.FingoPreferences;
 

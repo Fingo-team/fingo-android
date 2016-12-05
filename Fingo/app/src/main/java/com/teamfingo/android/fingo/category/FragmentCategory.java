@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.teamfingo.android.fingo.R;
-import com.teamfingo.android.fingo.common.FragmentMovieList;
 
 /**
  * A simple {@link Fragment} subclass.
