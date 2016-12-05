@@ -1,18 +1,20 @@
 package com.teamfingo.android.fingo.model;
 
+import java.util.ArrayList;
+
 /**
  * Created by Jaemin on 2016. 11. 29..
  */
 
 public class BoxOfficeRanking {
-    private Data[] data;
+    private ArrayList<Data> data = new ArrayList<>();
 
-    public Data[] getData ()
+    public ArrayList<Data> getData ()
     {
         return data;
     }
 
-    public void setData (Data[] data)
+    public void setData (ArrayList<Data> data)
     {
         this.data = data;
     }
