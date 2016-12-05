@@ -22,6 +22,10 @@ import com.teamfingo.android.fingo.R;
  * keystore password : fingo1221
  * facebook SDK Hash key : Qce+5cPoBrUhZu5LF5UFADzGUno=
  *
+ * fingo App ID : 638541519685008
+ * fingo Secret Code : de6875623535b7cdb7406b02b6482d93
+ * fingo App Package Name : com.teamfingo.android.fingo
+ *
  */
 
 public class ActivityLogin extends AppCompatActivity{
@@ -46,8 +50,9 @@ public class ActivityLogin extends AppCompatActivity{
     // pager 를 쓰지않고 단순히 Fragment 를 하나의 Layout container 에서 변경 해주기 위한 method
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        FragmentTransaction transaction = fragmentManager.beginTransaction().addToBackStack(null);
         transaction.replace(R.id.activity_login, fragment);
+
         transaction.commit();
     }
 }

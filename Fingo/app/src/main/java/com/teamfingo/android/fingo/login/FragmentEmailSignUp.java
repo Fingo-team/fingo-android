@@ -136,7 +136,7 @@ public class FragmentEmailSignUp extends Fragment {
 
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        FragmentTransaction transaction = fragmentManager.beginTransaction().addToBackStack(null);
         transaction.replace(R.id.activity_login, fragment);
         transaction.commit();
     }

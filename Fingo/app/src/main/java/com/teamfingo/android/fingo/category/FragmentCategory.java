@@ -39,7 +39,7 @@ public class FragmentCategory extends Fragment {
             public void onClick(View v) {
                 Fragment fragment = new FragmentMovieList();
                 FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                FragmentTransaction transaction = fragmentManager.beginTransaction().addToBackStack(null);
                 transaction.replace(R.id.container, fragment);
                 transaction.commit();
             }

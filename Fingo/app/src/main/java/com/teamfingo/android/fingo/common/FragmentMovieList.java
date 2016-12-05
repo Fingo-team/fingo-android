@@ -64,6 +64,7 @@ public class FragmentMovieList extends Fragment {
         mListAdapter = new ListAdapter();
         mListView.setAdapter(mListAdapter);
 
+
         pref = new FingoPreferences(getContext());
         token = pref.getAccessToken();
 
@@ -108,9 +109,7 @@ public class FragmentMovieList extends Fragment {
 
                 Intent intent = new Intent(getActivity(), ActivityMovieDetail.class);
                 intent.putExtra("movieId", movieId);
-
                 startActivity(intent);
-
             }
         });
 

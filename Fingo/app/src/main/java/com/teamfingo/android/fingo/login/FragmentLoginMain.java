@@ -113,7 +113,7 @@ public class FragmentLoginMain extends Fragment implements View.OnClickListener{
     // pager 를 쓰지않고 단순히 Fragment 를 하나의 Layout container 에서 변경 해주기 위한 method
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        FragmentTransaction transaction = fragmentManager.beginTransaction().addToBackStack(null);
         transaction.replace(R.id.activity_login, fragment);
         transaction.commit();
     }

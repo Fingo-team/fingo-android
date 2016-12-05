@@ -94,7 +94,7 @@ public class ActivityMain extends AppCompatActivity {
         Log.d("aaaa", "aaaa");
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        android.support.v4.app.FragmentTransaction transaction = fragmentManager.beginTransaction();
+        android.support.v4.app.FragmentTransaction transaction = fragmentManager.beginTransaction().addToBackStack(null);
         transaction.replace(R.id.container, fragment);
         transaction.commit();
     }
