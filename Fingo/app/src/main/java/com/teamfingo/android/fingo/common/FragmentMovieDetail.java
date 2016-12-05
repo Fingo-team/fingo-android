@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.interfaces.FingoService;
 import com.teamfingo.android.fingo.model.Movie;
+import com.teamfingo.android.fingo.utils.FingoPreferences;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
@@ -32,7 +33,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class FragmentMovieDetail extends Fragment {
 
     private static String FINGO_BASE_URL = "http://eb-fingo-real.ap-northeast-2.elasticbeanstalk.com/";
-    private static String AUTHORIZATION = "token 41059ad0ec56dbc9bfd1e7dc633cef2a6de69d48";
+    //private static String AUTHORIZATION = "token 41059ad0ec56dbc9bfd1e7dc633cef2a6de69d48";
 
     ImageView ivMovieBackgroundStillCut;
     ImageView ivMoviePoster;
@@ -77,8 +78,11 @@ public class FragmentMovieDetail extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
+        FingoPreferences pref = new FingoPreferences(getContext());
+        String token = pref.getAccessToken();
+
         FingoService service = retrofit.create(FingoService.class);
-        Call<Movie> movieCall = service.getMovie(AUTHORIZATION, (String) getArguments().getSerializable("movieId"));
+        Call<Movie> movieCall = service.getMovie(token, (String) getArguments().getSerializable("movieId"));
 
         movieCall.enqueue(new Callback<Movie>() {
             @Override
