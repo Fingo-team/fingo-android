@@ -1,15 +1,18 @@
 package com.teamfingo.android.fingo.search;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.teamfingo.android.fingo.R;
+import com.teamfingo.android.fingo.common.ActivityMovieDetail;
 import com.teamfingo.android.fingo.model.SearchMovie;
 
 import java.util.ArrayList;
@@ -24,10 +27,32 @@ public class RecyclerAdapterSearch extends RecyclerView.Adapter<RecyclerAdapterS
     private ArrayList<SearchMovie> mSearchMovies;
     private int itemLayout;
 
+
     public RecyclerAdapterSearch(Context context, ArrayList<SearchMovie> mSearchMovies, int itemLayout) {
         this.mContext = context;
         this.mSearchMovies = mSearchMovies;
         this.itemLayout = itemLayout;
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder{
+
+        RelativeLayout mRelativeLayout;
+        ImageView ivMoviePoster;
+        TextView tvMovieTitle;
+        TextView tvMovieDate;
+        TextView tvMovieGenre;
+        TextView tvMovieNation;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+
+            mRelativeLayout = (RelativeLayout) itemView.findViewById(R.id.relativeLayout_search);
+            ivMoviePoster = (ImageView) itemView.findViewById(R.id.imageView_movie_poster);
+            tvMovieTitle = (TextView) itemView.findViewById(R.id.textView_movie_title);
+            tvMovieDate = (TextView) itemView.findViewById(R.id.textView_movie_date);
+            tvMovieGenre = (TextView) itemView.findViewById(R.id.textView_movie_genre);
+            tvMovieNation = (TextView) itemView.findViewById(R.id.textView_movie_nation);
+        }
     }
 
     @Override
@@ -37,25 +62,28 @@ public class RecyclerAdapterSearch extends RecyclerView.Adapter<RecyclerAdapterS
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         Glide.with(mContext).load(mSearchMovies.get(position).getImg()).into(holder.ivMoviePoster);
+        holder.tvMovieTitle.setText(mSearchMovies.get(position).getTitle());
+        holder.tvMovieDate.setText("(" + mSearchMovies.get(position).getFirst_run_date() + ")");
+        holder.tvMovieGenre.setText(mSearchMovies.get(position).getGenre());
+        holder.tvMovieNation.setText("/ " + mSearchMovies.get(position).getNation_code());
+
+        holder.mRelativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String movieId = mSearchMovies.get(position).getId();
+
+                Intent intent = new Intent(mContext, ActivityMovieDetail.class);
+                intent.putExtra("movieId", movieId);
+
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return mSearchMovies.size();
-    }
-
-
-    public class ViewHolder extends RecyclerView.ViewHolder{
-
-        public final ImageView ivMoviePoster;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-
-            ivMoviePoster = (ImageView) itemView.findViewById(R.id.imageView_movie_poster);
-
-        }
     }
 }
