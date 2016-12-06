@@ -7,6 +7,4 @@
         android:icon="@drawable/ic_search_black_24dp"
         android:title="@string/icon_search"
         app:showAsAction="ifRoom"/>
-
-
 </menu>
