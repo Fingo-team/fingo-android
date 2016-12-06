@@ -136,7 +136,7 @@ public class FragmentMovieList extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            convertView = View.inflate(getActivity(), R.layout.movie_list_item, null);
+            convertView = View.inflate(getActivity(), R.layout.item_movie_list, null);
 
             imgViewMoviePoster = (ImageView) convertView.findViewById(R.id.imageView_movie_poster);
             tvMovieTitle = (TextView) convertView.findViewById(R.id.textView_movie_title);

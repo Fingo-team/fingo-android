@@ -1,5 +1,6 @@
 package com.teamfingo.android.fingo.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -9,9 +10,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.RelativeLayout;
 
 import com.teamfingo.android.fingo.R;
+import com.teamfingo.android.fingo.search.ActivitySearch;
 import com.teamfingo.android.fingo.utils.FingoPreferences;
 import com.teamfingo.android.fingo.category.FragmentCategory;
 import com.teamfingo.android.fingo.home.FragmentHome;
@@ -29,12 +32,11 @@ public class ActivityMain extends AppCompatActivity {
     RelativeLayout container;
     FingoPreferences mPref;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setSupportActionBar((Toolbar) findViewById(R.id.tool_bar));
+        setSupportActionBar((Toolbar) findViewById(R.id.main_tool_bar));
 
         mFragmentHome = new FragmentHome();
         mFragmentCategory = new FragmentCategory();
@@ -81,14 +83,28 @@ public class ActivityMain extends AppCompatActivity {
 
             }
         });
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    // ToolBar의 Search 아이콘을 눌렀을 때 ActivitySearch가 실행된다.
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.icon_search:
+                Intent intent = new Intent(ActivityMain.this, ActivitySearch.class);
+                startActivity(intent);
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
         return true;
     }
 

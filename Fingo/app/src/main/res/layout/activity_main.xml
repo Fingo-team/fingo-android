@@ -9,7 +9,7 @@
     tools:context="com.teamfingo.android.fingo.main.ActivityMain">
     
     <android.support.v7.widget.Toolbar
-        android:id="@+id/tool_bar"
+        android:id="@+id/main_tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:titleTextColor="#161616"
@@ -22,7 +22,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tool_bar"
+        android:layout_below="@id/main_tool_bar"
         android:layout_above="@+id/tabLayout">
     </RelativeLayout>
 

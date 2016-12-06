@@ -4,6 +4,9 @@ import com.teamfingo.android.fingo.model.BoxOfficeRanking;
 import com.teamfingo.android.fingo.model.Movie;
 import com.teamfingo.android.fingo.model.FingoAccessToken;
 import com.teamfingo.android.fingo.model.SearchList;
+import com.teamfingo.android.fingo.model.SearchMovie;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -22,12 +25,17 @@ import retrofit2.http.Query;
 
 public interface FingoService {
 
-
+    // Box Office Movie List
     @GET("/api/v1.0/movie/boxoffice/")
     Call<BoxOfficeRanking> getBoxOfficeRanking(@Header("Authorization") String authorization);
 
+    // Movie Detail Information
     @GET("/api/v1.0/movie/detail/{id}/")
     Call<Movie> getMovie(@Header("Authorization") String authorization, @Path("id") String id);
+
+    // 검색했을 때 Movie Information
+    @GET("/api/v1.0/movie/search/")
+    Call<ArrayList<SearchMovie>> getSearchMovie(@Header("Authorization") String authorization, @Query("q") String word);
 
     // SignUp function
     @FormUrlEncoded
