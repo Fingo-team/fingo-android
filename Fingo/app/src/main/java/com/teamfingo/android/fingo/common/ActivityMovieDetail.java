@@ -1,4 +1,4 @@
-package com.teamfingo.android.fingo.category;
+package com.teamfingo.android.fingo.common;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;

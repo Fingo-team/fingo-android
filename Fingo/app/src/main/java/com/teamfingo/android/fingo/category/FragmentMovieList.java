@@ -1,4 +1,4 @@
-package com.teamfingo.android.fingo.common;
+package com.teamfingo.android.fingo.category;
 
 
 import android.content.Intent;
@@ -16,8 +16,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.teamfingo.android.fingo.R;
+import com.teamfingo.android.fingo.common.ActivityMovieDetail;
 import com.teamfingo.android.fingo.interfaces.FingoService;
-import com.teamfingo.android.fingo.category.ActivityMovieDetail;
 import com.teamfingo.android.fingo.model.BoxOfficeRanking;
 import com.teamfingo.android.fingo.utils.FingoPreferences;
 
@@ -136,7 +136,7 @@ public class FragmentMovieList extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            convertView = View.inflate(getActivity(), R.layout.movie_list_item, null);
+            convertView = View.inflate(getActivity(), R.layout.item_movie_list, null);
 
             imgViewMoviePoster = (ImageView) convertView.findViewById(R.id.imageView_movie_poster);
             tvMovieTitle = (TextView) convertView.findViewById(R.id.textView_movie_title);

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3f51b5</color>
+    <color name="colorPrimary">#f9f9f9</color>
     <color name="colorPrimaryDark">#c1c1c1</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#ffaf40</color>
 
     <color name="colorWhiteBackground">#f4f3f3</color>
-    <color name="tabBackground">#efefef</color>
+    <color name="toolbarAndTabBackground">#efefef</color>
     <color name="movieDetail_movitTitle">#ffffff</color>
     <color name="colorTextShadow">#000000</color>
 </resources>
