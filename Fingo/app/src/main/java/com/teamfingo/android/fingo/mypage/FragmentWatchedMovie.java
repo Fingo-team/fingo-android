@@ -9,12 +9,13 @@ import android.view.ViewGroup;
 
 import com.teamfingo.android.fingo.R;
 
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class FragmentWatchedMovie extends Fragment {
 
-public class FragmentMyPage extends Fragment {
 
-    private String BASE_URL = "http://eb-fingo-real.ap-northeast-2.elasticbeanstalk.com/";
-
-    public FragmentMyPage() {
+    public FragmentWatchedMovie() {
         // Required empty public constructor
     }
 
@@ -22,11 +23,8 @@ public class FragmentMyPage extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_my_page, container, false);
-
-
+        View view = inflater.inflate(R.layout.fragment_watched_movie, container, false);
 
         return view;
     }

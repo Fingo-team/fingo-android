@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center_vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:srcCompat="@drawable/com_facebook_profile_picture_blank_square"
+            android:id="@+id/image_comment_profile"
+            android:layout_weight="0.05"
+            android:scaleType="fitXY" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:text="User Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView6"
+                android:textStyle="normal|bold"
+                android:textAllCaps="false" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RatingBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ratingBar"
+                    android:isIndicator="true"
+                    style="@style/Widget.AppCompat.RatingBar.Small" />
+
+                <TextView
+                    android:text="Date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView7"
+                    android:layout_weight="1"
+                    android:paddingLeft="10dp"
+                    android:textSize="10dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageButton
+            app:srcCompat="@drawable/icon_vertical_dots_gray"
+            android:id="@+id/button_modify"
+            android:layout_weight="0.05"
+            style="@android:style/Widget.DeviceDefault.Button.Borderless"
+            android:layout_width="15dp"
+            android:layout_height="30dp" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        app:srcCompat="@android:drawable/ic_menu_gallery"
+        android:id="@+id/image_mypage_stilcut"
+        android:layout_height="250dp"
+        android:scaleType="center"
+        android:layout_marginTop="73dp"
+        android:layout_below="@+id/linearLayout2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp">
+
+        <TextView
+            android:text="영화"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView9"
+            android:textColor="@color/colorTextShadow" />
+
+        <TextView
+            android:text="Movie_Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView_movie_title" />
+    </LinearLayout>
+
+    <TextView
+        android:text="comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView_comment"
+        android:layout_below="@+id/image_mypage_stilcut"
+        android:layout_alignLeft="@+id/linearLayout3"
+        android:layout_alignStart="@+id/linearLayout3"
+        android:layout_marginLeft="20dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView_comment"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_like"
+            android:layout_weight="1"
+            android:elevation="0dp"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:drawableLeft="@drawable/icon_heart_gray"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:textAlignment="center"
+            android:text="Like" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_comment"
+            android:layout_weight="1"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:drawableLeft="@drawable/icon_comment_gray"
+            android:drawablePadding="0dp"
+            android:text="Comment" />
+
+        <Button
+            android:text="Share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_share"
+            android:layout_weight="1"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:drawableLeft="@drawable/icon_dots" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -69,7 +69,7 @@ public class FragmentEmailSignUp extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_fragment_email_sign_up, container, false);
+        View view = inflater.inflate(R.layout.fragment_email_sign_up, container, false);
 
 
         // TODO Rx 사용해 볼 것 - 입력이 된 순간 text 에 입력 되도록!
