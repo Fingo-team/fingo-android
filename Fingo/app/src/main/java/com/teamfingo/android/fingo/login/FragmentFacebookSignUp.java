@@ -61,7 +61,7 @@ public class FragmentFacebookSignUp extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View view = inflater.inflate(R.layout.fragment_fragment_facebook_sign_up, container, false);
+        View view = inflater.inflate(R.layout.fragment_facebook_sign_up, container, false);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         // Fragment 로 구현 할 때에는 Callback Manager 를 private 으로 선언 하면 안됨.
