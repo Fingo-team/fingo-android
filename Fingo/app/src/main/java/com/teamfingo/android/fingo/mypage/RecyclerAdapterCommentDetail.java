@@ -19,12 +19,12 @@ import java.util.ArrayList;
  * Created by taewon on 2016-12-08.
  */
 
-public class RecyclerAdapterComment extends RecyclerView.Adapter<RecyclerAdapterComment.ViewHolder> {
+public class RecyclerAdapterCommentDetail extends RecyclerView.Adapter<RecyclerAdapterCommentDetail.ViewHolder> {
 
     Context mContext;
-    ArrayList<UserComments> mUserComments;
+    ArrayList<UserComments.Results> mUserComments = new ArrayList<>();
 
-    public RecyclerAdapterComment(Context context, ArrayList<UserComments> userComments) {
+    public RecyclerAdapterCommentDetail(Context context, ArrayList<UserComments.Results> userComments) {
 
         mContext = context;
         mUserComments = userComments;
@@ -64,6 +64,16 @@ public class RecyclerAdapterComment extends RecyclerView.Adapter<RecyclerAdapter
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
+        UserComments.Movie movie_data = mUserComments.get(position).getMovie();
+        UserComments.User user_data = mUserComments.get(position).getUser();
+        UserComments.Results comment_data = mUserComments.get(position);
+
+//        Glide.with(mContext).load(mUserComments.get(position).getUser().getUser_img()).into(holder.imgProfile);
+        holder.tvUserName.setText(user_data.getNickname());
+        holder.tvDate.setText(comment_data.getActivity_time());
+        holder.tvMovieTitle.setText(movie_data.getTitle());
+        holder.tvUserComment.setText(comment_data.getComment());
+        holder.rbUserRating.setRating(comment_data.getScore());
 
     }
 

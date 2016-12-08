@@ -26,10 +26,9 @@
             android:paddingLeft="16dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="118dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView_user_nickname"
-                android:layout_weight="0.04"
                 android:text="User Name" />
 
             <RatingBar
@@ -38,14 +37,6 @@
                 android:id="@+id/ratingBar_comment_detail"
                 style="@style/Widget.AppCompat.RatingBar.Small" />
 
-            <TextView
-                android:text="date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView_comment_date"
-                android:layout_weight="0.31"
-                android:layout_marginLeft="16dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
         </LinearLayout>
 
         <TextView
@@ -65,6 +56,15 @@
             android:id="@+id/textView_comment"
             android:layout_marginTop="16dp"
             android:layout_marginLeft="16dp" />
+
+        <TextView
+            android:text="date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView_comment_date"
+            android:layout_weight="0.31"
+            android:layout_marginLeft="16dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
         <LinearLayout
             android:orientation="horizontal"

@@ -12,9 +12,17 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.teamfingo.android.fingo.R;
+import com.teamfingo.android.fingo.interfaces.FingoService;
 import com.teamfingo.android.fingo.model.UserComments;
+import com.teamfingo.android.fingo.utils.FingoPreferences;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,9 +33,13 @@ public class FragmentCommentDetail extends Fragment {
     TextView tvOrdering;
 
     RecyclerView mRecyclerView;
-    RecyclerAdapterComment mAdapter;
+    RecyclerAdapterCommentDetail mAdapter;
 
-    ArrayList<UserComments> mUserComments;
+    ArrayList<UserComments.Results> mUserComments = new ArrayList<>();
+
+    private static final String BASE_URL = "http://eb-fingo-real.ap-northeast-2.elasticbeanstalk.com/";
+
+    private FingoPreferences mPref;
 
     public FragmentCommentDetail() {
         // Required empty public constructor
@@ -43,12 +55,43 @@ public class FragmentCommentDetail extends Fragment {
         btnOrdering = (ImageButton) view.findViewById(R.id.button_ordering);
         tvOrdering = (TextView) view.findViewById(R.id.textView_ordering);
 
+        mPref = new FingoPreferences(getContext());
+        callFingoService();
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_comment_detail);
-        mAdapter = new RecyclerAdapterComment(this.getContext(), mUserComments);
+        mAdapter = new RecyclerAdapterCommentDetail(this.getContext(), mUserComments);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         return view;
     }
 
+    private void callFingoService(){
+
+        Retrofit client = new Retrofit.Builder()
+                                    .baseUrl(BASE_URL)
+                                    .addConverterFactory(GsonConverterFactory.create())
+                                    .build();
+        FingoService service = client.create(FingoService.class);
+        Call<UserComments> userCommentsCall = service.getUserComments(mPref.getAccessToken());
+        userCommentsCall.enqueue(new Callback<UserComments>() {
+            @Override
+            public void onResponse(Call<UserComments> call, Response<UserComments> response) {
+                if(response.isSuccessful()){
+
+                    UserComments data = response.body();
+                    for(UserComments.Results comment : data.getResults()){
+                        mUserComments.add(comment);
+                    }
+                }
+                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<UserComments> call, Throwable t) {
+
+            }
+        });
+
+    }
 }
