@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:contentPadding="10dp"
-        app:cardElevation="10dp"
+        app:cardElevation="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp">
 
