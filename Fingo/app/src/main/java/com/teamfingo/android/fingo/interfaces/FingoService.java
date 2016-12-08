@@ -6,6 +6,7 @@ import com.teamfingo.android.fingo.model.Movie;
 import com.teamfingo.android.fingo.model.SearchList;
 import com.teamfingo.android.fingo.model.SearchMovie;
 import com.teamfingo.android.fingo.model.UserComments;
+import com.teamfingo.android.fingo.model.UserDetail;
 
 import java.util.ArrayList;
 
@@ -60,6 +61,8 @@ public interface FingoService {
     @GET("/api/v1.0/activity/user/comments/")
     Call<UserComments> getUserComments(@Header("Authorization") String authorization);
 
-    //
+    // get user detail
+    @GET("/api/v1.0/activity/user/detail/")
+    Call<UserDetail> getUserDetail(@Header("Authorization") String authorization);
 
 }

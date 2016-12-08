@@ -7,133 +7,140 @@
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
-        <!-- 유저 프로필 영역 -->
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/image_profile_cover"
+            <!-- 유저 프로필 영역 -->
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="275dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/image_profile_cover" />
-
-            <ImageButton
-                android:id="@+id/button_mypage_setting"
-                style="@android:style/Widget.Material.Button.Borderless"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="5dp"
-                android:scaleType="centerInside"
-                app:srcCompat="@drawable/icon_setting_white" />
-
-            <ImageButton
-                android:id="@+id/button_mypage_add"
-                style="@style/Base.Widget.AppCompat.Button.Borderless"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_margin="5dp"
-                android:scaleType="centerInside"
-                app:srcCompat="@drawable/icon_dots_white" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/button_mypage_add"
-                android:layout_centerHorizontal="true"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/image_profile"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    app:srcCompat="@drawable/com_facebook_profile_picture_blank_square" />
-
-                <TextView
-                    android:id="@+id/textView_user_nickname"
+                    android:id="@+id/image_profile_cover"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:text="Name"
-                    android:textAlignment="center"
-                    android:textColor="@color/cardview_light_background"
-                    android:textSize="30dp" />
+                    android:layout_height="275dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/image_profile_cover" />
 
-                <TextView
-                    android:id="@+id/textView_user_introduce"
+                <ImageButton
+                    android:id="@+id/button_mypage_setting"
+                    style="@android:style/Widget.Material.Button.Borderless"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/icon_setting_white" />
+
+                <ImageButton
+                    android:id="@+id/button_mypage_add"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_margin="5dp"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/icon_dots_white" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/button_mypage_add"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/image_profile"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        app:srcCompat="@drawable/com_facebook_profile_picture_blank_square" />
+
+                    <TextView
+                        android:id="@+id/textView_user_nickname"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:text="Name"
+                        android:textAlignment="center"
+                        android:textColor="@color/cardview_light_background"
+                        android:textSize="30dp" />
+
+                    <TextView
+                        android:id="@+id/textView_user_introduce"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="User Introduce"
+                        android:textAlignment="center"
+                        android:textColor="@color/cardview_light_background"
+                        android:textSize="15dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="User Introduce"
-                    android:textAlignment="center"
-                    android:textColor="@color/cardview_light_background"
-                    android:textSize="15dp" />
+                    android:layout_alignBottom="@+id/image_profile_cover"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="horizontal">
 
-            </LinearLayout>
+                    <Button
+                        android:id="@+id/button_comment"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:autoText="false"
+                        android:editable="false"
+                        android:elevation="0dp"
+                        android:text="comment"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorWhiteBackground"
+                        android:textIsSelectable="false" />
 
-            <LinearLayout
+                    <Button
+                        android:id="@+id/button_wish"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="wish"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorWhiteBackground" />
+
+                    <Button
+                        android:id="@+id/button_watched"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="watched"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorWhiteBackground" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/image_profile_cover"
-                android:layout_centerHorizontal="true"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:scrollbars="vertical" />
 
-                <Button
-                    android:id="@+id/button_comment"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:autoText="false"
-                    android:editable="false"
-                    android:elevation="0dp"
-                    android:text="comment"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorWhiteBackground"
-                    android:textIsSelectable="false" />
+            <!-- 유저 코멘트 영역 -->
 
-                <Button
-                    android:id="@+id/button_wish"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="wish"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorWhiteBackground" />
-
-                <Button
-                    android:id="@+id/button_watched"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="watched"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorWhiteBackground" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/image_profile_cover"
-                android:layout_centerHorizontal="true"
-                android:orientation="vertical"
-                android:id="@+id/linearLayout_user_comment"></LinearLayout>
-
-        </RelativeLayout>
-
-        <!-- 유저 코멘트 영역 -->
+        </LinearLayout>
 
 
     </android.support.v4.widget.NestedScrollView>
