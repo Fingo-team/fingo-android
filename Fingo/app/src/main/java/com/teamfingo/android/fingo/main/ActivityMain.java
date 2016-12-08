@@ -23,13 +23,14 @@ import com.teamfingo.android.fingo.recommend.FragmentRecommend;
 
 public class ActivityMain extends AppCompatActivity {
 
-    FragmentHome mFragmentHome;
-    FragmentCategory mFragmentCategory;
-    FragmentRecommend mFragmentRecommend;
-    FragmentMyPage mFragmentMyPage;
+    FragmentHome fragmentHome;
+    FragmentCategory fragmentCategory;
+    FragmentRecommend fragmentRecommend;
+    FragmentMyPage fragmentMyPage;
 
-    TabLayout mTabLayout;
-    RelativeLayout container;
+    TabLayout tabLayout;
+    RelativeLayout mainContainer;
+
     FingoPreferences mPref;
 
     @Override
@@ -38,20 +39,20 @@ public class ActivityMain extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.main_tool_bar));
 
-        mFragmentHome = new FragmentHome();
-        mFragmentCategory = new FragmentCategory();
-        mFragmentRecommend = new FragmentRecommend();
-        mFragmentMyPage = new FragmentMyPage();
+        fragmentHome = new FragmentHome();
+        fragmentCategory = new FragmentCategory();
+        fragmentRecommend = new FragmentRecommend();
+        fragmentMyPage = new FragmentMyPage();
 
         mPref = new FingoPreferences(this);
 
-        mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        container = (RelativeLayout) findViewById(R.id.container);
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        mainContainer = (RelativeLayout) findViewById(R.id.main_container);
 
         Log.e("CHECK_TOKEN_MAIN","======================" + mPref.getAccessToken());
-        replaceFragment(mFragmentHome);
+        replaceFragment(fragmentHome);
 
-        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -59,16 +60,16 @@ public class ActivityMain extends AppCompatActivity {
 
                 switch (tab.getPosition()) {
                     case 0:
-                        replaceFragment(mFragmentHome);
+                        replaceFragment(fragmentHome);
                         break;
                     case 1:
-                        replaceFragment(mFragmentCategory);
+                        replaceFragment(fragmentCategory);
                         break;
                     case 2:
-                        replaceFragment(mFragmentRecommend);
+                        replaceFragment(fragmentRecommend);
                         break;
                     case 3:
-                        replaceFragment(mFragmentMyPage);
+                        replaceFragment(fragmentMyPage);
                         break;
                 }
             }
@@ -109,11 +110,10 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     private void replaceFragment(Fragment fragment) {
-        Log.d("aaaa", "aaaa");
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction transaction = fragmentManager.beginTransaction().addToBackStack(null);
-        transaction.replace(R.id.container, fragment);
+        transaction.replace(R.id.main_container, fragment);
         transaction.commit();
     }
 }

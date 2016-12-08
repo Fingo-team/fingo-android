@@ -12,10 +12,10 @@ import com.teamfingo.android.fingo.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragementWishMovie extends Fragment {
+public class FragmentWishMovie extends Fragment {
 
 
-    public FragementWishMovie() {
+    public FragmentWishMovie() {
         // Required empty public constructor
     }
 
