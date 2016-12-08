@@ -33,7 +33,7 @@
                 android:text="User Name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView6"
+                android:id="@+id/textView_user_nickname"
                 android:textStyle="normal|bold"
                 android:textAllCaps="false" />
 
@@ -45,7 +45,7 @@
                 <RatingBar
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/ratingBar"
+                    android:id="@+id/ratingBar_comment"
                     android:isIndicator="true"
                     style="@style/Widget.AppCompat.RatingBar.Small" />
 
@@ -53,7 +53,7 @@
                     android:text="Date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textView7"
+                    android:id="@+id/textView_comment_date"
                     android:layout_weight="1"
                     android:paddingLeft="10dp"
                     android:textSize="10dp" />
@@ -84,7 +84,7 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
@@ -102,7 +102,8 @@
             android:text="Movie_Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView_movie_title" />
+            android:id="@+id/textView_movie_title"
+            android:layout_marginTop="10dp" />
     </LinearLayout>
 
     <TextView
@@ -134,7 +135,8 @@
             android:drawableLeft="@drawable/icon_heart_gray"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textAlignment="center"
-            android:text="Like" />
+            android:text="Like"
+            android:drawablePadding="0dp" />
 
         <Button
             android:layout_width="wrap_content"

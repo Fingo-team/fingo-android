@@ -21,7 +21,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="8dp">
 
                 <ImageButton
                     app:srcCompat="@drawable/com_facebook_tooltip_black_bottomnub"
@@ -38,12 +38,17 @@
                     android:id="@+id/textView_ordering"
                     android:layout_weight="1"
                     android:textAppearance="@style/TextAppearance.AppCompat" />
+
             </LinearLayout>
 
-            <LinearLayout
-                android:orientation="vertical"
+            <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></LinearLayout>
+                android:layout_height="match_parent"
+                android:id="@+id/recyclerView_comment_detail"
+                android:animationCache="false"
+                app:stackFromEnd="false"
+                android:layout_marginTop="8dp"/>
+
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

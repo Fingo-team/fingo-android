@@ -20,7 +20,7 @@
             style="@style/Widget.AppCompat.Button.Borderless" />
 
         <TextView
-            android:text="TextView"
+            android:text="Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textView_movie_title"

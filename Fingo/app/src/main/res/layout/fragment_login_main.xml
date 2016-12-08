@@ -27,7 +27,7 @@
 
         <Button
             android:text="이메일로 가입"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/button_email_sign_up"
             android:layout_weight="1"
@@ -37,13 +37,14 @@
 
         <Button
             android:text="페북으로 가입"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/button_facebook_sign_up"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
+            android:background="@color/com_facebook_blue"
             android:textColor="@android:color/background_light"
-            android:textStyle="normal|bold" />
+            android:textStyle="normal|bold"
+            style="@style/com_facebook_loginview_default_style" />
     </LinearLayout>
 
     <LinearLayout

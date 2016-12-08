@@ -12,10 +12,10 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/button_facebook_login"
-        android:background="@color/colorPrimary"
+        android:background="@color/com_facebook_blue"
         android:allowUndo="true"
         android:textColor="@android:color/background_light"
-        />
+        style="@style/com_facebook_loginview_default_style" />
 
     <LinearLayout
         android:orientation="horizontal"
