@@ -72,7 +72,6 @@ public class FragmentLoginMain extends Fragment implements View.OnClickListener{
 
         fragmentLogin = new FragmentLogin();
         fragmentEmailSignUp = new FragmentEmailSignUp();
-        fragmentFacebookSignUp = new FragmentFacebookSignUp();
 
         btnLogIn = (Button)view.findViewById(R.id.button_login);
         btnLogIn.setOnClickListener(this);
