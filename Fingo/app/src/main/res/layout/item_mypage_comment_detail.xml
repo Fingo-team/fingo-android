@@ -4,96 +4,111 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:layout_width="55dp"
-        app:srcCompat="@drawable/com_facebook_profile_picture_blank_square"
-        android:id="@+id/image_comment_detail_profile"
-        android:layout_height="50dp"
-        android:scaleType="fitXY"
-        android:layout_marginTop="16dp" />
-
-    <LinearLayout
-        android:orientation="vertical"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginTop="8dp">
+        android:layout_height="match_parent"
+        app:contentPadding="10dp"
+        app:cardElevation="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp">
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="16dp">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="118dp"
+            <ImageView
+                android:id="@+id/image_comment_detail_profile"
+                android:layout_width="55dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="16dp"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/com_facebook_profile_picture_blank_square" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView_user_nickname"
-                android:text="User Name" />
-
-            <RatingBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/ratingBar_comment_detail"
-                style="@style/Widget.AppCompat.RatingBar.Small" />
-
-        </LinearLayout>
-
-        <TextView
-            android:text="Movie_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView_movie_title"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:textStyle="normal|bold"
-            android:textSize="20sp" />
-
-        <TextView
-            android:text="Comment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView_comment"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="16dp" />
-
-        <TextView
-            android:text="date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView_comment_date"
-            android:layout_weight="0.31"
-            android:layout_marginLeft="16dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp">
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/button_like"
+                android:layout_marginTop="8dp"
                 android:layout_weight="1"
-                android:text="Like"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:drawableLeft="@drawable/icon_heart_gray"
-                android:drawablePadding="5dp" />
+                android:orientation="vertical">
 
-            <Button
-                android:text="Comment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/button_comment"
-                android:layout_weight="1"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:drawableLeft="@drawable/icon_comment_gray"
-                android:drawablePadding="10dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="16dp">
+
+                    <TextView
+                        android:id="@+id/textView_user_nickname"
+                        android:layout_width="118dp"
+                        android:layout_height="wrap_content"
+                        android:text="User Name" />
+
+                    <RatingBar
+                        android:id="@+id/ratingBar_comment_detail"
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView_movie_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Movie_title"
+                    android:textSize="20sp"
+                    android:textStyle="normal|bold" />
+
+                <TextView
+                    android:id="@+id/textView_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Comment" />
+
+                <TextView
+                    android:id="@+id/textView_comment_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_weight="0.31"
+                    android:text="date"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/button_like"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/icon_heart_gray"
+                        android:drawablePadding="5dp"
+                        android:text="Like"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+                    <Button
+                        android:id="@+id/button_comment"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/icon_comment_gray"
+                        android:drawablePadding="10dp"
+                        android:text="Comment"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </android.support.v7.widget.CardView>
+
 </LinearLayout>

@@ -12,7 +12,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:weightSum="1">
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -47,7 +48,9 @@
                 android:id="@+id/recyclerView_comment_detail"
                 android:animationCache="false"
                 app:stackFromEnd="false"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginTop="8dp"
+                android:layout_weight="4.94"
+                android:scrollbars="vertical" />
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
