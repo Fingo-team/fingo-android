@@ -3,18 +3,23 @@ package com.teamfingo.android.fingo.mypage;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import com.facebook.login.LoginManager;
 import com.teamfingo.android.fingo.R;
-import com.teamfingo.android.fingo.utils.FingoPreferences;
 import com.teamfingo.android.fingo.interfaces.FingoService;
 import com.teamfingo.android.fingo.login.ActivityLogin;
+import com.teamfingo.android.fingo.model.UserDetail;
+import com.teamfingo.android.fingo.utils.FingoPreferences;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,13 +28,24 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class FragmentMyPage extends Fragment {
+public class FragmentMyPage extends Fragment implements View.OnClickListener {
 
-    Button btnFacebookLogout;
-    Button btnLogout;
+    ImageButton btnMyPageSetting, btnMyPageAdd;
+    ImageView ivProfile, ivProfileCover;
+    TextView tvUserName, tvUserIntroduce, tvCommentCount, tvWishCount, tvWatchedCount;
+    Button btnComment, btnWish, btnWatched;
+
+    LinearLayout mLinearLayout;
+
+    FingoPreferences mPref;
 
     private String BASE_URL = "http://fingo-dev.ap-northeast-2.elasticbeanstalk.com/";
     private FingoPreferences mPref;
+
+    public static final int MY_PAGE_COMMENT = 0;
+    public static final int MY_PAGE_WISH = 1;
+    public static final int MY_PAGE_WATCHED = 2;
+
 
     public FragmentMyPage() {
         // Required empty public constructor
@@ -43,33 +59,83 @@ public class FragmentMyPage extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_page, container, false);
 
-        btnFacebookLogout = (Button) view.findViewById(R.id.button_facebook_logout);
-        btnFacebookLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        mPref = new FingoPreferences(getContext());
 
-                // 페이스북 로그아웃을 위한 메소드 호출
-                LoginManager.getInstance().logOut();
-                Log.e("Check Facebook Logout", "Logout Successfully!!");
+        btnMyPageSetting = (ImageButton) view.findViewById(R.id.button_mypage_setting);
+        btnMyPageSetting.setOnClickListener(this);
 
-            }
-        });
+        btnMyPageAdd = (ImageButton) view.findViewById(R.id.button_mypage_add);
+        btnMyPageAdd.setOnClickListener(this);
 
-        btnLogout = (Button) view.findViewById(R.id.button_logout);
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        ivProfile = (ImageView) view.findViewById(R.id.image_profile);
+        ivProfile.setOnClickListener(this);
 
-                // TODO 만료 직전 토큰 상태 체크 - preference 객체 삭제 필요
-                mPref = new FingoPreferences(getContext());
-                callFingoAPI();
-            }
-        });
+        ivProfileCover = (ImageView) view.findViewById(R.id.image_profile_cover);
+        ivProfileCover.setOnClickListener(this);
+
+        tvUserName = (TextView) view.findViewById(R.id.textView_user_nickname);
+        tvUserIntroduce = (TextView) view.findViewById(R.id.textView_user_introduce);
+
+        btnComment = (Button) view.findViewById(R.id.button_comment);
+        btnComment.setOnClickListener(this);
+
+        btnWish = (Button) view.findViewById(R.id.button_wish);
+        btnWish.setOnClickListener(this);
+
+        btnWatched = (Button) view.findViewById(R.id.button_watched);
+        btnWatched.setOnClickListener(this);
+
+        tvCommentCount = (TextView) view.findViewById(R.id.textView_comment_count);
+        tvWishCount = (TextView) view.findViewById(R.id.textView_wish_count);
+        tvWatchedCount = (TextView) view.findViewById(R.id.textView_watched_count);
+
+        callFingoService();
 
         return view;
     }
 
-    private void callFingoAPI() {
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.button_mypage_setting:
+                expireFingoToken();
+                break;
+
+            case R.id.button_mypage_add:
+
+                break;
+
+            case R.id.image_profile:
+
+                break;
+
+            case R.id.image_profile_cover:
+
+                break;
+
+            case R.id.button_comment:
+                sendFragment(MY_PAGE_COMMENT);
+                break;
+
+            case R.id.button_wish:
+                sendFragment(MY_PAGE_WISH);
+                break;
+
+            case R.id.button_watched:
+                sendFragment(MY_PAGE_WATCHED);
+                break;
+        }
+    }
+
+    public void sendFragment(int fragment_id) {
+
+        Intent intent = new Intent(getActivity(), ActivityMyPage.class);
+        intent.putExtra("Fragment", fragment_id);
+        startActivity(intent);
+    }
+
+    private void expireFingoToken() {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -97,8 +163,7 @@ public class FragmentMyPage extends Fragment {
                     startActivity(intent);
                     getActivity().finish();
 
-                }
-                else
+                } else
                     Log.e("Check Login Status", ">>>> 로그아웃 실패!!");
             }
 
@@ -106,8 +171,40 @@ public class FragmentMyPage extends Fragment {
             public void onFailure(Call<Void> call, Throwable t) {
                 t.printStackTrace();
             }
-        });
 
+        });
     }
 
+    private void callFingoService() {
+
+        Retrofit client = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        FingoService service = client.create(FingoService.class);
+        Call<UserDetail> userDetailCall = service.getUserDetail(mPref.getAccessToken());
+        userDetailCall.enqueue(new Callback<UserDetail>() {
+            @Override
+            public void onResponse(Call<UserDetail> call, Response<UserDetail> response) {
+                if(response.isSuccessful()){
+                    final UserDetail data = response.body();
+
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            tvUserName.setText(data.getUser_profile().getNickname());
+                            tvCommentCount.setText(data.getComment_cnt());
+                            tvWishCount.setText(data.getWish_movie_cnt());
+                            tvWatchedCount.setText(data.getWatched_movie_cnt());
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserDetail> call, Throwable t) {
+
+            }
+        });
+    }
 }

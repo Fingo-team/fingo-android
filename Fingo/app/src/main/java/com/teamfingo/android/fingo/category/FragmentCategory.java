@@ -39,7 +39,7 @@ public class FragmentCategory extends Fragment {
                 Fragment fragment = new FragmentMovieList();
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction().addToBackStack(null);
-                transaction.replace(R.id.container, fragment);
+                transaction.replace(R.id.main_container, fragment);
                 transaction.commit();
             }
         });

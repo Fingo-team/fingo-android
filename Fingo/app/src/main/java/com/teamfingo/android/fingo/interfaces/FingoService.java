@@ -1,11 +1,14 @@
 package com.teamfingo.android.fingo.interfaces;
 
 import com.teamfingo.android.fingo.model.BoxOfficeRanking;
-import com.teamfingo.android.fingo.model.Movie;
 import com.teamfingo.android.fingo.model.FingoAccessToken;
 import com.teamfingo.android.fingo.model.MovieScore;
+import com.teamfingo.android.fingo.model.Movie;
 import com.teamfingo.android.fingo.model.SearchList;
 import com.teamfingo.android.fingo.model.SearchMovie;
+import com.teamfingo.android.fingo.model.UserComments;
+import com.teamfingo.android.fingo.model.UserDetail;
+import com.teamfingo.android.fingo.model.UserMovies;
 
 import java.util.ArrayList;
 
@@ -15,8 +18,8 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.Path;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -63,5 +66,21 @@ public interface FingoService {
     // Search function
     @GET("/api/v1.0/movie/search/")
     Call<SearchList> getSearchList(@Header("Authorization") String authorization, @Query("q")String q);
+
+    // getPersonalComments
+    @GET("/api/v1.0/activity/user/comments/")
+    Call<UserComments> getUserComments(@Header("Authorization") String authorization);
+
+    // get user detail
+    @GET("/api/v1.0/activity/user/detail/")
+    Call<UserDetail> getUserDetail(@Header("Authorization") String authorization);
+
+    // get wish movie
+    @GET("/api/v1.0/activity/user/wish/movies/")
+    Call<UserMovies> getWishMovie(@Header("Authorization") String authorization);
+
+    // get watched movie
+    @GET("/api/v1.0/activity/user/wish/movies/")
+    Call<UserMovies> getWatchedMovie(@Header("Authorization") String authorization);
 
 }
