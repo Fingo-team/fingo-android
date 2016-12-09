@@ -79,30 +79,40 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_below="@id/imageView_movie_detail_backgroundStillcut"
-                android:id="@+id/button_bar_layout">
+                android:id="@+id/button_bar_layout"
+                android:padding="3dp">
                 <Button
                     android:id="@+id/button_wish_movie"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_weight="1"
+                    android:drawableTop="@drawable/icon_heart_gray"
+                    android:text="보고싶어요"
                     android:background="@color/colorWhiteBackground"/>
                 <Button
                     android:id="@+id/button_rate"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_weight="1"
+                    android:drawableTop="@drawable/icon_star"
+                    android:text="평가하기"
                     android:background="@color/colorWhiteBackground"/>
                 <Button
                     android:id="@+id/button_comment"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_weight="1"
+                    android:drawableTop="@drawable/icon_comment_gray"
+                    android:text="코멘트"
                     android:background="@color/colorWhiteBackground"/>
                 <Button
                     android:id="@+id/button_share"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_weight="1"
+                    android:drawableTop="@drawable/icon_dots"
+                    android:drawableTint="@color/colorAccent"
+                    android:text="공유"
                     android:background="@color/colorWhiteBackground"/>
             </android.support.v7.widget.ButtonBarLayout>
 
