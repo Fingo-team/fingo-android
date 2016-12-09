@@ -2,6 +2,7 @@ package com.teamfingo.android.fingo.interfaces;
 
 import com.teamfingo.android.fingo.model.BoxOfficeRanking;
 import com.teamfingo.android.fingo.model.FingoAccessToken;
+import com.teamfingo.android.fingo.model.MovieScore;
 import com.teamfingo.android.fingo.model.Movie;
 import com.teamfingo.android.fingo.model.SearchList;
 import com.teamfingo.android.fingo.model.SearchMovie;
@@ -12,6 +13,7 @@ import com.teamfingo.android.fingo.model.UserMovies;
 import java.util.ArrayList;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -39,6 +41,13 @@ public interface FingoService {
     // 검색했을 때 Movie Information
     @GET("/api/v1.0/movie/search/")
     Call<ArrayList<SearchMovie>> getSearchMovie(@Header("Authorization") String authorization, @Query("q") String word);
+
+    // Movie Score
+    @GET("/api/v1.0/movie/score/{id}")
+    Call<MovieScore> getMovieScore(@Header("Authorization") String authorization, @Path("id") String id);
+
+    @POST("/api/v1.0/movie/score/{id}")
+    Call<Void> postMovieScore(@Header("Authorization") String authorization, @Path("id") String id, @Body String score);
 
     // SignUp function
     @FormUrlEncoded
