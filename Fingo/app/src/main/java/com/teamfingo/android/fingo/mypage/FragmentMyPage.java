@@ -32,7 +32,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
 
     ImageButton btnMyPageSetting, btnMyPageAdd;
     ImageView ivProfile, ivProfileCover;
-    TextView tvUserName, tvUserIntroduce;
+    TextView tvUserName, tvUserIntroduce, tvCommentCount, tvWishCount, tvWatchedCount;
     Button btnComment, btnWish, btnWatched;
 
     LinearLayout mLinearLayout;
@@ -82,6 +82,10 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
 
         btnWatched = (Button) view.findViewById(R.id.button_watched);
         btnWatched.setOnClickListener(this);
+
+        tvCommentCount = (TextView) view.findViewById(R.id.textView_comment_count);
+        tvWishCount = (TextView) view.findViewById(R.id.textView_wish_count);
+        tvWatchedCount = (TextView) view.findViewById(R.id.textView_watched_count);
 
         callFingoService();
 
@@ -187,7 +191,9 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
                         @Override
                         public void run() {
                             tvUserName.setText(data.getUser_profile().getNickname());
-
+                            tvCommentCount.setText(data.getComment_cnt());
+                            tvWishCount.setText(data.getWish_movie_cnt());
+                            tvWatchedCount.setText(data.getWatched_movie_cnt());
                         }
                     });
                 }
