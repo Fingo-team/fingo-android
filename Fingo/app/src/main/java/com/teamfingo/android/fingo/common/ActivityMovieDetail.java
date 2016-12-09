@@ -219,6 +219,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
                 if (response.isSuccessful()) {
                     MovieScore movieScore = response.body();
+                    Log.d("aaaa", "response message ==== " + response.body());
 
                     String score = movieScore.getScore();
 
@@ -253,14 +254,13 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         if (response.isSuccessful()) {
-                            Toast.makeText(ActivityMovieDetail.this, "점수", Toast.LENGTH_SHORT).show();
                         } else {
                             Log.d("aaaa", "response message ==== " + response.message());
                         }
                     }
-
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
+                            Log.d("aaaa", "error message ==== " + t.getMessage());
 
                     }
                 });

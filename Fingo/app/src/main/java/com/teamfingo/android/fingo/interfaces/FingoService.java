@@ -13,7 +13,6 @@ import com.teamfingo.android.fingo.model.UserMovies;
 import java.util.ArrayList;
 
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -43,11 +42,12 @@ public interface FingoService {
     Call<ArrayList<SearchMovie>> getSearchMovie(@Header("Authorization") String authorization, @Query("q") String word);
 
     // Movie Score
-    @GET("/api/v1.0/movie/score/{id}")
+    @GET("/api/v1.0/movie/score/{id}/")
     Call<MovieScore> getMovieScore(@Header("Authorization") String authorization, @Path("id") String id);
 
-    @POST("/api/v1.0/movie/score/{id}")
-    Call<Void> postMovieScore(@Header("Authorization") String authorization, @Path("id") String id, @Body String score);
+    @FormUrlEncoded
+    @POST("/api/v1.0/movie/score/{id}/")
+    Call<Void> postMovieScore(@Header("Authorization") String authorization, @Path("id") String id, @Field("score") String score);
 
     // SignUp function
     @FormUrlEncoded
