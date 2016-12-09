@@ -80,7 +80,7 @@ public interface FingoService {
     Call<UserMovies> getWishMovie(@Header("Authorization") String authorization);
 
     // get watched movie
-    @GET("/api/v1.0/activity/user/wish/movies/")
+    @GET("/api/v1.0/activity/user/watched/movies/")
     Call<UserMovies> getWatchedMovie(@Header("Authorization") String authorization);
 
 }

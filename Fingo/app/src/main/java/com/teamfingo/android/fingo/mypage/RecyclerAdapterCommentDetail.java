@@ -56,7 +56,7 @@ public class RecyclerAdapterCommentDetail extends RecyclerView.Adapter<RecyclerA
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mypage_comment_detail, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
+        RecyclerAdapterCommentDetail.ViewHolder viewHolder = new RecyclerAdapterCommentDetail.ViewHolder(view);
 
         return viewHolder;
     }

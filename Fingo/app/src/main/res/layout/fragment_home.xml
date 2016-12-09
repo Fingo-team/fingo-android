@@ -2,12 +2,90 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.teamfingo.android.fingo.home.FragmentHome">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <ImageView
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/watcha_home_image"
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_weight="3.86"
+                android:scaleType="fitStart" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:elevation="10dp"
+                android:layout_marginTop="10dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@android:drawable/ic_menu_mapmode"
+                    android:id="@+id/imageView3" />
+
+                <TextView
+                    android:text="Watcha's choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/TextView"
+                    android:layout_weight="1"
+                    android:gravity="left|center_vertical" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="289dp"
+                app:srcCompat="@drawable/eat"
+                android:id="@+id/imageView6"
+                android:scaleType="fitXY" />
+
+            <TextView
+                android:text="먹고 기도하고 사랑하라"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView3"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView4"
+                android:layout_marginTop="10dp"
+                android:text="삶에 확신을 잃은 31살의 저널리스트 리즈\n중심이 필요한 사람들에게 추천하는 영화\n왓챠 플레이에서 첫달 무료로 감상해 보세요!"
+                android:layout_marginLeft="10dp" />
+
+            <Button
+                android:text="WATCH"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/button"
+                android:background="@color/com_facebook_blue"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_marginTop="10dp"
+                android:textColor="@android:color/background_light"
+                android:textColorHighlight="@android:color/background_light"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </FrameLayout>

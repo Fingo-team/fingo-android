@@ -5,12 +5,11 @@
     android:layout_height="match_parent"
     tools:context="com.teamfingo.android.fingo.mypage.FragmentMyPage">
 
-    <android.support.v4.widget.NestedScrollView
+    <com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader
+        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_gravity="center_horizontal|top">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,14 +24,14 @@
                 <ImageView
                     android:id="@+id/image_profile_cover"
                     android:layout_width="match_parent"
+                    android:layout_height="300dp"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:scaleType="fitXY"
-                    app:srcCompat="@drawable/image_profile_cover"
-                    android:layout_height="300dp" />
+                    app:srcCompat="@drawable/image_profile_cover" />
 
                 <ImageButton
                     android:id="@+id/button_mypage_setting"
@@ -41,7 +40,7 @@
                     android:layout_height="40dp"
                     android:layout_margin="5dp"
                     android:scaleType="centerInside"
-                    app:srcCompat="@drawable/icon_setting_white" />
+                    app:srcCompat="@android:drawable/ic_input_delete" />
 
                 <ImageButton
                     android:id="@+id/button_mypage_add"
@@ -90,53 +89,53 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentBottom="true"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_alignBottom="@+id/image_profile_cover"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true">
 
                     <LinearLayout
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
                         <TextView
-                            android:text="0"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
                             android:id="@+id/textView_comment_count"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:text="0"
                             android:textAlignment="center"
                             android:textColor="@color/colorPrimary" />
 
                         <TextView
-                            android:text="0"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
                             android:id="@+id/textView_wish_count"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:text="0"
                             android:textAlignment="center"
                             android:textColor="@color/colorPrimary" />
 
                         <TextView
-                            android:text="0"
+                            android:id="@+id/textView_watched_count"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/textView_watched_count"
                             android:layout_weight="1"
+                            android:text="0"
                             android:textAlignment="center"
                             android:textColor="@color/colorPrimary" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true">
+                        android:layout_alignParentStart="true"
+                        android:orientation="horizontal">
 
                         <Button
                             android:id="@+id/button_comment"
@@ -145,14 +144,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:autoText="false"
+                            android:contentDescription="1"
                             android:editable="false"
                             android:elevation="0dp"
+                            android:lineSpacingExtra="8sp"
                             android:text="comment"
                             android:textAllCaps="false"
                             android:textColor="@color/colorWhiteBackground"
-                            android:textIsSelectable="false"
-                            android:contentDescription="1"
-                            android:lineSpacingExtra="8sp" />
+                            android:textIsSelectable="false" />
 
                         <Button
                             android:id="@+id/button_wish"
@@ -182,8 +181,17 @@
 
         </LinearLayout>
 
+    </com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader>
 
-    </android.support.v4.widget.NestedScrollView>
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="300dp"
+        android:id="@+id/recyclerView_mypage_comment" />
+
 
 </RelativeLayout>
 

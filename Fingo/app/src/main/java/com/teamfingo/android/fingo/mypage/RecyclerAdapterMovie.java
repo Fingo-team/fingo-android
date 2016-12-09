@@ -1,6 +1,7 @@
 package com.teamfingo.android.fingo.mypage;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.teamfingo.android.fingo.R;
+import com.teamfingo.android.fingo.common.ActivityMovieDetail;
 import com.teamfingo.android.fingo.model.UserMovies;
 
 import java.util.ArrayList;
@@ -49,8 +52,8 @@ public class RecyclerAdapterMovie extends RecyclerView.Adapter<RecyclerAdapterMo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mypage_comment_detail, parent, false);
-        RecyclerAdapterMovie.ViewHolder mViewHolder = new ViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_wish_watched_movie, parent, false);
+        RecyclerAdapterMovie.ViewHolder mViewHolder = new RecyclerAdapterMovie.ViewHolder(view);
 
         return mViewHolder;
     }
@@ -58,9 +61,19 @@ public class RecyclerAdapterMovie extends RecyclerView.Adapter<RecyclerAdapterMo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-//        Glide.with(mContext).load(mMovies.getMovies).into(holder.imgMoviePoster);
-//        holder.tvMovieTitle.setText(mMovies.getMovieTitle);
-//        holder.tvMovieRating.setText(mMovies.getMovieRating);
+        final UserMovies.Results movieData = mMovies.get(position);
+
+        Glide.with(mContext).load(movieData.getMovie().getImg()).into(holder.imgMoviePoster);
+        holder.imgMoviePoster.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ActivityMovieDetail.class);
+                intent.putExtra("movieId",movieData.getMovie().getId());
+                mContext.startActivity(intent);
+            }
+        });
+        holder.tvMovieTitle.setText(movieData.getMovie().getTitle());
+        holder.tvMovieRating.setText(movieData.getMovie().getScore());
 
     }
 

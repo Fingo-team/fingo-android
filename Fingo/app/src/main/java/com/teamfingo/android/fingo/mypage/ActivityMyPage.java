@@ -26,6 +26,7 @@ public class ActivityMyPage extends AppCompatActivity {
         mFragments.add(1, new FragmentWishMovie());
         mFragments.add(2, new FragmentWatchedMovie());
 
+
         replaceFragment(mFragments.get(fragment_id));
 
     }
