@@ -58,7 +58,7 @@ public class FragmentEmailSignUp extends Fragment {
         return sToken;
     }
 
-    private String BASE_URL = "http://eb-fingo-real.ap-northeast-2.elasticbeanstalk.com/";
+    private String BASE_URL = "http://fingo-dev.ap-northeast-2.elasticbeanstalk.com/";
     
     public FragmentEmailSignUp() {
         // Required empty public constructor

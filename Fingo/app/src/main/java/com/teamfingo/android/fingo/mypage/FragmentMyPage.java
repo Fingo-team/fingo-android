@@ -28,7 +28,7 @@ public class FragmentMyPage extends Fragment {
     Button btnFacebookLogout;
     Button btnLogout;
 
-    private String BASE_URL = "http://eb-fingo-real.ap-northeast-2.elasticbeanstalk.com/";
+    private String BASE_URL = "http://fingo-dev.ap-northeast-2.elasticbeanstalk.com/";
     private FingoPreferences mPref;
 
     public FragmentMyPage() {

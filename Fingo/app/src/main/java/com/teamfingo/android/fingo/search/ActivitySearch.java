@@ -25,7 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ActivitySearch extends AppCompatActivity {
 
-    private static String FINGO_BASE_URL = "http://eb-fingo-real.ap-northeast-2.elasticbeanstalk.com/";
+    private static String FINGO_BASE_URL = "http://fingo-dev.ap-northeast-2.elasticbeanstalk.com/";
 
     Toolbar searchToolbar;
 
