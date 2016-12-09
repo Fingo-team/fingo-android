@@ -1,6 +1,8 @@
 package com.teamfingo.android.fingo.mypage;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.ViewGroup;
 
 /**
@@ -9,8 +11,16 @@ import android.view.ViewGroup;
 
 public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerAdapterMypageComment.ViewHolder>{
 
-    public class ViewHolder {
+    Context mContext;
+//    AraayList<>
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
+        public ViewHolder(View itemView) {
+            super(itemView);
+
+
+
+        }
     }
 
     @Override

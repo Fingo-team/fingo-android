@@ -37,13 +37,13 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
 
     LinearLayout mLinearLayout;
 
-    FingoPreferences mPref;
+    private String BASE_URL = "http://fingo-dev.ap-northeast-2.elasticbeanstalk.com/";
+    private FingoPreferences mPref;
 
     public static final int MY_PAGE_COMMENT = 0;
     public static final int MY_PAGE_WISH = 1;
     public static final int MY_PAGE_WATCHED = 2;
 
-    private static final String BASE_URL = "http://fingo-dev.ap-northeast-2.elasticbeanstalk.com/";
 
     public FragmentMyPage() {
         // Required empty public constructor
