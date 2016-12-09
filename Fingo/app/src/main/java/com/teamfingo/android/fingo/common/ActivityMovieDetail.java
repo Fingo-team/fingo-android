@@ -111,13 +111,9 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                     Glide.with(ActivityMovieDetail.this).load(movie.getImg()).into(ivMoviePoster);
                     tvMovieTitle.setText(movie.getTitle());
                     tvMovieScore.setText(movie.getScore());
-                    btnWishMovie.setText("1");
                     btnWishMovie.setOnClickListener(ActivityMovieDetail.this);
-                    btnRate.setText("2");
                     btnRate.setOnClickListener(ActivityMovieDetail.this);
-                    btnComment.setText("3");
                     btnComment.setOnClickListener(ActivityMovieDetail.this);
-                    btnShare.setText("4");
                     btnShare.setOnClickListener(ActivityMovieDetail.this);
 
                     tvMovieDate.setText("개봉일: " + movie.getFirst_run_date());
