@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,7 @@ public class FragmentCommentDetail extends Fragment {
 
     ArrayList<UserComments.Results> mUserComments = new ArrayList<>();
 
-    private static final String BASE_URL = "http://eb-fingo-real.ap-northeast-2.elasticbeanstalk.com/";
+    private static final String BASE_URL = "http://fingo-dev.ap-northeast-2.elasticbeanstalk.com/";
 
     private FingoPreferences mPref;
 
@@ -66,21 +67,22 @@ public class FragmentCommentDetail extends Fragment {
         return view;
     }
 
-    private void callFingoService(){
+    private void callFingoService() {
 
         Retrofit client = new Retrofit.Builder()
-                                    .baseUrl(BASE_URL)
-                                    .addConverterFactory(GsonConverterFactory.create())
-                                    .build();
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
         FingoService service = client.create(FingoService.class);
         Call<UserComments> userCommentsCall = service.getUserComments(mPref.getAccessToken());
         userCommentsCall.enqueue(new Callback<UserComments>() {
             @Override
             public void onResponse(Call<UserComments> call, Response<UserComments> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
 
                     UserComments data = response.body();
-                    for(UserComments.Results comment : data.getResults()){
+                    for (UserComments.Results comment : data.getResults()) {
+                        Log.e("Check comment", "---------" + comment.getMovie().getTitle());
                         mUserComments.add(comment);
                     }
                 }

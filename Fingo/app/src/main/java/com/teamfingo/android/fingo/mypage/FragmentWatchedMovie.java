@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,7 @@ public class FragmentWatchedMovie extends Fragment {
 
     ArrayList<UserMovies.Results> mWatchedMovies = new ArrayList<>();
 
-    private static final String BASE_URL = "http://eb-fingo-real.ap-northeast-2.elasticbeanstalk.com/";
+    private static final String BASE_URL = "http://fingo-dev.ap-northeast-2.elasticbeanstalk.com/";
 
     private FingoPreferences mPref;
 
@@ -52,6 +53,7 @@ public class FragmentWatchedMovie extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_watched_movie, container, false);
 
+        Log.e("Frgement", ">>>>>>>>>> 진입 체크");
         btnOrdering = (ImageButton) view.findViewById(R.id.button_ordering);
         tvOrdering = (TextView) view.findViewById(R.id.textView_ordering);
 
@@ -61,6 +63,7 @@ public class FragmentWatchedMovie extends Fragment {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_watched_movie);
         mAdapter = new RecyclerAdapterMovie(this.getContext(), mWatchedMovies);
         mRecyclerView.setAdapter(mAdapter);
+
         GridLayoutManager manager = new GridLayoutManager(this.getContext(), 3);
         mRecyclerView.setLayoutManager(manager);
 
@@ -79,12 +82,13 @@ public class FragmentWatchedMovie extends Fragment {
             @Override
             public void onResponse(Call<UserMovies> call, Response<UserMovies> response) {
                 if (response.isSuccessful()) {
-
                     UserMovies data = response.body();
-                    for(UserMovies.Results movie : data.getResults()){
+                    for (UserMovies.Results movie : data.getResults()) {
+                        Log.e("check watched movie", ">>>>>>" + movie.getMovie().getTitle());
                         mWatchedMovies.add(movie);
                     }
-                }
+                } else
+                    Log.e("check watched movie", ">>>>>>" + response.message());
                 mAdapter.notifyDataSetChanged();
             }
 
