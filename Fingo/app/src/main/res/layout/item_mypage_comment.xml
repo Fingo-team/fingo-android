@@ -125,7 +125,8 @@
                 android:layout_alignStart="@+id/linearLayout3"
                 android:layout_below="@+id/image_mypage_stilcut"
                 android:layout_marginLeft="20dp"
-                android:text="comment" />
+                android:text="comment"
+                android:layout_marginTop="10dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -133,7 +134,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/textView_comment"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="50dp"
                 android:orientation="horizontal">
 
                 <Button
