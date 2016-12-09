@@ -44,7 +44,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="8dp"
             android:animationCache="false"
-            android:scrollbars="vertical"
+            android:scrollbars="none"
             app:stackFromEnd="false" />
 
     </LinearLayout>
