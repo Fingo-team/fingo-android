@@ -2,6 +2,7 @@ package com.teamfingo.android.fingo.interfaces;
 
 import com.teamfingo.android.fingo.model.BoxOfficeRanking;
 import com.teamfingo.android.fingo.model.FingoAccessToken;
+import com.teamfingo.android.fingo.model.MovieComment;
 import com.teamfingo.android.fingo.model.MovieScore;
 import com.teamfingo.android.fingo.model.Movie;
 import com.teamfingo.android.fingo.model.SearchList;
@@ -41,13 +42,19 @@ public interface FingoService {
     @GET("/api/v1.0/movie/search/")
     Call<ArrayList<SearchMovie>> getSearchMovie(@Header("Authorization") String authorization, @Query("q") String word);
 
-    // Movie Score
+    // Movie Score - 영화 상세 화면에서 별점 남기기와 관련된 API
     @GET("/api/v1.0/movie/score/{id}/")
     Call<MovieScore> getMovieScore(@Header("Authorization") String authorization, @Path("id") String id);
-
     @FormUrlEncoded
     @POST("/api/v1.0/movie/score/{id}/")
     Call<Void> postMovieScore(@Header("Authorization") String authorization, @Path("id") String id, @Field("score") String score);
+
+    // Movie Comment - 영화 상세 화면에서 코멘트 남기기와 관련된 API
+    @GET("/api/v1.0/movie/{id}/comment/")
+    Call<MovieComment> getMovieComment(@Header("Authorization") String authorization, @Path("id") String id);
+    @FormUrlEncoded
+    @POST("/api/v1.0/movie/{id}/comment/")
+    Call<Void> postMovieComment(@Header("Authorization") String authorization, @Path("id") String id, @Field("comment") String comment);
 
     // SignUp function
     @FormUrlEncoded

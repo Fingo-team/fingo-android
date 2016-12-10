@@ -23,6 +23,7 @@
         <RatingBar
             android:id="@+id/ratingBar_rated"
             style="?android:attr/ratingBarStyleSmall"
+            android:isIndicator="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:numStars="5"
@@ -30,7 +31,6 @@
             android:stepSize="0.5"
             android:layout_gravity="center_vertical"
             android:progressTint="@color/colorAccent"
-            android:progressBackgroundTint="@color/colorAccent"
             android:secondaryProgressTint="@color/colorAccent"/>
     </LinearLayout>
 
