@@ -8,4 +8,6 @@
     <color name="toolbarAndTabBackground">#efefef</color>
     <color name="movieDetail_movitTitle">#ffffff</color>
     <color name="colorTextShadow">#000000</color>
+
+    <color name="colorButtonActivate">#feff5a39</color>
 </resources>
