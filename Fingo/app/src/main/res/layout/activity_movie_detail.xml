@@ -86,7 +86,7 @@
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_weight="1"
-                    android:drawableTop="@drawable/icon_heart_gray"
+                    android:drawableTop="@drawable/button_wish_movie_color_selector"
                     android:text="보고싶어요"
                     android:background="@color/colorWhiteBackground"/>
                 <Button
@@ -94,7 +94,7 @@
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_weight="1"
-                    android:drawableTop="@drawable/icon_star"
+                    android:drawableTop="@drawable/button_rate_color_selector"
                     android:text="평가하기"
                     android:background="@color/colorWhiteBackground"/>
                 <Button

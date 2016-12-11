@@ -5,6 +5,7 @@ import com.teamfingo.android.fingo.model.FingoAccessToken;
 import com.teamfingo.android.fingo.model.MovieComment;
 import com.teamfingo.android.fingo.model.MovieScore;
 import com.teamfingo.android.fingo.model.Movie;
+import com.teamfingo.android.fingo.model.MovieWish;
 import com.teamfingo.android.fingo.model.SearchList;
 import com.teamfingo.android.fingo.model.SearchMovie;
 import com.teamfingo.android.fingo.model.UserComments;
@@ -41,6 +42,13 @@ public interface FingoService {
     // 검색했을 때 Movie Information
     @GET("/api/v1.0/movie/search/")
     Call<ArrayList<SearchMovie>> getSearchMovie(@Header("Authorization") String authorization, @Query("q") String word);
+
+    // Movie Wish - 영화 상세 화면에서 보고싶어요와 관련된 API
+    @GET("/api/v1.0/movie/wish/{id}/")
+    Call<MovieWish> getMovieWish(@Header("Authorization") String authorization, @Path("id") String id);
+    @FormUrlEncoded
+    @POST("/api/v1.0/movie/wish/{id}/")
+    Call<Void> postMovieWish(@Header("Authorization") String authorization, @Path("id") String id, @Field("wish_movie") String wishMovie);
 
     // Movie Score - 영화 상세 화면에서 별점 남기기와 관련된 API
     @GET("/api/v1.0/movie/score/{id}/")

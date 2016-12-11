@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:state_activated="false"
+        android:drawable="@drawable/ic_favorite_black_30dp"/>
+
+    <!-- 버튼 활성화 됐을 경우 -->
+    <item
+        android:state_activated="true"
+        android:drawable="@drawable/ic_favorite_pink_30dp"/>
+
+</selector>

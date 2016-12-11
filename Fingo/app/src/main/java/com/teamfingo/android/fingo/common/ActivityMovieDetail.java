@@ -22,6 +22,7 @@ import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.model.Movie;
 import com.teamfingo.android.fingo.model.MovieComment;
 import com.teamfingo.android.fingo.model.MovieScore;
+import com.teamfingo.android.fingo.model.MovieWish;
 import com.teamfingo.android.fingo.utils.AppController;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -54,8 +55,9 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
     RatingBar rbRatedScore;
     EditText etComment;
 
+    String movieId;
+    Boolean wishMovieState;
     String score;
-
     String comment;
     String ratedScore;
 
@@ -83,7 +85,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
         ivStillCut5 = (ImageView) findViewById(R.id.imageView_stillCut5);
         llDirectorandActor = (LinearLayout) findViewById(R.id.linearLayout_director_and_actor);
 
-        String movieId = getIntent().getStringExtra("movieId");
+        movieId = getIntent().getStringExtra("movieId");
 
         Call<Movie> movieCall = AppController.getFingoService().getMovie(AppController.getToken(), movieId);
 
@@ -140,22 +142,45 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
             @Override
             public void onFailure(Call<Movie> call, Throwable t) {
-                Log.d("aaaa", "onFailure ==== ");
+                Log.d("log", "onFailure ==== ");
 
             }
         });
 
-        Call<MovieScore> getMovieScoreCall = AppController.getFingoService().getMovieScore(AppController.getToken(), movieId); // GET
+        Call<MovieWish> getMovieWishCall = AppController.getFingoService().getMovieWish(AppController.getToken(), movieId);
+        getMovieWishCall.enqueue(new Callback<MovieWish>() {
+            @Override
+            public void onResponse(Call<MovieWish> call, Response<MovieWish> response) {
+                if (response.isSuccessful()) {
+                    MovieWish movieWish = response.body();
+
+                    wishMovieState = Boolean.valueOf(movieWish.getWish_movie());
+                    btnWishMovie.setActivated(wishMovieState);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MovieWish> call, Throwable t) {
+
+            }
+        });
+
+        Call<MovieScore> getMovieScoreCall = AppController.getFingoService()
+                .getMovieScore(AppController.getToken(), movieId); // GET
 
         getMovieScoreCall.enqueue(new Callback<MovieScore>() {
             @Override
             public void onResponse(Call<MovieScore> call, Response<MovieScore> response) {
                 if (response.isSuccessful()) {
                     MovieScore movieScore = response.body();
-                    Log.d("aaaa", "response message ==== " + response.body());
+                    Log.d("log", "response message ==== " + response.body());
 
                     score = movieScore.getScore();
 
+                    if (!score.equals("0.0")) {
+                        Log.d("log", "1/ score == "+score);
+                        btnRate.setText(score);
+                    }
                 }
             }
 
@@ -189,6 +214,9 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_wish_movie:
+                wishMovieState = !wishMovieState;
+                btnWishMovie.setActivated(wishMovieState);
+                setWishButtonState();
                 break;
             case R.id.button_rate:
                 openDialogRating();
@@ -206,10 +234,37 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
         }
     }
 
+    private void setWishButtonState() {
+        String wishMovieStateToString;
+
+        if (wishMovieState) {
+            wishMovieStateToString = "True";
+        } else {
+            wishMovieStateToString = "False";
+        }
+
+        Call<Void> postMovieWishCall = AppController.getFingoService()
+                .postMovieWish(AppController.getToken(), movieId, wishMovieStateToString);
+
+        postMovieWishCall.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("log", "response message ==== " + response.message());
+                    Log.d("log", "response message ==== " + response.raw());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+            }
+        });
+
+    }
 
     private void openDialogRating() {
 
-        final String movieId = getIntent().getStringExtra("movieId");
+        //final String movieId = getIntent().getStringExtra("movieId");
 
         String movieTitle;
         String movieDate;
@@ -229,7 +284,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
         tvRatingMovieDate.setText(movieDate);
 
 
-        if (score != "0") {
+        if (!score.equals("0.0")) {
             rbScore.setRating(Float.parseFloat(score));
         } else {
             rbScore.setRating(0.0f);
@@ -249,7 +304,16 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         if (response.isSuccessful()) {
+                            // 실시간으로 화면에 반영될 수 있게 처리
                             score = ratedScore;
+                            if (ratedScore.equals("0.0")) {
+                                btnRate.setText("평가하기");
+                            } else {
+                                Log.d("log", "2/ score == "+score);
+
+                                btnRate.setText(ratedScore);
+                            }
+
                         } else {
                             Log.d("log", "response message ==== " + response.message());
                         }
@@ -282,7 +346,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
     private void openDialogComment() {
 
-        final String movieId = getIntent().getStringExtra("movieId");
+        //final String movieId = getIntent().getStringExtra("movieId");
 
         String movieTitle;
 
@@ -309,14 +373,16 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(ActivityMovieDetail.this, "완료", Toast.LENGTH_SHORT).show();
 
-                String comment = etComment.getText().toString();
+                String writtenComment = etComment.getText().toString();
+                comment = writtenComment;
 
-                Call<Void> postMovieComment = AppController.getFingoService().postMovieComment(AppController.getToken(), movieId, comment); // POST
+                Call<Void> postMovieComment = AppController.getFingoService().postMovieComment(AppController.getToken(), movieId, writtenComment); // POST
 
                 postMovieComment.enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         if (response.isSuccessful()) {
+                            Log.d("log", "response message ==== " + response.message());
                         } else {
                             Log.d("log", "response message ==== " + response.message());
                         }
