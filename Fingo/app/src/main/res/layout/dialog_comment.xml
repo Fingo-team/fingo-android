@@ -30,8 +30,7 @@
             android:rating="0.0"
             android:stepSize="0.5"
             android:layout_gravity="center_vertical"
-            android:progressTint="@color/colorAccent"
-            android:secondaryProgressTint="@color/colorAccent"/>
+            android:progressTint="@color/colorAccent"/>
     </LinearLayout>
 
     <EditText

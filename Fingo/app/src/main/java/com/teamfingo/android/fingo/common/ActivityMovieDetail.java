@@ -19,22 +19,18 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.teamfingo.android.fingo.R;
-import com.teamfingo.android.fingo.interfaces.FingoService;
 import com.teamfingo.android.fingo.model.Movie;
 import com.teamfingo.android.fingo.model.MovieComment;
 import com.teamfingo.android.fingo.model.MovieScore;
-import com.teamfingo.android.fingo.utils.FingoPreferences;
+import com.teamfingo.android.fingo.utils.AppController;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class ActivityMovieDetail extends AppCompatActivity implements View.OnClickListener{
-    private static String FINGO_BASE_URL = "http://fingo-dev.ap-northeast-2.elasticbeanstalk.com/";
 
     ImageView ivMovieBackgroundStillCut, ivMoviePoster;
     TextView tvMovieTitle, tvMovieScore;
@@ -58,10 +54,11 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
     RatingBar rbRatedScore;
     EditText etComment;
 
-    FingoPreferences pref;
-    String token;
-
     String score;
+
+    String comment;
+    String ratedScore;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,18 +85,8 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
         String movieId = getIntent().getStringExtra("movieId");
 
-        // Fingo Api 호출
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(FINGO_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Call<Movie> movieCall = AppController.getFingoService().getMovie(AppController.getToken(), movieId);
 
-        pref = new FingoPreferences(this);
-        token = pref.getAccessToken();
-
-        FingoService service = retrofit.create(FingoService.class);
-
-        Call<Movie> movieCall = service.getMovie(token, movieId);
         movieCall.enqueue(new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
@@ -158,12 +145,11 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
             }
         });
 
-        Call<MovieScore> getMovieScoreCall = service.getMovieScore(token, movieId); // GET
+        Call<MovieScore> getMovieScoreCall = AppController.getFingoService().getMovieScore(AppController.getToken(), movieId); // GET
+
         getMovieScoreCall.enqueue(new Callback<MovieScore>() {
             @Override
             public void onResponse(Call<MovieScore> call, Response<MovieScore> response) {
-                //Toast.makeText(ActivityMovieDetail.this, "성공", Toast.LENGTH_SHORT).show();
-
                 if (response.isSuccessful()) {
                     MovieScore movieScore = response.body();
                     Log.d("aaaa", "response message ==== " + response.body());
@@ -178,24 +164,44 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
             }
         });
+
+        Call<MovieComment> getMovieCommentCall = AppController.getFingoService().getMovieComment(AppController.getToken(), movieId); // GET
+
+        getMovieCommentCall.enqueue(new Callback<MovieComment>() {
+            @Override
+            public void onResponse(Call<MovieComment> call, Response<MovieComment> response) {
+
+                if (response.isSuccessful()) {
+                    MovieComment movieComment = response.body();
+
+                    comment = movieComment.getComment();
+                    ratedScore = movieComment.getScore();
+                }
+            }
+            @Override
+            public void onFailure(Call<MovieComment> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_wish_movie:
-                Toast.makeText(v.getContext(), "보고싶어요", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.button_rate:
-                Toast.makeText(v.getContext(), "평가하기", Toast.LENGTH_SHORT).show();
                 openDialogRating();
                 break;
             case R.id.button_comment:
-                Toast.makeText(v.getContext(), "코멘트", Toast.LENGTH_SHORT).show();
-                openDialogComment();
-                break;
+                if (score.equals("0.0") || score.equals("0")) {
+                    Toast.makeText(v.getContext(), "평가 먼저 남겨주세요^.^", Toast.LENGTH_SHORT).show();
+                    break;
+                } else {
+                    openDialogComment();
+                    break;
+                }
             case R.id.button_share:
-                Toast.makeText(v.getContext(), "공유하기", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -203,13 +209,8 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
     private void openDialogRating() {
 
-        //-------------------------- Fingo Api 호출 ------------------------------//
         final String movieId = getIntent().getStringExtra("movieId");
 
-        pref = new FingoPreferences(this);
-        token = pref.getAccessToken();
-
-        //
         String movieTitle;
         String movieDate;
 
@@ -226,7 +227,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
         tvRatingMovieTitle.setText(movieTitle);
         tvRatingMovieDate.setText(movieDate);
-        //
+
 
         if (score != "0") {
             rbScore.setRating(Float.parseFloat(score));
@@ -242,16 +243,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                 final String ratedScore;
                 ratedScore = String.valueOf(rbScore.getRating());
 
-                Log.d("aaaa", "ratedScore ==== "+ratedScore);
-
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(FINGO_BASE_URL)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-
-                FingoService service = retrofit.create(FingoService.class);
-
-                Call<Void> postMovieScoreCall = service.postMovieScore(token, movieId, ratedScore); // POST
+                Call<Void> postMovieScoreCall = AppController.getFingoService().postMovieScore(AppController.getToken(), movieId, ratedScore); // POST
 
                 postMovieScoreCall.enqueue(new Callback<Void>() {
                     @Override
@@ -259,12 +251,12 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                         if (response.isSuccessful()) {
                             score = ratedScore;
                         } else {
-                            Log.d("aaaa", "response message ==== " + response.message());
+                            Log.d("log", "response message ==== " + response.message());
                         }
                     }
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
-                            Log.d("aaaa", "error message ==== " + t.getMessage());
+                            Log.d("log", "error message ==== " + t.getMessage());
 
                     }
                 });
@@ -292,17 +284,6 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
         final String movieId = getIntent().getStringExtra("movieId");
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(FINGO_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        pref = new FingoPreferences(this);
-        token = pref.getAccessToken();
-
-        final FingoService service = retrofit.create(FingoService.class);
-        Call<MovieComment> getMovieCommentCall = service.getMovieComment(token, movieId); // GET
-
         String movieTitle;
 
         mBuilderComment = new AlertDialog.Builder(this);
@@ -316,29 +297,12 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
         movieTitle = tvMovieTitle.getText().toString();
         tvMovieTitleComment.setText(movieTitle);
 
-        getMovieCommentCall.enqueue(new Callback<MovieComment>() {
-            @Override
-            public void onResponse(Call<MovieComment> call, Response<MovieComment> response) {
+        if (comment != null) {
+            etComment.setText(comment);
+        }
 
-                if (response.isSuccessful()) {
-                    MovieComment movieComment = response.body();
+        rbRatedScore.setRating(Float.parseFloat(score));
 
-                    String comment = movieComment.getComment();
-                    String score = movieComment.getScore();
-
-                    if (comment != null) {
-                        etComment.setText(comment);
-                    }
-
-                    rbRatedScore.setRating(Float.parseFloat(score));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MovieComment> call, Throwable t) {
-
-            }
-        });
 
         mBuilderComment.setPositiveButton("완료", new DialogInterface.OnClickListener() {
             @Override
@@ -347,20 +311,19 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
                 String comment = etComment.getText().toString();
 
-                Call<Void> postMovieComment = service.postMovieComment(token, movieId, comment); // POST
+                Call<Void> postMovieComment = AppController.getFingoService().postMovieComment(AppController.getToken(), movieId, comment); // POST
 
                 postMovieComment.enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         if (response.isSuccessful()) {
                         } else {
-                            Log.d("aaaa", "response message ==== " + response.message());
+                            Log.d("log", "response message ==== " + response.message());
                         }
                     }
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
-                        Log.d("aaaa", "error message ==== " + t.getMessage());
-
+                        Log.d("log", "error message ==== " + t.getMessage());
                     }
                 });
 
@@ -372,7 +335,6 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                 Toast.makeText(ActivityMovieDetail.this, "취소", Toast.LENGTH_SHORT).show();
             }
         });
-
 
         mAlertDialogComment = mBuilderComment.setTitle("코멘트 남기기")
                 .setView(mViewDialogComment)
