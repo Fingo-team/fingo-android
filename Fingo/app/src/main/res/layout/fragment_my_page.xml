@@ -5,21 +5,32 @@
     android:layout_height="match_parent"
     tools:context="com.teamfingo.android.fingo.mypage.FragmentMyPage">
 
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/recyclerView_mypage_comment"
+        android:layout_alignParentTop="true" />
+
     <com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|top">
+        android:layout_gravity="center_horizontal|top"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <!-- 유저 프로필 영역 -->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/image_profile_cover"
@@ -75,7 +86,7 @@
                         android:text="Name"
                         android:textAlignment="center"
                         android:textColor="@color/cardview_light_background"
-                        android:textSize="30dp" />
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/textView_user_introduce"
@@ -182,15 +193,6 @@
         </LinearLayout>
 
     </com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader>
-
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="300dp"
-        android:id="@+id/recyclerView_mypage_comment" />
 
 
 </RelativeLayout>

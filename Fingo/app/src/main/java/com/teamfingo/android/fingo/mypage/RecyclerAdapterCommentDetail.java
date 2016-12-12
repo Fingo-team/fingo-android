@@ -28,7 +28,6 @@ public class RecyclerAdapterCommentDetail extends RecyclerView.Adapter<RecyclerA
 
         mContext = context;
         mUserComments = userComments;
-
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

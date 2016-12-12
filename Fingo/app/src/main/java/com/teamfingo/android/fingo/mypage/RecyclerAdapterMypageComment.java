@@ -2,9 +2,11 @@ package com.teamfingo.android.fingo.mypage;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -21,9 +23,9 @@ import java.util.ArrayList;
 public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerAdapterMypageComment.ViewHolder>{
 
     Context mContext;
-    ArrayList<UserComments> mUserComments = new ArrayList<>();
+    ArrayList<UserComments.Results> mUserComments = new ArrayList<>();
 
-    public RecyclerAdapterMypageComment(Context mContext, ArrayList<UserComments> mUserComments) {
+    public RecyclerAdapterMypageComment(Context mContext, ArrayList<UserComments.Results> mUserComments) {
         this.mContext = mContext;
         this.mUserComments = mUserComments;
     }
@@ -33,7 +35,8 @@ public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerA
         ImageView imgUserProfile, imgMovieStilcut;
         TextView tvUserName, tvMovieTitle, tvComment, tvCommentDate;
         RatingBar rbUserScore;
-        Button btnModify, btnLike, btnAddComment, btnShare;
+        Button btnLike, btnAddComment, btnShare;
+        ImageButton btnModify;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -42,7 +45,7 @@ public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerA
             tvUserName = (TextView) itemView.findViewById(R.id.textView_user_nickname);
             rbUserScore = (RatingBar) itemView.findViewById(R.id.ratingBar_comment);
             tvCommentDate = (TextView) itemView.findViewById(R.id.textView_comment_date);
-            btnModify = (Button) itemView.findViewById(R.id.button_modify);
+            btnModify = (ImageButton) itemView.findViewById(R.id.button_modify);
             imgMovieStilcut = (ImageView) itemView.findViewById(R.id.image_mypage_stilcut);
             tvMovieTitle = (TextView) itemView.findViewById(R.id.textView_movie_title);
             tvComment = (TextView) itemView.findViewById(R.id.textView_comment);
@@ -54,17 +57,33 @@ public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerA
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mypage_comment, parent, false);
+        RecyclerAdapterMypageComment.ViewHolder viewHolder = new RecyclerAdapterMypageComment.ViewHolder(view);
+
+        return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
+        UserComments.Movie movie_data = mUserComments.get(position).getMovie();
+        UserComments.User user_data = mUserComments.get(position).getUser();
+        UserComments.Results comment_data = mUserComments.get(position);
+
+        holder.tvUserName.setText(user_data.getNickname());
+        holder.rbUserScore.setRating(comment_data.getScore());
+        holder.tvCommentDate.setText(comment_data.getActivity_time());
+        holder.tvMovieTitle.setText(movie_data.getTitle());
+        holder.tvComment.setText(comment_data.getComment());
+
+//        Glide.with(mContext).load(movie_data.getStillcut()[0]).into(holder.imgMovieStilcut);
+
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mUserComments.size();
     }
 
 }

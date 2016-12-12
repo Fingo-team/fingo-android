@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.model.UserComments;
 
@@ -33,10 +34,10 @@ public class RecyclerAdapterComment extends RecyclerView.Adapter<RecyclerAdapter
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        ImageView imgProfile;
+        ImageView imgProfile, imgStilcut;
         TextView tvUserName, tvDate, tvMovieTitle, tvUserComment;
         RatingBar rbUserRating;
-        Button btnLike, btnComment;
+        Button btnLike, btnComment, btnShare;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -49,13 +50,16 @@ public class RecyclerAdapterComment extends RecyclerView.Adapter<RecyclerAdapter
             btnLike = (Button) itemView.findViewById(R.id.button_like);
             btnComment = (Button) itemView.findViewById(R.id.button_comment);
             rbUserRating = (RatingBar) itemView.findViewById(R.id.ratingBar_comment_detail);
+            btnShare = (Button) itemView.findViewById(R.id.button_share);
+            imgStilcut = (ImageView) itemView.findViewById(R.id.image_mypage_stilcut);
+
         }
     }
 
     @Override
     public RecyclerAdapterComment.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mypage_comment_detail, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mypage_comment, parent, false);
         RecyclerAdapterComment.ViewHolder viewHolder = new RecyclerAdapterComment.ViewHolder(view);
 
         return viewHolder;
@@ -68,13 +72,11 @@ public class RecyclerAdapterComment extends RecyclerView.Adapter<RecyclerAdapter
         UserComments.User user_data = mUserComments.get(position).getUser();
         UserComments.Results comment_data = mUserComments.get(position);
 
-//        Glide.with(mContext).load(mUserComments.get(position).getUser().getUser_img()).into(holder.imgProfile);
         holder.tvUserName.setText(user_data.getNickname());
-        holder.tvDate.setText(comment_data.getActivity_time());
-        holder.tvMovieTitle.setText(movie_data.getTitle());
-        holder.tvUserComment.setText(comment_data.getComment());
         holder.rbUserRating.setRating(comment_data.getScore());
-
+        holder.tvDate.setText(comment_data.getComment());
+        Glide.with(mContext).load(movie_data.getStillcut()).into(holder.imgStilcut);
+        holder.tvMovieTitle.setText(movie_data.getTitle());
     }
 
     @Override

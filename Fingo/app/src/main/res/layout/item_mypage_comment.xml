@@ -14,7 +14,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginTop="15dp"
+            android:elevation="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -94,7 +96,7 @@
                 app:srcCompat="@android:drawable/ic_menu_gallery" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
@@ -119,7 +121,7 @@
 
             <TextView
                 android:id="@+id/textView_comment"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/linearLayout3"
                 android:layout_alignStart="@+id/linearLayout3"
