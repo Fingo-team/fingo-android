@@ -227,6 +227,10 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
 
     private void callFingoComment() {
 
+        // TODO 싱글톤으로 좀 더 깔끔하게 표현 가능
+        // 호출 될 때마다 초기화
+        mUserComments = new ArrayList<>();
+
         Retrofit client = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -246,11 +250,11 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
                     mAdapter.notifyDataSetChanged();
                 }
             }
-
             @Override
             public void onFailure(Call<UserComments> call, Throwable t) {
 
             }
         });
+
     }
 }
