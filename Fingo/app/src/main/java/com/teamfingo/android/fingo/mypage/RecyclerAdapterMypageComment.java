@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.model.UserComments;
 
@@ -77,7 +78,7 @@ public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerA
         holder.tvMovieTitle.setText(movie_data.getTitle());
         holder.tvComment.setText(comment_data.getComment());
 
-//        Glide.with(mContext).load(movie_data.getStillcut()[0]).into(holder.imgMovieStilcut);
+        Glide.with(mContext).load(movie_data.getStillcut()[0].getImg()).into(holder.imgMovieStilcut);
 
     }
 
