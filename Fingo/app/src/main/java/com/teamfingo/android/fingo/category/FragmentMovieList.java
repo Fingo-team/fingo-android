@@ -17,18 +17,14 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.common.ActivityMovieDetail;
-import com.teamfingo.android.fingo.interfaces.FingoService;
 import com.teamfingo.android.fingo.model.BoxOfficeRanking;
 import com.teamfingo.android.fingo.utils.AppController;
-import com.teamfingo.android.fingo.utils.FingoPreferences;
 
 import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
