@@ -18,20 +18,18 @@ import android.widget.TextView;
 
 import com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader;
 import com.teamfingo.android.fingo.R;
-import com.teamfingo.android.fingo.interfaces.FingoService;
 import com.teamfingo.android.fingo.login.ActivityLogin;
 import com.teamfingo.android.fingo.model.UserComments;
 import com.teamfingo.android.fingo.model.UserDetail;
-import com.teamfingo.android.fingo.utils.FingoPreferences;
+import com.teamfingo.android.fingo.utils.AppController;
 
 import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.teamfingo.android.fingo.utils.FingoPreferences.removeAccessToken;
 
 public class FragmentMyPage extends Fragment implements View.OnClickListener {
 
@@ -45,9 +43,6 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
     RecyclerViewHeader header;
 
     ArrayList<UserComments.Results> mUserComments = new ArrayList<>();
-
-    private String BASE_URL = "http://fingo-dev.ap-northeast-2.elasticbeanstalk.com/";
-    private FingoPreferences mPref;
 
     public static final int MY_PAGE_COMMENT = 0;
     public static final int MY_PAGE_WISH = 1;
@@ -65,8 +60,6 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_page, container, false);
-
-        mPref = new FingoPreferences(getContext());
 
         btnMyPageSetting = (ImageButton) view.findViewById(R.id.button_mypage_setting);
         btnMyPageSetting.setOnClickListener(this);
@@ -153,26 +146,17 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
 
     private void expireFingoToken() {
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        FingoService fingoService = retrofit.create(FingoService.class);
-        Call<Void> fingoLogoutCall = fingoService.userEmailLogout(mPref.getAccessToken());
+        Call<Void> fingoLogoutCall = AppController.getFingoService().userEmailLogout(AppController.getToken());
         fingoLogoutCall.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
 
-                mPref.getAccessToken();
                 Log.e("Check Login Status", ">>>>>>>>" + response.message());
 
                 if (response.isSuccessful()) {
 
-                    Log.e("CHECK_TOKEN_BEFORE", mPref.getAccessToken());
-                    mPref.removeAccessToken();
-                    Log.e("CHECK_TOKEN_AFTER", mPref.getAccessToken());
-                    Log.e("Check Token Status", mPref.getAccessToken());
+                    removeAccessToken();
+                    Log.e("CHECK_TOKEN_AFTER", AppController.getToken());
                     Log.e("Check Login Status", ">>>> 로그아웃 성공!!");
 
                     Intent intent = new Intent(getActivity(), ActivityLogin.class);
@@ -193,12 +177,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
 
     private void callFingoService() {
 
-        Retrofit client = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        FingoService service = client.create(FingoService.class);
-        Call<UserDetail> userDetailCall = service.getUserDetail(mPref.getAccessToken());
+        Call<UserDetail> userDetailCall = AppController.getFingoService().getUserDetail(AppController.getToken());
         userDetailCall.enqueue(new Callback<UserDetail>() {
             @Override
             public void onResponse(Call<UserDetail> call, Response<UserDetail> response) {
@@ -219,7 +198,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
 
             @Override
             public void onFailure(Call<UserDetail> call, Throwable t) {
-
+                t.printStackTrace();
             }
 
         });
@@ -231,13 +210,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
         // 호출 될 때마다 초기화
         mUserComments = new ArrayList<>();
 
-        Retrofit client = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        FingoService service = client.create(FingoService.class);
-        Call<UserComments> userCommentsCall = service.getUserComments(mPref.getAccessToken());
+        Call<UserComments> userCommentsCall = AppController.getFingoService().getUserComments(AppController.getToken());
         userCommentsCall.enqueue(new Callback<UserComments>() {
             @Override
             public void onResponse(Call<UserComments> call, Response<UserComments> response) {

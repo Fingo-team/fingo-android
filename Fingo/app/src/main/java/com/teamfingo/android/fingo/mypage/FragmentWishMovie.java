@@ -12,17 +12,14 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.teamfingo.android.fingo.R;
-import com.teamfingo.android.fingo.interfaces.FingoService;
 import com.teamfingo.android.fingo.model.UserMovies;
-import com.teamfingo.android.fingo.utils.FingoPreferences;
+import com.teamfingo.android.fingo.utils.AppController;
 
 import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,10 +33,6 @@ public class FragmentWishMovie extends Fragment {
     RecyclerAdapterMovie mAdapter;
 
     ArrayList<UserMovies.Results> mWishMovies = new ArrayList<>();
-
-    private static final String BASE_URL = "http://fingo-dev.ap-northeast-2.elasticbeanstalk.com/";
-
-    private FingoPreferences mPref;
 
     public FragmentWishMovie() {
         // Required empty public constructor
@@ -55,7 +48,6 @@ public class FragmentWishMovie extends Fragment {
         btnOrdering = (ImageButton) view.findViewById(R.id.button_ordering);
         tvOrdering = (TextView) view.findViewById(R.id.textView_ordering);
 
-        mPref = new FingoPreferences(getContext());
         callFingoService();
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_wish_movie);
@@ -69,12 +61,7 @@ public class FragmentWishMovie extends Fragment {
 
     private void callFingoService() {
 
-        Retrofit client = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        FingoService service = client.create(FingoService.class);
-        Call<UserMovies> wishMovieCall = service.getWishMovie(mPref.getAccessToken());
+        Call<UserMovies> wishMovieCall = AppController.getFingoService().getWishMovie(AppController.getToken());
         wishMovieCall.enqueue(new Callback<UserMovies>() {
             @Override
             public void onResponse(Call<UserMovies> call, Response<UserMovies> response) {

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +13,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.teamfingo.android.fingo.R;
-import com.teamfingo.android.fingo.interfaces.FingoService;
 import com.teamfingo.android.fingo.model.FingoAccessToken;
+import com.teamfingo.android.fingo.utils.AppController;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  *
@@ -50,20 +47,9 @@ public class FragmentEmailSignUp extends Fragment {
     String mPassword;
     String mUserName;
 
-    private String sToken;
-
-    Boolean mSignUpSuccess = false;
-
-    public String getsToken() {
-        return sToken;
-    }
-
-    private String BASE_URL = "http://fingo-dev.ap-northeast-2.elasticbeanstalk.com/";
-    
     public FragmentEmailSignUp() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,32 +81,14 @@ public class FragmentEmailSignUp extends Fragment {
 
     private void callFingoAPI() {
 
-        Retrofit retrofit = new Retrofit.Builder()
-                                        .baseUrl(BASE_URL)
-                                        .addConverterFactory(GsonConverterFactory.create())
-                                        .build();
-
-        Log.e("CHECK!!", "=========="+mEmail);
-        Log.e("CHECK!!", "=========="+mPassword);
-        Log.e("CHECK!!", "=========="+mUserName);
-
-        FingoService fingoService = retrofit.create(FingoService.class);
-        Call<FingoAccessToken> fingoAccessTokenCall = fingoService.createEmailUser(mEmail, mPassword, mUserName);
-
-        // TODO 이미 존재하는 회원 인지를 체크하는 로직 필요 - 부분적으로 해결!
-        // TODO Rx를 이용해 실시간으로 valid 여부 체크!
-
+        Call<FingoAccessToken> fingoAccessTokenCall = AppController.getFingoService().createEmailUser(mEmail, mPassword, mUserName);
         fingoAccessTokenCall.enqueue(new Callback<FingoAccessToken>() {
             @Override
             public void onResponse(Call<FingoAccessToken> call, Response<FingoAccessToken> response) {
                 if(response.isSuccessful()){
 
-                    sToken = response.body().getToken();
-                    Log.e("CHECK TOKEN", ">>>>>>>>" + sToken);
-
-                    Toast.makeText(getContext(), "회원 가입에 성공 하였습니다!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "회원 인증 메일을 확인해 주세요", Toast.LENGTH_SHORT).show();
                     replaceFragment(new FragmentLoginMain());
-
                 }
                 else
                 // TODO 어떤 정보의 중복으로 인해 회원가입이 되지 않는것인지 출력되는 메세지 세분화가 필요
