@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -20,11 +21,20 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.teamfingo.android.fingo.R;
+import com.teamfingo.android.fingo.interfaces.FingoService;
 import com.teamfingo.android.fingo.main.ActivityMain;
+import com.teamfingo.android.fingo.model.FingoAccessToken;
+import com.teamfingo.android.fingo.utils.FingoPreferences;
 
 import org.json.JSONObject;
 
 import java.util.Arrays;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
@@ -52,6 +62,11 @@ public class FragmentLoginMain extends Fragment implements View.OnClickListener{
     Fragment fragmentFacebookSignUp;
 
     CallbackManager mCallbackManager;
+
+    private static final String BASE_URL = "http://fingo-dev.ap-northeast-2.elasticbeanstalk.com/";
+
+    private FingoPreferences mPref;
+
 
     public FragmentLoginMain() {
         // Required empty public constructor
@@ -137,8 +152,7 @@ public class FragmentLoginMain extends Fragment implements View.OnClickListener{
                             Log.i("TAG", "AccessToken: " + result.getAccessToken().getToken());
 //                            setResult(RESULT_OK);
 
-                            Intent intent = new Intent(getActivity(), ActivityMain.class);
-                            startActivity(intent);
+                            callFingoAPI(result.getAccessToken().getToken());
 
                             // TODO 현재 프레그먼트가 속한 ActivityLogin 에서 ActivitiyMain 으로 이동 한 뒤에 현재 Activity 를 닫아 줄 수 있도록 구현 해야함.
 //                            finish();
@@ -165,4 +179,38 @@ public class FragmentLoginMain extends Fragment implements View.OnClickListener{
             }
         });
     }
+
+    private void callFingoAPI(String facebook_token) {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        FingoService fingoService = retrofit.create(FingoService.class);
+        Call<FingoAccessToken> fingoAccessTokenCall = fingoService.createFacebookUser(facebook_token);
+        fingoAccessTokenCall.enqueue(new Callback<FingoAccessToken>() {
+            @Override
+            public void onResponse(Call<FingoAccessToken> call, Response<FingoAccessToken> response) {
+                if(response.isSuccessful()){
+
+                    String token = response.body().getToken();
+                    mPref.setAccessToken(token);
+
+                    Intent intent = new Intent(getActivity(), ActivityMain.class);
+                    startActivity(intent);
+
+                }
+                else
+                    // TODO 어떤 정보의 중복으로 인해 회원가입이 되지 않는것인지 출력되는 메세지 세분화가 필요
+                    Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<FingoAccessToken> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
 }

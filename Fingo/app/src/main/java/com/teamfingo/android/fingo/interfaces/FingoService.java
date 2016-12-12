@@ -98,4 +98,8 @@ public interface FingoService {
     @GET("/api/v1.0/activity/user/watched/movies/")
     Call<UserMovies> getWatchedMovie(@Header("Authorization") String authorization);
 
+    @FormUrlEncoded
+    @POST("/api/v1.0/user/fb_login/")
+    Call<FingoAccessToken> createFacebookUser(@Field("access_token")String facebook_token);
+
 }
