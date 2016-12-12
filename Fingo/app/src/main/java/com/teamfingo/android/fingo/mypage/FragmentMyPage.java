@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,14 +14,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader;
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.interfaces.FingoService;
 import com.teamfingo.android.fingo.login.ActivityLogin;
+import com.teamfingo.android.fingo.model.UserComments;
 import com.teamfingo.android.fingo.model.UserDetail;
 import com.teamfingo.android.fingo.utils.FingoPreferences;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,7 +40,11 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
     TextView tvUserName, tvUserIntroduce, tvCommentCount, tvWishCount, tvWatchedCount;
     Button btnComment, btnWish, btnWatched;
 
-    LinearLayout mLinearLayout;
+    RecyclerView mRecyclerView;
+    RecyclerAdapterMypageComment mAdapter;
+    RecyclerViewHeader header;
+
+    ArrayList<UserComments.Results> mUserComments = new ArrayList<>();
 
     private String BASE_URL = "http://fingo-dev.ap-northeast-2.elasticbeanstalk.com/";
     private FingoPreferences mPref;
@@ -87,7 +96,16 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
         tvWishCount = (TextView) view.findViewById(R.id.textView_wish_count);
         tvWatchedCount = (TextView) view.findViewById(R.id.textView_watched_count);
 
+        header = (RecyclerViewHeader) view.findViewById(R.id.header);
+
         callFingoService();
+        callFingoComment();
+
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_mypage_comment);
+        mAdapter = new RecyclerAdapterMypageComment(this.getContext(), mUserComments);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        header.attachTo(mRecyclerView);
 
         return view;
     }
@@ -184,7 +202,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
         userDetailCall.enqueue(new Callback<UserDetail>() {
             @Override
             public void onResponse(Call<UserDetail> call, Response<UserDetail> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     final UserDetail data = response.body();
 
                     new Handler().post(new Runnable() {
@@ -201,6 +219,36 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
 
             @Override
             public void onFailure(Call<UserDetail> call, Throwable t) {
+
+            }
+
+        });
+    }
+
+    private void callFingoComment() {
+
+        Retrofit client = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        FingoService service = client.create(FingoService.class);
+        Call<UserComments> userCommentsCall = service.getUserComments(mPref.getAccessToken());
+        userCommentsCall.enqueue(new Callback<UserComments>() {
+            @Override
+            public void onResponse(Call<UserComments> call, Response<UserComments> response) {
+                if (response.isSuccessful()) {
+
+                    UserComments data = response.body();
+                    for(UserComments.Results comment : data.getResults()){
+                        mUserComments.add(comment);
+                    }
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserComments> call, Throwable t) {
 
             }
         });
