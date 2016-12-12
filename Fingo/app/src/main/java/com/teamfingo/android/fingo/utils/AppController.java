@@ -1,6 +1,7 @@
 package com.teamfingo.android.fingo.utils;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.teamfingo.android.fingo.interfaces.FingoService;
 
@@ -18,7 +19,7 @@ public class AppController extends Application { // 앱이 실행되면 무조�
     private static Retrofit mRetrofit;
     private static FingoPreferences mFingoPreferences;
     private static String mToken;
-    static FingoService mService;
+    private static FingoService mService;
 
     @Override
     public void onCreate() {
@@ -41,6 +42,8 @@ public class AppController extends Application { // 앱이 실행되면 무조�
     }
 
     public static String getToken() {
+        Log.e("log","AppController / getToken() ==== " + mToken);
+
         return mToken;
     }
 

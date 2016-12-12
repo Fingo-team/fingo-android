@@ -67,6 +67,8 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
 
+        Log.e("log", "movie detail token ==== " + AppController.getToken());
+
         ivMovieBackgroundStillCut = (ImageView) findViewById(R.id.imageView_movie_detail_backgroundStillcut);
         ivMoviePoster = (ImageView) findViewById(R.id.imageView_movie_detail_movie_post);
         tvMovieTitle = (TextView) findViewById(R.id.textView_movie_detail_movie_title);
@@ -177,8 +179,11 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
                     score = movieScore.getScore();
 
-                    if (!score.equals("0.0")) {
+                    if (!(score.equals("0.0"))) {
                         Log.d("log", "1/ score == "+score);
+                        Log.d("log", "score.equals()"+score.equals("0.0"));
+                        Log.d("log", "!score.equals()"+!(score.equals("0.0")));
+
                         btnRate.setText(score);
                     }
                 }
@@ -222,7 +227,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                 openDialogRating();
                 break;
             case R.id.button_comment:
-                if (score.equals("0.0") || score.equals("0")) {
+                if (score.equals("0.0")) {
                     Toast.makeText(v.getContext(), "평가 먼저 남겨주세요^.^", Toast.LENGTH_SHORT).show();
                     break;
                 } else {
@@ -264,8 +269,6 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
     private void openDialogRating() {
 
-        //final String movieId = getIntent().getStringExtra("movieId");
-
         String movieTitle;
         String movieDate;
 
@@ -284,7 +287,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
         tvRatingMovieDate.setText(movieDate);
 
 
-        if (!score.equals("0.0")) {
+        if (!(score.equals("0.0"))) {
             rbScore.setRating(Float.parseFloat(score));
         } else {
             rbScore.setRating(0.0f);
@@ -310,8 +313,10 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                                 btnRate.setText("평가하기");
                             } else {
                                 Log.d("log", "2/ score == "+score);
-
                                 btnRate.setText(ratedScore);
+                                if (btnWishMovie.isActivated()) {
+                                    btnWishMovie.setActivated(!(btnWishMovie.isActivated()));
+                                }
                             }
 
                         } else {
@@ -340,13 +345,9 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
         mAlertDialogRating.show();
 
-
-
     }
 
     private void openDialogComment() {
-
-        //final String movieId = getIntent().getStringExtra("movieId");
 
         String movieTitle;
 
