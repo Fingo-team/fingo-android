@@ -31,17 +31,17 @@ public class AppController extends Application { // 앱이 실행되면 무조�
                 .build();
 
         mFingoPreferences = new FingoPreferences(this);
-        mToken = mFingoPreferences.getAccessToken();
-
-        mService = mRetrofit.create(FingoService.class);
 
     }
 
     public static FingoService getFingoService() {
+        mService = mRetrofit.create(FingoService.class);
+
         return mService;
     }
 
     public static String getToken() {
+        mToken = mFingoPreferences.getAccessToken();
         Log.e("log","AppController / getToken() ==== " + mToken);
 
         return mToken;
