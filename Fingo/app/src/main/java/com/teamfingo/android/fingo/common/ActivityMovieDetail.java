@@ -55,7 +55,8 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
     RatingBar rbRatedScore;
     EditText etComment;
 
-    String movieId;
+    String movieId; // 특정 영화의 id
+
     Boolean wishMovieState;
     String score;
     String comment;
@@ -69,27 +70,13 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
         Log.e("log", "movie detail token ==== " + AppController.getToken());
 
-        ivMovieBackgroundStillCut = (ImageView) findViewById(R.id.imageView_movie_detail_backgroundStillcut);
-        ivMoviePoster = (ImageView) findViewById(R.id.imageView_movie_detail_movie_post);
-        tvMovieTitle = (TextView) findViewById(R.id.textView_movie_detail_movie_title);
-        tvMovieScore = (TextView) findViewById(R.id.textView_movie_detail_movie_score);
-        btnWishMovie = (Button) findViewById(R.id.button_wish_movie);
-        btnRate = (Button) findViewById(R.id.button_rate);
-        btnComment= (Button) findViewById(R.id.button_comment);
-        btnShare = (Button) findViewById(R.id.button_share);
-        tvMovieDate = (TextView) findViewById(R.id.textView_date);
-        tvMovieGenre = (TextView) findViewById(R.id.textView_genre);
-        tvMovieStory = (TextView) findViewById(R.id.textView_story);
-        ivStillCut1 = (ImageView) findViewById(R.id.imageView_stillCut1);
-        ivStillCut2 = (ImageView) findViewById(R.id.imageView_stillCut2);
-        ivStillCut3 = (ImageView) findViewById(R.id.imageView_stillCut3);
-        ivStillCut4 = (ImageView) findViewById(R.id.imageView_stillCut4);
-        ivStillCut5 = (ImageView) findViewById(R.id.imageView_stillCut5);
-        llDirectorandActor = (LinearLayout) findViewById(R.id.linearLayout_director_and_actor);
-
         movieId = getIntent().getStringExtra("movieId");
 
-        Call<Movie> movieCall = AppController.getFingoService().getMovie(AppController.getToken(), movieId);
+        // Movie Detail 화면 초기화
+        initMovieDetailView();
+
+        Call<Movie> movieCall = AppController.getFingoService()
+                .getMovie(AppController.getToken(), movieId);
 
         movieCall.enqueue(new Callback<Movie>() {
             @Override
@@ -99,12 +86,13 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
                     Movie.Stillcut[] stillCutImg = movie.getStillcut();
                     Glide.with(ActivityMovieDetail.this).load(stillCutImg[1].getImg()).into(ivMovieBackgroundStillCut);
-                    // movie title, movie score가 더 잘 보이게 하기 위해서 배경 이미지를 반투명 처리
+                    // movie title, movie score 글씨를 더 잘 보이게 하기 위해 배경 이미지를 반투명 처리
                     ivMovieBackgroundStillCut.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY);
 
                     Glide.with(ActivityMovieDetail.this).load(movie.getImg()).into(ivMoviePoster);
                     tvMovieTitle.setText(movie.getTitle());
                     tvMovieScore.setText(movie.getScore());
+
                     btnWishMovie.setOnClickListener(ActivityMovieDetail.this);
                     btnRate.setOnClickListener(ActivityMovieDetail.this);
                     btnComment.setOnClickListener(ActivityMovieDetail.this);
@@ -144,8 +132,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
             @Override
             public void onFailure(Call<Movie> call, Throwable t) {
-                Log.d("log", "onFailure ==== ");
-
+                Log.e("log", "error message ==== " + t.getMessage());
             }
         });
 
@@ -163,7 +150,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
             @Override
             public void onFailure(Call<MovieWish> call, Throwable t) {
-
+                Log.e("log", "error message ==== " + t.getMessage());
             }
         });
 
@@ -175,15 +162,11 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
             public void onResponse(Call<MovieScore> call, Response<MovieScore> response) {
                 if (response.isSuccessful()) {
                     MovieScore movieScore = response.body();
-                    Log.d("log", "response message ==== " + response.body());
+                    Log.e("log", "response message ==== " + response.body());
 
                     score = movieScore.getScore();
 
                     if (!(score.equals("0.0"))) {
-                        Log.d("log", "1/ score == "+score);
-                        Log.d("log", "score.equals()"+score.equals("0.0"));
-                        Log.d("log", "!score.equals()"+!(score.equals("0.0")));
-
                         btnRate.setText(score);
                     }
                 }
@@ -191,7 +174,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
             @Override
             public void onFailure(Call<MovieScore> call, Throwable t) {
-
+                Log.e("log", "error message ==== " + t.getMessage());
             }
         });
 
@@ -210,9 +193,31 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
             }
             @Override
             public void onFailure(Call<MovieComment> call, Throwable t) {
-
+                Log.e("log", "error message ==== " + t.getMessage());
             }
         });
+    }
+
+    public void initMovieDetailView() {
+
+        ivMovieBackgroundStillCut = (ImageView) findViewById(R.id.imageView_movie_detail_backgroundStillcut);
+        ivMoviePoster = (ImageView) findViewById(R.id.imageView_movie_detail_movie_post);
+        tvMovieTitle = (TextView) findViewById(R.id.textView_movie_detail_movie_title);
+        tvMovieScore = (TextView) findViewById(R.id.textView_movie_detail_movie_score);
+        btnWishMovie = (Button) findViewById(R.id.button_wish_movie);
+        btnRate = (Button) findViewById(R.id.button_rate);
+        btnComment= (Button) findViewById(R.id.button_comment);
+        btnShare = (Button) findViewById(R.id.button_share);
+        tvMovieDate = (TextView) findViewById(R.id.textView_date);
+        tvMovieGenre = (TextView) findViewById(R.id.textView_genre);
+        tvMovieStory = (TextView) findViewById(R.id.textView_story);
+        ivStillCut1 = (ImageView) findViewById(R.id.imageView_stillCut1);
+        ivStillCut2 = (ImageView) findViewById(R.id.imageView_stillCut2);
+        ivStillCut3 = (ImageView) findViewById(R.id.imageView_stillCut3);
+        ivStillCut4 = (ImageView) findViewById(R.id.imageView_stillCut4);
+        ivStillCut5 = (ImageView) findViewById(R.id.imageView_stillCut5);
+        llDirectorandActor = (LinearLayout) findViewById(R.id.linearLayout_director_and_actor);
+
     }
 
     @Override
@@ -262,6 +267,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("log", "error message ==== " + t.getMessage());
             }
         });
 
@@ -296,39 +302,38 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
         mBuilderRating.setPositiveButton("완료", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(ActivityMovieDetail.this, "완료", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ActivityMovieDetail.this, "완료", Toast.LENGTH_SHORT).show();
 
-                final String ratedScore;
-                ratedScore = String.valueOf(rbScore.getRating());
+            final String ratedScore;
+            ratedScore = String.valueOf(rbScore.getRating());
 
-                Call<Void> postMovieScoreCall = AppController.getFingoService().postMovieScore(AppController.getToken(), movieId, ratedScore); // POST
+            Call<Void> postMovieScoreCall = AppController.getFingoService().postMovieScore(AppController.getToken(), movieId, ratedScore); // POST
 
-                postMovieScoreCall.enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        if (response.isSuccessful()) {
-                            // 실시간으로 화면에 반영될 수 있게 처리
-                            score = ratedScore;
-                            if (ratedScore.equals("0.0")) {
-                                btnRate.setText("평가하기");
-                            } else {
-                                Log.d("log", "2/ score == "+score);
-                                btnRate.setText(ratedScore);
-                                if (btnWishMovie.isActivated()) {
-                                    btnWishMovie.setActivated(!(btnWishMovie.isActivated()));
-                                }
-                            }
-
+            postMovieScoreCall.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        // 실시간으로 화면에 반영될 수 있게 처리
+                        score = ratedScore;
+                        if (ratedScore.equals("0.0")) {
+                            btnRate.setText("평가하기");
                         } else {
-                            Log.d("log", "response message ==== " + response.message());
+                            Log.d("log", "2/ score == "+score);
+                            btnRate.setText(ratedScore);
+                            if (btnWishMovie.isActivated()) {
+                                btnWishMovie.setActivated(!(btnWishMovie.isActivated()));
+                            }
                         }
-                    }
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                            Log.d("log", "error message ==== " + t.getMessage());
 
+                    } else {
+                        Log.e("log", "response message ==== " + response.message());
                     }
-                });
+                }
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Log.e("log", "error message ==== " + t.getMessage());
+                }
+            });
 
             }
         });
@@ -383,14 +388,14 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         if (response.isSuccessful()) {
-                            Log.d("log", "response message ==== " + response.message());
+                            Log.e("log", "response message ==== " + response.message());
                         } else {
-                            Log.d("log", "response message ==== " + response.message());
+                            Log.e("log", "response message ==== " + response.message());
                         }
                     }
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
-                        Log.d("log", "error message ==== " + t.getMessage());
+                        Log.e("log", "error message ==== " + t.getMessage());
                     }
                 });
 
