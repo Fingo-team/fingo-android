@@ -7,6 +7,12 @@
     tools:context="com.teamfingo.android.fingo.mypage.FragmentMyPage"
     android:background="?android:attr/colorButtonNormal">
 
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/recyclerView_mypage_comment"
+        android:paddingTop="10dp" />
+
     <com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -14,12 +20,15 @@
         android:layout_gravity="center_horizontal|top"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:clickable="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:clipToPadding="true"
+            android:clickable="true">
 
             <!-- 유저 프로필 영역 -->
             <RelativeLayout
@@ -187,15 +196,6 @@
         </LinearLayout>
 
     </com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader>
-
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="269dp"
-        android:id="@+id/recyclerView_mypage_comment"
-        android:paddingTop="10dp"
-        android:layout_below="@+id/header"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
 
