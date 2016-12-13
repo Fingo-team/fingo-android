@@ -102,7 +102,7 @@
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_weight="1"
-                    android:drawableTop="@drawable/icon_comment_gray"
+                    android:drawableTop="@drawable/ic_comment_black_30dp"
                     android:text="코멘트"
                     android:background="@color/colorWhiteBackground"/>
                 <Button
@@ -110,7 +110,7 @@
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_weight="1"
-                    android:drawableTop="@drawable/icon_dots"
+                    android:drawableTop="@drawable/ic_share_black_30dp"
                     android:drawableTint="@color/colorAccent"
                     android:text="공유"
                     android:background="@color/colorWhiteBackground"/>

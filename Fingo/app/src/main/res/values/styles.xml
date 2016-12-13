@@ -14,5 +14,9 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    
+    <style name="MyTapLayoutTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">10dp</item>
+    </style>
 
 </resources>

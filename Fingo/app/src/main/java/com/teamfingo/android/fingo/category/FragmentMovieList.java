@@ -17,24 +17,19 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.common.ActivityMovieDetail;
-import com.teamfingo.android.fingo.interfaces.FingoService;
 import com.teamfingo.android.fingo.model.BoxOfficeRanking;
-import com.teamfingo.android.fingo.utils.FingoPreferences;
+import com.teamfingo.android.fingo.utils.AppController;
 
 import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class FragmentMovieList extends Fragment {
-
-    private static String FINGO_BASE_URL = "http://fingo-dev.ap-northeast-2.elasticbeanstalk.com/";
 
     ListView mListView;
     ListAdapter mListAdapter;
@@ -47,8 +42,6 @@ public class FragmentMovieList extends Fragment {
     TextView tvTotalAttendance;
     TextView tvReleaseDate;
 
-    FingoPreferences pref;
-    String token;
 
     public FragmentMovieList() {
         // Required empty public constructor
@@ -65,20 +58,10 @@ public class FragmentMovieList extends Fragment {
         mListView.setAdapter(mListAdapter);
 
 
-        pref = new FingoPreferences(getContext());
-        token = pref.getAccessToken();
 
         if (mRanks.size() == 0) {
 
-            // Fingo Api 호출
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(FINGO_BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-
-            FingoService service = retrofit.create(FingoService.class);
-
-            Call<BoxOfficeRanking> boxOfficeRankingCall = service.getBoxOfficeRanking(token);
+            Call<BoxOfficeRanking> boxOfficeRankingCall = AppController.getFingoService().getBoxOfficeRanking(AppController.getToken());
 
             boxOfficeRankingCall.enqueue(new Callback<BoxOfficeRanking>() {
                 @Override

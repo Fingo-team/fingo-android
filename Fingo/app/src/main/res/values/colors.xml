@@ -10,4 +10,5 @@
     <color name="colorTextShadow">#000000</color>
 
     <color name="colorButtonActivate">#feff5a39</color>
+    <color name="colorWhite">#ffffff</color>
 </resources>
