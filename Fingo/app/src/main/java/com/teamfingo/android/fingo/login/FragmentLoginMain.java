@@ -21,9 +21,9 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.teamfingo.android.fingo.R;
-import com.teamfingo.android.fingo.interfaces.FingoService;
 import com.teamfingo.android.fingo.main.ActivityMain;
 import com.teamfingo.android.fingo.model.FingoAccessToken;
+import com.teamfingo.android.fingo.utils.AppController;
 import com.teamfingo.android.fingo.utils.FingoPreferences;
 
 import org.json.JSONObject;
@@ -33,8 +33,6 @@ import java.util.Arrays;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
@@ -59,14 +57,8 @@ public class FragmentLoginMain extends Fragment implements View.OnClickListener{
 
     Fragment fragmentLogin;
     Fragment fragmentEmailSignUp;
-    Fragment fragmentFacebookSignUp;
 
     CallbackManager mCallbackManager;
-
-    private static final String BASE_URL = "http://fingo-dev.ap-northeast-2.elasticbeanstalk.com/";
-
-    private FingoPreferences mPref;
-
 
     public FragmentLoginMain() {
         // Required empty public constructor
@@ -182,20 +174,14 @@ public class FragmentLoginMain extends Fragment implements View.OnClickListener{
 
     private void callFingoAPI(String facebook_token) {
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        FingoService fingoService = retrofit.create(FingoService.class);
-        Call<FingoAccessToken> fingoAccessTokenCall = fingoService.createFacebookUser(facebook_token);
+        Call<FingoAccessToken> fingoAccessTokenCall = AppController.getFingoService().createFacebookUser(facebook_token);
         fingoAccessTokenCall.enqueue(new Callback<FingoAccessToken>() {
             @Override
             public void onResponse(Call<FingoAccessToken> call, Response<FingoAccessToken> response) {
                 if(response.isSuccessful()){
 
                     String token = response.body().getToken();
-                    mPref.setAccessToken(token);
+                    new FingoPreferences(getContext()).setAccessToken(token);
 
                     Intent intent = new Intent(getActivity(), ActivityMain.class);
                     startActivity(intent);
