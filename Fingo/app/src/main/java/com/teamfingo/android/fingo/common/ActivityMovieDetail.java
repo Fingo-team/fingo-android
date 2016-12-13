@@ -245,12 +245,22 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
     }
 
     private void setWishButtonState() {
-        String wishMovieStateToString;
+        String wishMovieStateToString; // 서버로 보내주기위해 wishMovieState를 String 값으로 바꿈
 
         if (wishMovieState) {
             wishMovieStateToString = "True";
         } else {
             wishMovieStateToString = "False";
+        }
+
+        // 평가가 되어있는 영화일 경우일 때, 보고싶어요 버튼을 누르게되면 평가를 취소해줘야 하기 때문에 코드 작성 
+        if (!(score.equals("0.0"))) {
+            Log.e("log", "rated score ==== " + ratedScore);
+            Toast.makeText(this, "평가가 취소됩니다", Toast.LENGTH_SHORT).show();
+            btnRate.setText("평가하기");
+            score = "0.0";
+            ratedScore = "0.0";
+            wishMovieState = !wishMovieState;
         }
 
         Call<Void> postMovieWishCall = AppController.getFingoService()
