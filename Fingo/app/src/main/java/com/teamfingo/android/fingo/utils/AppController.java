@@ -14,8 +14,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AppController extends Application { // 앱이 실행되면 무조건 초기화 됨
 
-    //private static String FINGO_BASE_URL = "http://fingo-dev.ap-northeast-2.elasticbeanstalk.com/";
-    private static String FINGO_BASE_URL = "http://eb-fingo-real.ap-northeast-2.elasticbeanstalk.com/";
+    //private static String FINGO_BASE_URL = "http://eb-fingo-real.ap-northeast-2.elasticbeanstalk.com/";
+    private static String FINGO_BASE_URL = "http://fingo2-dev.ap-northeast-2.elasticbeanstalk.com/";
+
 
     private static Retrofit mRetrofit;
     private static FingoPreferences mFingoPreferences;

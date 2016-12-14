@@ -99,7 +99,8 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                     btnShare.setOnClickListener(ActivityMovieDetail.this);
 
                     tvMovieDate.setText("개봉일: " + movie.getFirst_run_date());
-                    tvMovieGenre.setText("장르: " + movie.getGenre());
+                    Movie.Genre[] genre = movie.getGenre();
+                    tvMovieGenre.setText("장르: " + genre[0]);
                     tvMovieStory.setText(movie.getStory());
 
                     Glide.with(ActivityMovieDetail.this).load(stillCutImg[0].getImg()).into(ivStillCut1);
