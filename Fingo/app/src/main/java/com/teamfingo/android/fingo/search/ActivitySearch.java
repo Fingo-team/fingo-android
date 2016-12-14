@@ -11,21 +11,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.teamfingo.android.fingo.R;
-import com.teamfingo.android.fingo.interfaces.FingoService;
 import com.teamfingo.android.fingo.model.SearchMovie;
-import com.teamfingo.android.fingo.utils.FingoPreferences;
+import com.teamfingo.android.fingo.utils.AppController;
 
 import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ActivitySearch extends AppCompatActivity {
-
-    private static String FINGO_BASE_URL = "http://fingo-dev.ap-northeast-2.elasticbeanstalk.com/";
 
     Toolbar searchToolbar;
 
@@ -34,9 +29,6 @@ public class ActivitySearch extends AppCompatActivity {
     EditText mToolbarEditText;
 
     ArrayList<SearchMovie> mSearchMovies = new ArrayList<>();
-
-    FingoPreferences pref;
-    String token;
 
     String searchWord;
 
@@ -64,18 +56,8 @@ public class ActivitySearch extends AppCompatActivity {
 
                         searchWord = mToolbarEditText.getText().toString();
 
-                        pref = new FingoPreferences(ActivitySearch.this);
-                        token = pref.getAccessToken();
-
-                        // Fingo Api 호출
-                        Retrofit retrofit = new Retrofit.Builder()
-                                .baseUrl(FINGO_BASE_URL)
-                                .addConverterFactory(GsonConverterFactory.create())
-                                .build();
-
-                        FingoService service = retrofit.create(FingoService.class);
-
-                        Call<ArrayList<SearchMovie>> searchMovieCall = service.getSearchMovie(token, searchWord);
+                        Call<ArrayList<SearchMovie>> searchMovieCall = AppController.getFingoService()
+                                .getSearchMovie(AppController.getToken(), searchWord);
 
                         searchMovieCall.enqueue(new Callback<ArrayList<SearchMovie>>() {
                             @Override

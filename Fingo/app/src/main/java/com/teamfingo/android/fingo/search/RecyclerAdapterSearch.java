@@ -66,8 +66,10 @@ public class RecyclerAdapterSearch extends RecyclerView.Adapter<RecyclerAdapterS
         Glide.with(mContext).load(mSearchMovies.get(position).getImg()).into(holder.ivMoviePoster);
         holder.tvMovieTitle.setText(mSearchMovies.get(position).getTitle());
         holder.tvMovieDate.setText("(" + mSearchMovies.get(position).getFirst_run_date() + ")");
-        holder.tvMovieGenre.setText(mSearchMovies.get(position).getGenre());
-        holder.tvMovieNation.setText("/ " + mSearchMovies.get(position).getNation_code());
+        SearchMovie.Genre genre[] = mSearchMovies.get(position).getGenre();
+        holder.tvMovieGenre.setText(genre[0].toString());
+        SearchMovie.Nation_code nationCode[] = mSearchMovies.get(position).getNation_code();
+        holder.tvMovieNation.setText("/ " + nationCode[0]);
 
         holder.mRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
