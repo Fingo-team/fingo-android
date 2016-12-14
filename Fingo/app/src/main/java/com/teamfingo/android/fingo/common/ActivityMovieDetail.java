@@ -191,6 +191,10 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
                     comment = movieComment.getComment();
                     ratedScore = movieComment.getScore();
+
+                    if (comment != null) {
+                        btnComment.setActivated(true);
+                    }
                 }
             }
             @Override
@@ -386,9 +390,8 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
         movieTitle = tvMovieTitle.getText().toString();
         tvMovieTitleComment.setText(movieTitle);
 
-        if (comment != null) {
-            etComment.setText(comment);
-        }
+        etComment.setText(comment);
+
 
         rbRatedScore.setRating(Float.parseFloat(score));
 
@@ -408,6 +411,9 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         if (response.isSuccessful()) {
                             Log.e("log", "response message ==== " + response.message());
+
+                            // 댓글이 써졌을 경우 코멘트 아이콘 색상 변경
+                            btnComment.setActivated(true);
                         } else {
                             Log.e("log", "response message ==== " + response.message());
                         }

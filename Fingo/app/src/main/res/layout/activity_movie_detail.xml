@@ -102,7 +102,7 @@
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_weight="1"
-                    android:drawableTop="@drawable/ic_comment_black_30dp"
+                    android:drawableTop="@drawable/button_comment_color_selector"
                     android:text="코멘트"
                     android:background="@color/colorWhiteBackground"/>
                 <Button
