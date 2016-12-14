@@ -144,6 +144,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                     MovieWish movieWish = response.body();
 
                     wishMovieState = Boolean.valueOf(movieWish.getWish_movie());
+                    Log.e("log", "wishMovieState = Boolean.valueOf(movieWish.getWish_movie());" + wishMovieState);
                     btnWishMovie.setActivated(wishMovieState);
                 }
             }
@@ -225,6 +226,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
         switch (v.getId()) {
             case R.id.button_wish_movie:
                 wishMovieState = !wishMovieState;
+                Log.e("log", "wish button clicked, wishMovieState ==== " + wishMovieState);
                 btnWishMovie.setActivated(wishMovieState);
                 setWishButtonState();
                 break;
@@ -245,12 +247,21 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
     }
 
     private void setWishButtonState() {
-        String wishMovieStateToString;
+        String wishMovieStateToString; // 서버로 보내주기위해 wishMovieState를 String 값으로 바꿈
 
         if (wishMovieState) {
             wishMovieStateToString = "True";
         } else {
             wishMovieStateToString = "False";
+        }
+
+        // 평가가 되어있는 영화일 경우, 보고싶어요 버튼을 누르게되면 평가되어있던 점수를 0점으로 처리 
+        if (!(score.equals("0.0"))) {
+            Log.e("log", "rated score ==== " + ratedScore);
+            Toast.makeText(this, "평가가 취소됩니다", Toast.LENGTH_SHORT).show();
+            btnRate.setText("평가하기");
+            score = "0.0";
+            ratedScore = "0.0";
         }
 
         Call<Void> postMovieWishCall = AppController.getFingoService()
@@ -313,15 +324,19 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
-                        // 실시간으로 화면에 반영될 수 있게 처리
+                        // 사용자의 평가 점수가 실시간으로 화면에 반영될 수 있게 처리
                         score = ratedScore;
+
                         if (ratedScore.equals("0.0")) {
                             btnRate.setText("평가하기");
                         } else {
                             Log.d("log", "2/ score == "+score);
                             btnRate.setText(ratedScore);
+
+                            // 보고싶어요 버튼이 클릭되어있는 영화가 평가됐을 경우, 보고싶어요 버튼 비활성화되게 처리
                             if (btnWishMovie.isActivated()) {
-                                btnWishMovie.setActivated(!(btnWishMovie.isActivated()));
+                                wishMovieState = !wishMovieState;
+                                btnWishMovie.setActivated(wishMovieState);
                             }
                         }
 
