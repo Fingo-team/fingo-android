@@ -21,6 +21,7 @@ import com.teamfingo.android.fingo.model.BoxOfficeRanking;
 import com.teamfingo.android.fingo.utils.AppController;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,7 +35,7 @@ public class FragmentMovieList extends Fragment {
     ListView mListView;
     ListAdapter mListAdapter;
 
-    ArrayList<BoxOfficeRanking.Data> mRanks = new ArrayList<>();
+    ArrayList<List<BoxOfficeRanking.Data>> mRanks = new ArrayList<>();
 
     ImageView imgViewMoviePoster;
     TextView tvMovieTitle;
@@ -57,8 +58,6 @@ public class FragmentMovieList extends Fragment {
         mListAdapter = new ListAdapter();
         mListView.setAdapter(mListAdapter);
 
-
-
         if (mRanks.size() == 0) {
 
             Call<BoxOfficeRanking> boxOfficeRankingCall = AppController.getFingoService().getBoxOfficeRanking(AppController.getToken());
@@ -71,7 +70,10 @@ public class FragmentMovieList extends Fragment {
                         Log.d("aaaa", "response ==== " + response);
                         BoxOfficeRanking boxOfficeRanking = response.body();
                         Log.d("aaa", "dataList ==== " + boxOfficeRanking.toString());
-                        mRanks.addAll(boxOfficeRanking.getData());
+
+                        for (int i=0; i<boxOfficeRanking.getData().size(); i++) {
+                            mRanks.add(boxOfficeRanking.getData());
+                        }
                     }
                     mListAdapter.notifyDataSetChanged();
                 }
@@ -88,7 +90,7 @@ public class FragmentMovieList extends Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String movieId = mRanks.get(position).getMovie().getId();
+                String movieId = mRanks.get(position).get(position).getMovie().getId();
 
                 Intent intent = new Intent(getActivity(), ActivityMovieDetail.class);
                 intent.putExtra("movieId", movieId);
@@ -127,11 +129,12 @@ public class FragmentMovieList extends Fragment {
             tvTotalAttendance = (TextView) convertView.findViewById(R.id.textView_total_attendance);
             tvReleaseDate = (TextView) convertView.findViewById(R.id.textView_release_date);
 
-            Glide.with(getContext()).load(mRanks.get(position).getMovie().getImg()).into(imgViewMoviePoster);
-            tvMovieTitle.setText(mRanks.get(position).getMovie().getTitle());
-            tvAverageScore.setText(mRanks.get(position).getMovie().getScore());
-            tvTotalAttendance.setText(mRanks.get(position).getMovie().getGenre());
-            tvReleaseDate.setText(mRanks.get(position).getMovie().getFirst_run_date());
+            Glide.with(getContext()).load(mRanks.get(position).get(position).getMovie().getImg()).into(imgViewMoviePoster);
+            tvMovieTitle.setText(mRanks.get(position).get(position).getMovie().getTitle());
+            tvAverageScore.setText(mRanks.get(position).get(position).getMovie().getScore());
+            BoxOfficeRanking.Genre genre[] = mRanks.get(position).get(position).getMovie().getGenre();
+            tvTotalAttendance.setText(genre[0].toString());
+            tvReleaseDate.setText(mRanks.get(position).get(position).getMovie().getFirst_run_date());
 
             return convertView;
         }

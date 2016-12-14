@@ -4,12 +4,13 @@ package com.teamfingo.android.fingo.model;
  * Created by Jaemin on 2016. 12. 1..
  */
 
-public class Movie {
-    private String genre;
+public class Movie
+{
+    private Genre[] genre;
 
     private String story;
 
-    private String nation_code;
+    private Nation_code[] nation_code;
 
     private String title;
 
@@ -25,12 +26,12 @@ public class Movie {
 
     private Director[] director;
 
-    public String getGenre ()
+    public Genre[] getGenre ()
     {
         return genre;
     }
 
-    public void setGenre (String genre)
+    public void setGenre (Genre[] genre)
     {
         this.genre = genre;
     }
@@ -45,12 +46,12 @@ public class Movie {
         this.story = story;
     }
 
-    public String getNation_code ()
+    public Nation_code[] getNation_code ()
     {
         return nation_code;
     }
 
-    public void setNation_code (String nation_code)
+    public void setNation_code (Nation_code[] nation_code)
     {
         this.nation_code = nation_code;
     }
@@ -126,31 +127,13 @@ public class Movie {
     }
 
     @Override
-    public String toString() {
-        return "ClassPojo [genre = "+genre+", story = "+story+", nation_code = "+nation_code+", title = "+title+", stillcut = "+stillcut+", score = "+score+", img = "+img+", first_run_date = "+first_run_date+", actor = "+actor+", director = "+director+"]";
+    public String toString()
+    {
+        return "[genre = "+genre+", story = "+story+", nation_code = "+nation_code+", title = "+title+", stillcut = "+stillcut+", score = "+score+", img = "+img+", first_run_date = "+first_run_date+", actor = "+actor+", director = "+director+"]";
     }
 
-    public class Stillcut {
-        private String img;
-
-        public String getImg ()
-        {
-            return img;
-        }
-
-        public void setImg (String img)
-        {
-            this.img = img;
-        }
-
-        @Override
-        public String toString()
-        {
-            return "ClassPojo [img = "+img+"]";
-        }
-    }
-
-    public class Director {
+    public class Actor
+    {
         private String name;
 
         private String img;
@@ -178,11 +161,12 @@ public class Movie {
         @Override
         public String toString()
         {
-            return "ClassPojo [name = "+name+", img = "+img+"]";
+            return "[name = "+name+", img = "+img+"]";
         }
     }
 
-    public class Actor {
+    public class Director
+    {
         private String name;
 
         private String img;
@@ -210,7 +194,70 @@ public class Movie {
         @Override
         public String toString()
         {
-            return "ClassPojo [name = "+name+", img = "+img+"]";
+            return name + img;
+        }
+    }
+
+    public class Genre
+    {
+        private String name;
+
+        public String getName ()
+        {
+            return name;
+        }
+
+        public void setName (String name)
+        {
+            this.name = name;
+        }
+
+        @Override
+        public String toString()
+        {
+            return name;
+        }
+    }
+
+    public class Stillcut
+    {
+        private String img;
+
+        public String getImg ()
+        {
+            return img;
+        }
+
+        public void setImg (String img)
+        {
+            this.img = img;
+        }
+
+        @Override
+        public String toString()
+        {
+            return img;
+        }
+    }
+
+    public class Nation_code
+    {
+        private String name;
+
+        public String getName ()
+        {
+            return name;
+        }
+
+        public void setName (String name)
+        {
+            this.name = name;
+        }
+
+        @Override
+        public String toString()
+        {
+            return name;
         }
     }
 }
