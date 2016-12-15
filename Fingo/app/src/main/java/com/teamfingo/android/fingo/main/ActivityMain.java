@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.search.ActivitySearch;
+import com.teamfingo.android.fingo.utils.AppController;
 import com.teamfingo.android.fingo.utils.FingoPreferences;
 import com.teamfingo.android.fingo.category.FragmentCategory;
 import com.teamfingo.android.fingo.home.FragmentHome;
@@ -31,8 +32,6 @@ public class ActivityMain extends AppCompatActivity {
     TabLayout tabLayout;
     RelativeLayout mainContainer;
 
-    FingoPreferences mPref;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,12 +43,10 @@ public class ActivityMain extends AppCompatActivity {
         fragmentRecommend = new FragmentRecommend();
         fragmentMyPage = new FragmentMyPage();
 
-        mPref = new FingoPreferences(this);
-
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         mainContainer = (RelativeLayout) findViewById(R.id.main_container);
 
-        Log.e("CHECK_TOKEN_MAIN","======================" + mPref.getAccessToken());
+        Log.e("CHECK_TOKEN_MAIN","======================" + AppController.getToken());
         replaceFragment(fragmentHome);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -112,7 +109,8 @@ public class ActivityMain extends AppCompatActivity {
     private void replaceFragment(Fragment fragment) {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        android.support.v4.app.FragmentTransaction transaction = fragmentManager.beginTransaction().addToBackStack(null);
+        //android.support.v4.app.FragmentTransaction transaction = fragmentManager.beginTransaction().addToBackStack(null);
+        android.support.v4.app.FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.main_container, fragment);
         transaction.commit();
     }

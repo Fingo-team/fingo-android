@@ -80,7 +80,7 @@ public class FragmentMovieList extends Fragment {
 
                 @Override
                 public void onFailure(Call<BoxOfficeRanking> call, Throwable t) {
-                    Log.d("aaaa", "onFailure() ==== ");
+                    Log.d("aaaa", "onFailure() ==== " + t.getMessage());
                     t.printStackTrace();
                 }
 
