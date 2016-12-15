@@ -31,7 +31,8 @@
             android:layout_weight="5"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textStyle="normal|bold"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textSize="20dp" />
 
         <Button
             android:text="완료"
@@ -73,9 +74,8 @@
             android:layout_height="match_parent"
             android:inputType="textMultiLine"
             android:ems="10"
-            android:id="@+id/editText"
+            android:id="@+id/editText_comment"
             android:hint="코멘트를 입력해 주세요"
-            android:textAlignment="viewStart"
             android:gravity="top" />
     </LinearLayout>
 </LinearLayout>

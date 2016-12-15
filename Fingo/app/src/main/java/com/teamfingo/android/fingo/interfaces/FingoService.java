@@ -114,7 +114,6 @@ public interface FingoService {
     @PATCH("/api/v1.0/movie/{id}/comment/")
     Call<Void> correctUserComment(@Header("Authorization") String authorization, @Path("id") String id, @Field("comment") String comment);
 
-    @FormUrlEncoded
     @DELETE("/api/v1.0/movie/{id}/comment/")
     Call<Void> deleteUserComment(@Header("Authorization") String authorization, @Path("id") String id);
 
