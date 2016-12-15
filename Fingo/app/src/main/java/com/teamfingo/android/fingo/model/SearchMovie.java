@@ -6,11 +6,11 @@ package com.teamfingo.android.fingo.model;
 
 public class SearchMovie
 {
-    private String genre;
+    private Genre[] genre;
 
     private String id;
 
-    private String nation_code;
+    private Nation_code[] nation_code;
 
     private String title;
 
@@ -20,12 +20,12 @@ public class SearchMovie
 
     private String first_run_date;
 
-    public String getGenre ()
+    public Genre[] getGenre ()
     {
         return genre;
     }
 
-    public void setGenre (String genre)
+    public void setGenre (Genre[] genre)
     {
         this.genre = genre;
     }
@@ -40,12 +40,12 @@ public class SearchMovie
         this.id = id;
     }
 
-    public String getNation_code ()
+    public Nation_code[] getNation_code ()
     {
         return nation_code;
     }
 
-    public void setNation_code (String nation_code)
+    public void setNation_code (Nation_code[] nation_code)
     {
         this.nation_code = nation_code;
     }
@@ -93,6 +93,48 @@ public class SearchMovie
     @Override
     public String toString()
     {
-        return "ClassPojo [genre = "+genre+", id = "+id+", nation_code = "+nation_code+", title = "+title+", score = "+score+", img = "+img+", first_run_date = "+first_run_date+"]";
+        return "[genre = "+genre+", id = "+id+", nation_code = "+nation_code+", title = "+title+", score = "+score+", img = "+img+", first_run_date = "+first_run_date+"]";
+    }
+
+    public class Genre
+    {
+        private String name;
+
+        public String getName ()
+        {
+            return name;
+        }
+
+        public void setName (String name)
+        {
+            this.name = name;
+        }
+
+        @Override
+        public String toString()
+        {
+            return name;
+        }
+    }
+
+    public class Nation_code
+    {
+        private String name;
+
+        public String getName ()
+        {
+            return name;
+        }
+
+        public void setName (String name)
+        {
+            this.name = name;
+        }
+
+        @Override
+        public String toString()
+        {
+            return name;
+        }
     }
 }

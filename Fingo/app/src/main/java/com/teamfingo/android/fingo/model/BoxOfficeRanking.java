@@ -6,7 +6,8 @@ import java.util.ArrayList;
  * Created by Jaemin on 2016. 11. 29..
  */
 
-public class BoxOfficeRanking {
+public class BoxOfficeRanking
+{
     private ArrayList<Data> data = new ArrayList<>();
 
     public ArrayList<Data> getData ()
@@ -22,7 +23,7 @@ public class BoxOfficeRanking {
     @Override
     public String toString()
     {
-        return "ClassPojo [data = "+data+"]";
+        return "[data = "+data+"]";
     }
 
     public class Data
@@ -54,17 +55,17 @@ public class BoxOfficeRanking {
         @Override
         public String toString()
         {
-            return "ClassPojo [rank = "+rank+", movie = "+movie+"]";
+            return "[rank = "+rank+", movie = "+movie+"]";
         }
     }
 
     public class Movie
     {
-        private String genre;
+        private Genre[] genre;
 
         private String id;
 
-        private String nation_code;
+        private Nation_code[] nation_code;
 
         private String title;
 
@@ -74,12 +75,12 @@ public class BoxOfficeRanking {
 
         private String first_run_date;
 
-        public String getGenre ()
+        public Genre[] getGenre ()
         {
             return genre;
         }
 
-        public void setGenre (String genre)
+        public void setGenre (Genre[] genre)
         {
             this.genre = genre;
         }
@@ -94,12 +95,12 @@ public class BoxOfficeRanking {
             this.id = id;
         }
 
-        public String getNation_code ()
+        public Nation_code[] getNation_code ()
         {
             return nation_code;
         }
 
-        public void setNation_code (String nation_code)
+        public void setNation_code (Nation_code[] nation_code)
         {
             this.nation_code = nation_code;
         }
@@ -147,7 +148,50 @@ public class BoxOfficeRanking {
         @Override
         public String toString()
         {
-            return "ClassPojo [genre = "+genre+", id = "+id+", nation_code = "+nation_code+", title = "+title+", score = "+score+", img = "+img+", first_run_date = "+first_run_date+"]";
+            return "[genre = "+genre+", id = "+id+", nation_code = "+nation_code+", title = "+title+", score = "+score+", img = "+img+", first_run_date = "+first_run_date+"]";
         }
     }
+
+    public class Genre
+    {
+        private String name;
+
+        public String getName ()
+        {
+            return name;
+        }
+
+        public void setName (String name)
+        {
+            this.name = name;
+        }
+
+        @Override
+        public String toString()
+        {
+            return name;
+        }
+    }
+
+    public class Nation_code
+    {
+        private String name;
+
+        public String getName ()
+        {
+            return name;
+        }
+
+        public void setName (String name)
+        {
+            this.name = name;
+        }
+
+        @Override
+        public String toString()
+        {
+            return name;
+        }
+    }
+
 }

@@ -99,7 +99,8 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                     btnShare.setOnClickListener(ActivityMovieDetail.this);
 
                     tvMovieDate.setText("개봉일: " + movie.getFirst_run_date());
-                    tvMovieGenre.setText("장르: " + movie.getGenre());
+                    Movie.Genre[] genre = movie.getGenre();
+                    tvMovieGenre.setText("장르: " + genre[0]);
                     tvMovieStory.setText(movie.getStory());
 
                     Glide.with(ActivityMovieDetail.this).load(stillCutImg[0].getImg()).into(ivStillCut1);
@@ -144,6 +145,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                     MovieWish movieWish = response.body();
 
                     wishMovieState = Boolean.valueOf(movieWish.getWish_movie());
+                    Log.e("log", "wishMovieState = Boolean.valueOf(movieWish.getWish_movie());" + wishMovieState);
                     btnWishMovie.setActivated(wishMovieState);
                 }
             }
@@ -168,6 +170,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
                     if (!(score.equals("0.0"))) {
                         btnRate.setText(score);
+                        btnRate.setActivated(true);
                     }
                 }
             }
@@ -189,6 +192,10 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
                     comment = movieComment.getComment();
                     ratedScore = movieComment.getScore();
+
+                    if (comment != null) {
+                        btnComment.setActivated(true);
+                    }
                 }
             }
             @Override
@@ -225,6 +232,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
         switch (v.getId()) {
             case R.id.button_wish_movie:
                 wishMovieState = !wishMovieState;
+                Log.e("log", "wish button clicked, wishMovieState ==== " + wishMovieState);
                 btnWishMovie.setActivated(wishMovieState);
                 setWishButtonState();
                 break;
@@ -245,12 +253,22 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
     }
 
     private void setWishButtonState() {
-        String wishMovieStateToString;
+        String wishMovieStateToString; // 서버로 보내주기위해 wishMovieState를 String 값으로 바꿈
 
         if (wishMovieState) {
             wishMovieStateToString = "True";
         } else {
             wishMovieStateToString = "False";
+        }
+
+        // 평가가 되어있는 영화일 경우, 보고싶어요 버튼을 누르게되면 평가되어있던 점수를 0점으로 처리
+        if (!(score.equals("0.0"))) {
+            Log.e("log", "rated score ==== " + ratedScore);
+            Toast.makeText(this, "평가가 취소됩니다", Toast.LENGTH_SHORT).show();
+            btnRate.setText("평가하기");
+            btnRate.setActivated(false);
+            score = "0.0";
+            ratedScore = "0.0";
         }
 
         Call<Void> postMovieWishCall = AppController.getFingoService()
@@ -294,6 +312,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
 
         if (!(score.equals("0.0"))) {
+            // 영화에 평가 점수가 있을 경우 rating bar에 점수를 표시해줌
             rbScore.setRating(Float.parseFloat(score));
         } else {
             rbScore.setRating(0.0f);
@@ -313,15 +332,20 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
-                        // 실시간으로 화면에 반영될 수 있게 처리
-                        score = ratedScore;
+                        score = ratedScore; // 사용자가 영화에 대한 평가 점수를 남기면, 평가 점수가 실시간으로 화면에 반영될 수 있게 처리
+
                         if (ratedScore.equals("0.0")) {
                             btnRate.setText("평가하기");
+                            btnRate.setActivated(false);
                         } else {
                             Log.d("log", "2/ score == "+score);
                             btnRate.setText(ratedScore);
+                            btnRate.setActivated(true);
+
+                            // 보고싶어요 버튼이 클릭되어있는 영화가 평가됐을 경우, 보고싶어요 버튼 비활성화되게 처리
                             if (btnWishMovie.isActivated()) {
-                                btnWishMovie.setActivated(!(btnWishMovie.isActivated()));
+                                wishMovieState = !wishMovieState;
+                                btnWishMovie.setActivated(wishMovieState);
                             }
                         }
 
@@ -367,9 +391,8 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
         movieTitle = tvMovieTitle.getText().toString();
         tvMovieTitleComment.setText(movieTitle);
 
-        if (comment != null) {
-            etComment.setText(comment);
-        }
+        etComment.setText(comment);
+
 
         rbRatedScore.setRating(Float.parseFloat(score));
 
@@ -389,6 +412,9 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         if (response.isSuccessful()) {
                             Log.e("log", "response message ==== " + response.message());
+
+                            // 댓글이 써졌을 경우 코멘트 아이콘 색상 변경
+                            btnComment.setActivated(true);
                         } else {
                             Log.e("log", "response message ==== " + response.message());
                         }

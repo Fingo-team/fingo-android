@@ -8,6 +8,7 @@ import com.teamfingo.android.fingo.model.Movie;
 import com.teamfingo.android.fingo.model.MovieWish;
 import com.teamfingo.android.fingo.model.SearchList;
 import com.teamfingo.android.fingo.model.SearchMovie;
+import com.teamfingo.android.fingo.model.Statistics;
 import com.teamfingo.android.fingo.model.UserComments;
 import com.teamfingo.android.fingo.model.UserDetail;
 import com.teamfingo.android.fingo.model.UserMovies;
@@ -63,6 +64,10 @@ public interface FingoService {
     @FormUrlEncoded
     @POST("/api/v1.0/movie/{id}/comment/")
     Call<Void> postMovieComment(@Header("Authorization") String authorization, @Path("id") String id, @Field("comment") String comment);
+
+    // Statistics - User의 취향 통계를 나타내주는 API
+    @GET("/api/v1.0/statistics/all/")
+    Call<Statistics> getStatistics(@Header("Authorization") String authorization);
 
     // SignUp function
     @FormUrlEncoded
