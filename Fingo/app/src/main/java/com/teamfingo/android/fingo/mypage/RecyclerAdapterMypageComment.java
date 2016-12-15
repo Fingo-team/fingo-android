@@ -3,6 +3,7 @@ package com.teamfingo.android.fingo.mypage;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.cocosw.bottomsheet.BottomSheet;
 import com.teamfingo.android.fingo.R;
+import com.teamfingo.android.fingo.common.ActivityCorrectComment;
 import com.teamfingo.android.fingo.model.UserComments;
 
 import java.util.ArrayList;
@@ -50,7 +52,8 @@ public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerA
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case R.id.menu_correct:
-                                // TODO when correct menu/button is clicked
+                                Intent intent = new Intent(mActivity, ActivityCorrectComment.class);
+                                mActivity.startActivity(intent);
 
                                 break;
 

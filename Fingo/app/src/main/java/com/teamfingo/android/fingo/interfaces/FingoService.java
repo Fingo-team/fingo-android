@@ -16,10 +16,12 @@ import com.teamfingo.android.fingo.model.UserMovies;
 import java.util.ArrayList;
 
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -106,5 +108,15 @@ public interface FingoService {
     @FormUrlEncoded
     @POST("/api/v1.0/user/fb_login/")
     Call<FingoAccessToken> createFacebookUser(@Field("access_token")String facebook_token);
+
+    // 코멘트 수정 및 삭제 in my page
+    @FormUrlEncoded
+    @PATCH("/api/v1.0/movie/{id}/comment/")
+    Call<Void> correctUserComment(@Header("Authorization") String authorization, @Path("id") String id, @Field("comment") String comment);
+
+    @FormUrlEncoded
+    @DELETE("/api/v1.0/movie/{id}/comment/")
+    Call<Void> deleteUserComment(@Header("Authorization") String authorization, @Path("id") String id);
+
 
 }
