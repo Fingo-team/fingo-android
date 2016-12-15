@@ -26,7 +26,6 @@ public class ActivityMyPage extends AppCompatActivity {
         mFragments.add(1, new FragmentWishMovie());
         mFragments.add(2, new FragmentWatchedMovie());
 
-
         replaceFragment(mFragments.get(fragment_id));
 
     }
@@ -35,7 +34,7 @@ public class ActivityMyPage extends AppCompatActivity {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.addToBackStack(null);
+//        transaction.addToBackStack(null);
         transaction.replace(R.id.activity_my_page, fragment);
         transaction.commit();
 

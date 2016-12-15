@@ -97,7 +97,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
         callFingoComment();
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_mypage_comment);
-        mAdapter = new RecyclerAdapterMypageComment(this.getContext(), mUserComments);
+        mAdapter = new RecyclerAdapterMypageComment(this.getContext(), this.getActivity(), mUserComments);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         header.attachTo(mRecyclerView);
@@ -114,7 +114,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.button_mypage_add:
-                openAndroidBottomMenu(v);
+                openSettingMenu(v);
                 break;
 
             case R.id.image_profile:
@@ -139,9 +139,9 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void openAndroidBottomMenu(View view) {
+    public void openSettingMenu(View view) {
 
-        new BottomSheet.Builder(this.getActivity()).title("Bottom Menu Title").sheet(R.menu.item_android_bottom_menu).listener(new DialogInterface.OnClickListener() {
+        new BottomSheet.Builder(this.getActivity()).title("Profile options").sheet(R.menu.item_android_bottom_menu).listener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
