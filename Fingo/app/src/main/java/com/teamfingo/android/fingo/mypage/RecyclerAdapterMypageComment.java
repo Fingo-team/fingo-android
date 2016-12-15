@@ -1,6 +1,8 @@
 package com.teamfingo.android.fingo.mypage;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +16,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.cocosw.bottomsheet.BottomSheet;
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.model.UserComments;
 
@@ -23,14 +26,54 @@ import java.util.ArrayList;
  * Created by taewon on 2016-12-09.
  */
 
-public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerAdapterMypageComment.ViewHolder>{
+public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerAdapterMypageComment.ViewHolder> implements View.OnClickListener {
 
+    Activity mActivity;
     Context mContext;
     ArrayList<UserComments.Results> mUserComments = new ArrayList<>();
 
-    public RecyclerAdapterMypageComment(Context mContext, ArrayList<UserComments.Results> mUserComments) {
+    public RecyclerAdapterMypageComment(Context mContext, Activity mActivity, ArrayList<UserComments.Results> mUserComments) {
+
+        this.mActivity = mActivity;
         this.mContext = mContext;
         this.mUserComments = mUserComments;
+    }
+
+    public void openModifyMenu(View view) {
+
+        new BottomSheet.Builder(mActivity)
+                .title("Comment Options")
+                .sheet(R.menu.item_comment_option)
+                .listener(new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case R.id.menu_correct:
+                                // TODO when correct menu/button is clicked
+
+                                break;
+
+                            case R.id.menu_delete:
+                                // TODO when delete menu/button is clicked
+
+                                break;
+                        }
+                    }
+                }).show();
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+
+            case R.id.button_modify:
+                openModifyMenu(v);
+                break;
+
+        }
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -82,6 +125,8 @@ public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerA
 
         Glide.with(mContext).load(movie_data.getStillcut()[0].getImg()).into(holder.imgMovieStilcut);
         holder.imgMovieStilcut.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY);
+
+        holder.btnModify.setOnClickListener(this);
 
     }
 
