@@ -1,6 +1,8 @@
 package com.teamfingo.android.fingo.mypage;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,6 +81,7 @@ public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerA
         holder.tvComment.setText(comment_data.getComment());
 
         Glide.with(mContext).load(movie_data.getStillcut()[0].getImg()).into(holder.imgMovieStilcut);
+        holder.imgMovieStilcut.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY);
 
     }
 
