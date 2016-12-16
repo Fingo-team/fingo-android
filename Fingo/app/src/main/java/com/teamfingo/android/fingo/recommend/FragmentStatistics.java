@@ -23,8 +23,6 @@ import retrofit2.Response;
  */
 public class FragmentStatistics extends Fragment {
 
-    ImageView ivActor;
-    TextView tvActorName;
 
 
     public FragmentStatistics() {
@@ -37,8 +35,6 @@ public class FragmentStatistics extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_statistics, container, false);
 
-        ivActor = (ImageView) view.findViewById(R.id.imageView_preferred_actor);
-        tvActorName = (TextView) view.findViewById(R.id.textView_preferred_actor_name);
 
         Call<Statistics> statisticsCall = AppController.getFingoService()
                 .getStatistics(AppController.getToken());
@@ -54,8 +50,6 @@ public class FragmentStatistics extends Fragment {
                     // TODO 처음 가입한 유저의 경우 쌓인 데이터가 없기 때문에 actors에 아무 정보도 없으므로 예외처리 해줘야함
 
                     if (actors.length > 1) {
-                        Glide.with(getContext()).load(actors[1].getActor().getImg()).into(ivActor);
-                        tvActorName.setText(actors[1].getActor().getName());
                     }
 
 
