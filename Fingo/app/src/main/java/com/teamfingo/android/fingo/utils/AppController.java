@@ -7,6 +7,7 @@ import com.teamfingo.android.fingo.interfaces.FingoService;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.HEAD;
 
 /**
  * Created by Jaemin on 2016. 12. 9..
@@ -45,7 +46,7 @@ public class AppController extends Application { // 앱이 실행되면 무조�
     public static String getToken() {
         mToken = mFingoPreferences.getAccessToken();
         Log.e("log","AppController / getToken() ==== " + mToken);
-
+        
         return mToken;
     }
 

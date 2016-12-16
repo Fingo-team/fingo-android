@@ -10,8 +10,7 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/recyclerView_mypage_comment"
-        android:paddingTop="10dp" />
+        android:id="@+id/recyclerView_mypage_comment" />
 
     <com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader
         android:id="@+id/header"

@@ -1,6 +1,7 @@
 package com.teamfingo.android.fingo.mypage;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader;
+import com.cocosw.bottomsheet.BottomSheet;
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.login.ActivityLogin;
 import com.teamfingo.android.fingo.model.UserComments;
@@ -95,7 +97,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
         callFingoComment();
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_mypage_comment);
-        mAdapter = new RecyclerAdapterMypageComment(this.getContext(), mUserComments);
+        mAdapter = new RecyclerAdapterMypageComment(this.getContext(), this.getActivity(), mUserComments);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         header.attachTo(mRecyclerView);
@@ -112,7 +114,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.button_mypage_add:
-
+                openSettingMenu(v);
                 break;
 
             case R.id.image_profile:
@@ -135,6 +137,32 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
                 sendFragment(MY_PAGE_WATCHED);
                 break;
         }
+    }
+
+    public void openSettingMenu(View view) {
+
+        new BottomSheet.Builder(this.getActivity()).title("Profile options").sheet(R.menu.item_android_bottom_menu).listener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case R.id.menu_help:
+                        // TODO when help menu/button is clicked
+                        break;
+
+                    case R.id.menu_call:
+                        // TODO when call menu/button is clicked
+                        break;
+
+                    case R.id.menu_upload:
+                        // TODO when upload menu/button is clicked
+                        break;
+
+                    case R.id.menu_share:
+                        // TODO when share menu/button is clicked
+                        break;
+                }
+            }
+        }).show();
     }
 
     public void sendFragment(int fragment_id) {
