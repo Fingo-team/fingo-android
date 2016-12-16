@@ -3,8 +3,10 @@ package com.teamfingo.android.fingo.mypage;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader;
+import com.bumptech.glide.Glide;
 import com.cocosw.bottomsheet.BottomSheet;
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.login.ActivityLogin;
@@ -25,6 +28,7 @@ import com.teamfingo.android.fingo.model.UserComments;
 import com.teamfingo.android.fingo.model.UserDetail;
 import com.teamfingo.android.fingo.utils.AppController;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -33,7 +37,7 @@ import retrofit2.Response;
 
 import static com.teamfingo.android.fingo.utils.FingoPreferences.removeAccessToken;
 
-public class FragmentMyPage extends Fragment implements View.OnClickListener {
+public class FragmentMyPage extends Fragment implements View.OnClickListener, setProfileImage {
 
     ImageButton btnMyPageSetting, btnMyPageAdd;
     ImageView ivProfile, ivProfileCover;
@@ -43,6 +47,8 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
     RecyclerView mRecyclerView;
     RecyclerAdapterMypageComment mAdapter;
     RecyclerViewHeader header;
+
+    Uri imageUri;
 
     ArrayList<UserComments.Results> mUserComments = new ArrayList<>();
 
@@ -70,6 +76,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
         btnMyPageAdd.setOnClickListener(this);
 
         ivProfile = (ImageView) view.findViewById(R.id.image_profile);
+        Glide.with(this.getActivity()).load(R.drawable.com_facebook_profile_picture_blank_portrait).into(ivProfile);
         ivProfile.setOnClickListener(this);
 
         ivProfileCover = (ImageView) view.findViewById(R.id.image_profile_cover);
@@ -118,7 +125,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.image_profile:
-
+                editProfileImage(v);
                 break;
 
             case R.id.image_profile_cover:
@@ -163,6 +170,38 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
                 }
             }
         }).show();
+    }
+
+    public void editProfileImage(View view) {
+
+        new BottomSheet.Builder(this.getActivity())
+                .title("Profile Setting")
+                .sheet(R.menu.item_profile_image)
+                .listener(new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+
+                            case R.id.menu_takePhoto:
+                                takePhoto();
+                                break;
+
+                            case R.id.menu_getGallery:
+
+                                getGallery();
+                                break;
+
+                            case R.id.menu_facebookProfile:
+                                getFacebookImage();
+                                break;
+
+                            case R.id.menu_delete:
+                                deleteImage();
+                                break;
+                        }
+                    }
+                }).show();
     }
 
     public void sendFragment(int fragment_id) {
@@ -219,6 +258,13 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
                             tvCommentCount.setText(data.getComment_cnt());
                             tvWishCount.setText(data.getWish_movie_cnt());
                             tvWatchedCount.setText(data.getWatched_movie_cnt());
+
+                            // 유저 프로필 이미지 세팅
+                            if (data.getUser_profile().getUser_img() == null)
+                                Glide.with(getActivity()).load(R.drawable.com_facebook_profile_picture_blank_portrait).into(ivProfile);
+
+                            else{}
+//                                Glide.with(getActivity()).load(data.getUser_profile().getUser_img()).into(ivProfile);
                         }
                     });
                 }
@@ -245,17 +291,74 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener {
                 if (response.isSuccessful()) {
 
                     UserComments data = response.body();
-                    for(UserComments.Results comment : data.getResults()){
+                    for (UserComments.Results comment : data.getResults()) {
                         mUserComments.add(comment);
                     }
                     mAdapter.notifyDataSetChanged();
                 }
             }
+
             @Override
             public void onFailure(Call<UserComments> call, Throwable t) {
 
             }
         });
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        imageUri = data.getData();
+        Log.e("check uri", imageUri+"");
+
+        File file = new File(imageUri.getPath());
+//        Log.e("check file", file.getPath());
+
+        ivProfile.setImageURI(data.getData());
+//        File file = new File(imageUri.getPath());
+//        Log.e("check uri", file.getPath()+"");
+//        RequestBody body = RequestBody.create(MediaType.parse("image/*"), file);
+//
+//        Call<ResponseBody> uploadImageCall = AppController.getFingoService().uploadImage(AppController.getToken(), body);
+//        uploadImageCall.enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                if (response.isSuccessful()) {
+//                    Log.e("Upload", "success");
+//                }
+//
+//                else
+//                    Log.e("Upload", "Fail");
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                Log.e("Upload error:", t.getMessage());
+//            }
+//        });
+
+    }
+
+    @Override
+    public void takePhoto() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent,1);
+    }
+
+    @Override
+    public void getGallery() {
+
+    }
+
+    @Override
+    public void getFacebookImage() {
+
+    }
+
+    @Override
+    public void deleteImage() {
 
     }
 }

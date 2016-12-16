@@ -9,9 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="10dp"
         android:elevation="0dp"
-        android:background="@color/cardview_light_background">
+        android:background="@color/cardview_light_background"
+        android:layout_marginBottom="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,13 +24,11 @@
             android:padding="10dp"
             android:paddingBottom="0dp">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/image_comment_profile"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_weight="0.05"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/com_facebook_profile_picture_blank_square"
                 android:layout_marginRight="8dp" />
 
             <LinearLayout

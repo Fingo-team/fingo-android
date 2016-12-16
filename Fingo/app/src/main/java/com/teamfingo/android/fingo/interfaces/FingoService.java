@@ -2,9 +2,9 @@ package com.teamfingo.android.fingo.interfaces;
 
 import com.teamfingo.android.fingo.model.BoxOfficeRanking;
 import com.teamfingo.android.fingo.model.FingoAccessToken;
+import com.teamfingo.android.fingo.model.Movie;
 import com.teamfingo.android.fingo.model.MovieComment;
 import com.teamfingo.android.fingo.model.MovieScore;
-import com.teamfingo.android.fingo.model.Movie;
 import com.teamfingo.android.fingo.model.MovieWish;
 import com.teamfingo.android.fingo.model.SearchList;
 import com.teamfingo.android.fingo.model.SearchMovie;
@@ -15,21 +15,23 @@ import com.teamfingo.android.fingo.model.UserMovies;
 
 import java.util.ArrayList;
 
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
  * Created by Jaemin on 2016. 11. 29..
- *
- *
  */
 
 public interface FingoService {
@@ -49,6 +51,7 @@ public interface FingoService {
     // Movie Wish - 영화 상세 화면에서 보고싶어요와 관련된 API
     @GET("/api/v1.0/movie/wish/{id}/")
     Call<MovieWish> getMovieWish(@Header("Authorization") String authorization, @Path("id") String id);
+
     @FormUrlEncoded
     @POST("/api/v1.0/movie/wish/{id}/")
     Call<Void> postMovieWish(@Header("Authorization") String authorization, @Path("id") String id, @Field("wish_movie") String wishMovie);
@@ -56,6 +59,7 @@ public interface FingoService {
     // Movie Score - 영화 상세 화면에서 별점 남기기와 관련된 API
     @GET("/api/v1.0/movie/score/{id}/")
     Call<MovieScore> getMovieScore(@Header("Authorization") String authorization, @Path("id") String id);
+
     @FormUrlEncoded
     @POST("/api/v1.0/movie/score/{id}/")
     Call<Void> postMovieScore(@Header("Authorization") String authorization, @Path("id") String id, @Field("score") String score);
@@ -63,6 +67,7 @@ public interface FingoService {
     // Movie Comment - 영화 상세 화면에서 코멘트 남기기와 관련된 API
     @GET("/api/v1.0/movie/{id}/comment/")
     Call<MovieComment> getMovieComment(@Header("Authorization") String authorization, @Path("id") String id);
+
     @FormUrlEncoded
     @POST("/api/v1.0/movie/{id}/comment/")
     Call<Void> postMovieComment(@Header("Authorization") String authorization, @Path("id") String id, @Field("comment") String comment);
@@ -87,7 +92,7 @@ public interface FingoService {
 
     // Search function
     @GET("/api/v1.0/movie/search/")
-    Call<SearchList> getSearchList(@Header("Authorization") String authorization, @Query("q")String q);
+    Call<SearchList> getSearchList(@Header("Authorization") String authorization, @Query("q") String q);
 
     // getPersonalComments
     @GET("/api/v1.0/activity/user/comments/")
@@ -107,7 +112,7 @@ public interface FingoService {
 
     @FormUrlEncoded
     @POST("/api/v1.0/user/fb_login/")
-    Call<FingoAccessToken> createFacebookUser(@Field("access_token")String facebook_token);
+    Call<FingoAccessToken> createFacebookUser(@Field("access_token") String facebook_token);
 
     // 코멘트 수정 및 삭제 in my page
     @FormUrlEncoded
@@ -117,5 +122,10 @@ public interface FingoService {
     @DELETE("/api/v1.0/movie/{id}/comment/")
     Call<Void> deleteUserComment(@Header("Authorization") String authorization, @Path("id") String id);
 
+    // 이미지 업로드
+    @Multipart
+    @POST("/api/v1.0/user/upload_profile/")
+    Call<ResponseBody> uploadImage(@Header("Authorization") String authorization,
+                                   @Part RequestBody file);
 
 }
