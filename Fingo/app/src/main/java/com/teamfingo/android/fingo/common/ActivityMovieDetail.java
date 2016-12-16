@@ -168,9 +168,13 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
                     score = movieScore.getScore();
 
+                    // 서버로부터 받아오는 값이 0.0이거나 0일 때에는 화면에 평가하기 아이콘이 바뀌지 않도록 처리  
                     if (!(score.equals("0.0"))) {
-                        btnRate.setText(score);
-                        btnRate.setActivated(true);
+                        if (!(score.equals("0"))) {
+                            btnRate.setText(score);
+                            btnRate.setActivated(true);
+                            Toast.makeText(ActivityMovieDetail.this, "!(score.equals(\"0.0\")) " + score.equals("0.0"), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
             }
