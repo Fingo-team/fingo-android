@@ -64,6 +64,8 @@ dependencies {
     
     // Bottom sheet library
     compile 'com.cocosw:bottomsheet:1.+@aar'
-
+    
+    // MPAndroidChart
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
+    
 }
-
