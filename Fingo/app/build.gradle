@@ -62,4 +62,6 @@ dependencies {
     // Recycler view header
     compile 'com.bartoszlipinski:recyclerviewheader2:2.0.1'
 
+    // MPAndroidChart
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
 }
