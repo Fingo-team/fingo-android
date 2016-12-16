@@ -1,8 +1,11 @@
 package com.teamfingo.android.fingo.mypage;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,9 +31,14 @@ import com.teamfingo.android.fingo.model.UserComments;
 import com.teamfingo.android.fingo.model.UserDetail;
 import com.teamfingo.android.fingo.utils.AppController;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -310,34 +318,39 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        imageUri = data.getData();
-        Log.e("check uri", imageUri+"");
+        Bundle extras = data.getExtras();
+        Bitmap imageBitmap = (Bitmap) extras.get("data");
 
-        File file = new File(imageUri.getPath());
-//        Log.e("check file", file.getPath());
+        ivProfile.setImageBitmap(imageBitmap);
+        imageUri = getImageUri(getActivity(),imageBitmap);
+        String filePath = getRealPathFromURI(imageUri);
+//        imageUri = data.getData();
+//        Log.e("check uri", imageUri+"");
+//
+//        String filePath = getRealPathFromURI(imageUri);
+//
+        File file = new File(filePath);
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
+        RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_test");
 
-        ivProfile.setImageURI(data.getData());
-//        File file = new File(imageUri.getPath());
-//        Log.e("check uri", file.getPath()+"");
-//        RequestBody body = RequestBody.create(MediaType.parse("image/*"), file);
-//
-//        Call<ResponseBody> uploadImageCall = AppController.getFingoService().uploadImage(AppController.getToken(), body);
-//        uploadImageCall.enqueue(new Callback<ResponseBody>() {
-//            @Override
-//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//                if (response.isSuccessful()) {
-//                    Log.e("Upload", "success");
-//                }
-//
-//                else
-//                    Log.e("Upload", "Fail");
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                Log.e("Upload error:", t.getMessage());
-//            }
-//        });
+        Call<ResponseBody> uploadImageCall = AppController.getFingoService().uploadImage(AppController.getToken(), body, name);
+        uploadImageCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Log.e("Upload", "success");
+                }
+
+                else
+                    Log.e("Upload", "Fail");
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("Upload error:", t.getMessage());
+            }
+        });
 
     }
 
@@ -361,4 +374,32 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
     public void deleteImage() {
 
     }
+
+    @Override
+    public String getRealPathFromURI(Uri contentUri){
+
+        try{
+            String[] proj = {MediaStore.Images.Media.DATA};
+            Cursor cursor = getActivity().getContentResolver().query(contentUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+
+            cursor.moveToFirst();
+
+            return cursor.getString(column_index);
+        }catch (Exception e){
+
+            e.printStackTrace();
+            return contentUri.getPath();
+        }
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+
+        return Uri.parse(path);
+    }
+
 }
