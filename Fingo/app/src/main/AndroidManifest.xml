@@ -3,6 +3,7 @@
     package="com.teamfingo.android.fingo">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".utils.AppController"
@@ -24,7 +25,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".main.ActivityMain" />
+        <activity
+            android:name=".main.ActivityMain" />
         <activity android:name=".login.ActivityLogin" />
         <activity android:name=".search.ActivitySearch" />
         <activity android:name=".common.ActivityMovieDetail" />

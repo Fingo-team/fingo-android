@@ -6,6 +6,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,6 +56,13 @@ public class ActivityCorrectComment extends AppCompatActivity implements View.On
         btnCancel.setOnClickListener(this);
 
         rbScore = (RatingBar) findViewById(R.id.ratingBar_score);
+        rbScore.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                openDialogRating();
+                return false;
+            }
+        });
         tvTitle = (TextView) findViewById(R.id.textView_title);
         etComment = (EditText) findViewById(R.id.editText_comment);
 
