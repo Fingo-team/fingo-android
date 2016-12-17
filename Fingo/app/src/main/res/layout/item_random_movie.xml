@@ -19,7 +19,8 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp">
             <TextView
                 android:id="@+id/textView_movie_title"
                 android:layout_width="match_parent"
@@ -29,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <RatingBar
-                android:id="@+id/ratingBar"
+                android:id="@+id/ratingBar_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 

@@ -5,7 +5,7 @@
              tools:context="com.teamfingo.android.fingo.recommend.FragmentRandomMovie">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView_increase_movie_rating"
+        android:id="@+id/recyclerView_random_movie"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
