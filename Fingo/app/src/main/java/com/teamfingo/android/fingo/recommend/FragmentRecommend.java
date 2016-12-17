@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +17,7 @@ import com.teamfingo.android.fingo.R;
  */
 public class FragmentRecommend extends Fragment {
 
-    FragmentIncreaseMovieRating mFragmentIncreaseMovieRating;
+    FragmentRandomMovie mFragmentRandomMovie;
     FragmentStatistics mFragmentStatistics;
     RelativeLayout containerRecommend;
 
@@ -36,7 +34,7 @@ public class FragmentRecommend extends Fragment {
         containerRecommend = (RelativeLayout) view.findViewById(R.id.container_recommend);
 
         mFragmentStatistics = new FragmentStatistics();
-        mFragmentIncreaseMovieRating = new FragmentIncreaseMovieRating();
+        mFragmentRandomMovie = new FragmentRandomMovie();
 
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabLayout_recommend);
         replaceFragment(mFragmentStatistics);
@@ -49,7 +47,7 @@ public class FragmentRecommend extends Fragment {
                         replaceFragment(mFragmentStatistics);
                         break;
                     case 1:
-                        replaceFragment(mFragmentIncreaseMovieRating);
+                        replaceFragment(mFragmentRandomMovie);
                         break;
                 }
             }

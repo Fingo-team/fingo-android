@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.teamfingo.android.fingo.R;
-import com.teamfingo.android.fingo.model.SearchMovie;
+import com.teamfingo.android.fingo.model.Movie;
 import com.teamfingo.android.fingo.utils.AppController;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class ActivitySearch extends AppCompatActivity {
     RecyclerAdapterSearch mRecyclerAdapterSearch;
     EditText mToolbarEditText;
 
-    ArrayList<SearchMovie> mSearchMovies = new ArrayList<>();
+    ArrayList<Movie> mSearchMovies = new ArrayList<>();
 
     String searchWord;
 
@@ -56,20 +56,20 @@ public class ActivitySearch extends AppCompatActivity {
 
                         searchWord = mToolbarEditText.getText().toString();
 
-                        Call<ArrayList<SearchMovie>> searchMovieCall = AppController.getFingoService()
+                        Call<ArrayList<Movie>> searchMovieCall = AppController.getFingoService()
                                 .getSearchMovie(AppController.getToken(), searchWord);
 
-                        searchMovieCall.enqueue(new Callback<ArrayList<SearchMovie>>() {
+                        searchMovieCall.enqueue(new Callback<ArrayList<Movie>>() {
                             @Override
-                            public void onResponse(Call<ArrayList<SearchMovie>> call, Response<ArrayList<SearchMovie>> response) {
-                                ArrayList<SearchMovie> data = response.body();
+                            public void onResponse(Call<ArrayList<Movie>> call, Response<ArrayList<Movie>> response) {
+                                ArrayList<Movie> data = response.body();
                                 mSearchMovies.addAll(data);
 
                                 mRecyclerAdapterSearch.notifyDataSetChanged();
                             }
 
                             @Override
-                            public void onFailure(Call<ArrayList<SearchMovie>> call, Throwable t) {
+                            public void onFailure(Call<ArrayList<Movie>> call, Throwable t) {
 
                             }
                         });

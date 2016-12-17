@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.common.ActivityMovieDetail;
-import com.teamfingo.android.fingo.model.SearchMovie;
+import com.teamfingo.android.fingo.model.Movie;
 
 import java.util.ArrayList;
 
@@ -24,13 +24,13 @@ import java.util.ArrayList;
 public class RecyclerAdapterSearch extends RecyclerView.Adapter<RecyclerAdapterSearch.ViewHolder> {
 
     Context mContext;
-    private ArrayList<SearchMovie> mSearchMovies;
+    private ArrayList<Movie> mSearchMovies;
     private int itemLayout;
 
 
-    public RecyclerAdapterSearch(Context context, ArrayList<SearchMovie> mSearchMovies, int itemLayout) {
+    public RecyclerAdapterSearch(Context context, ArrayList<Movie> searchMovies, int itemLayout) {
         this.mContext = context;
-        this.mSearchMovies = mSearchMovies;
+        this.mSearchMovies = searchMovies;
         this.itemLayout = itemLayout;
     }
 
@@ -66,9 +66,9 @@ public class RecyclerAdapterSearch extends RecyclerView.Adapter<RecyclerAdapterS
         Glide.with(mContext).load(mSearchMovies.get(position).getImg()).into(holder.ivMoviePoster);
         holder.tvMovieTitle.setText(mSearchMovies.get(position).getTitle());
         holder.tvMovieDate.setText("(" + mSearchMovies.get(position).getFirst_run_date() + ")");
-        SearchMovie.Genre genre[] = mSearchMovies.get(position).getGenre();
+        Movie.Genre genre[] = mSearchMovies.get(position).getGenre();
         holder.tvMovieGenre.setText(genre[0].toString());
-        SearchMovie.Nation_code nationCode[] = mSearchMovies.get(position).getNation_code();
+        Movie.Nation_code nationCode[] = mSearchMovies.get(position).getNation_code();
         holder.tvMovieNation.setText("/ " + nationCode[0]);
 
         holder.mRelativeLayout.setOnClickListener(new View.OnClickListener() {
