@@ -22,7 +22,7 @@ public class Movie
 
     private String first_run_date;
 
-    private Actor[] actor;
+    private Actors[] actors;
 
     private Director[] director;
 
@@ -106,14 +106,14 @@ public class Movie
         this.first_run_date = first_run_date;
     }
 
-    public Actor[] getActor ()
+    public Actors[] getActors ()
     {
-        return actor;
+        return actors;
     }
 
-    public void setActor (Actor[] actor)
+    public void setActors (Actors[] actors)
     {
-        this.actor = actor;
+        this.actors = actors;
     }
 
     public Director[] getDirector ()
@@ -129,7 +129,104 @@ public class Movie
     @Override
     public String toString()
     {
-        return "[genre = "+genre+", story = "+story+", nation_code = "+nation_code+", title = "+title+", stillcut = "+stillcut+", score = "+score+", img = "+img+", first_run_date = "+first_run_date+", actor = "+actor+", director = "+director+"]";
+        return "[genre = "+genre+", story = "+story+", nation_code = "+nation_code+", title = "+title+", stillcut = "+stillcut+", score = "+score+", img = "+img+", first_run_date = "+first_run_date+", actors = "+actors+", director = "+director+"]";
+    }
+
+    public class Genre
+    {
+        private String name;
+
+        public String getName ()
+        {
+            return name;
+        }
+
+        public void setName (String name)
+        {
+            this.name = name;
+        }
+
+        @Override
+        public String toString()
+        {
+            return name;
+        }
+    }
+
+    public class Nation_code
+    {
+        private String name;
+
+        public String getName ()
+        {
+            return name;
+        }
+
+        public void setName (String name)
+        {
+            this.name = name;
+        }
+
+        @Override
+        public String toString()
+        {
+            return name;
+        }
+    }
+
+    public class Stillcut
+    {
+        private String img;
+
+        public String getImg ()
+        {
+            return img;
+        }
+
+        public void setImg (String img)
+        {
+            this.img = img;
+        }
+
+        @Override
+        public String toString()
+        {
+            return img;
+        }
+    }
+
+
+    public class Actors
+    {
+        private String role;
+
+        private Actor actor;
+
+        public String getRole ()
+        {
+            return role;
+        }
+
+        public void setRole (String role)
+        {
+            this.role = role;
+        }
+
+        public Actor getActor ()
+        {
+            return actor;
+        }
+
+        public void setActor (Actor actor)
+        {
+            this.actor = actor;
+        }
+
+        @Override
+        public String toString()
+        {
+            return "[role = "+role+", actor = "+actor+"]";
+        }
     }
 
     public class Actor
@@ -194,70 +291,8 @@ public class Movie
         @Override
         public String toString()
         {
-            return name + img;
+            return "[name = "+name+", img = "+img+"]";
         }
     }
 
-    public class Genre
-    {
-        private String name;
-
-        public String getName ()
-        {
-            return name;
-        }
-
-        public void setName (String name)
-        {
-            this.name = name;
-        }
-
-        @Override
-        public String toString()
-        {
-            return name;
-        }
-    }
-
-    public class Stillcut
-    {
-        private String img;
-
-        public String getImg ()
-        {
-            return img;
-        }
-
-        public void setImg (String img)
-        {
-            this.img = img;
-        }
-
-        @Override
-        public String toString()
-        {
-            return img;
-        }
-    }
-
-    public class Nation_code
-    {
-        private String name;
-
-        public String getName ()
-        {
-            return name;
-        }
-
-        public void setName (String name)
-        {
-            this.name = name;
-        }
-
-        @Override
-        public String toString()
-        {
-            return name;
-        }
-    }
 }

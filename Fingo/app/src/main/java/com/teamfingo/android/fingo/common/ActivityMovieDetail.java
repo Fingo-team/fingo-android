@@ -111,7 +111,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
                     mLayoutParams = new LinearLayout.LayoutParams(200, 200);
                     Movie.Director[] directors = movie.getDirector();
-                    Movie.Actor[] actors = movie.getActor();
+                    Movie.Actors[] actors = movie.getActors();
 
                     for (int i=0; i<directors.length; i++) {
                         CircleImageView civ = new CircleImageView(ActivityMovieDetail.this);
@@ -123,7 +123,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
                     for (int i=0; i<actors.length; i++) {
                         CircleImageView civ = new CircleImageView(ActivityMovieDetail.this);
-                        Glide.with(ActivityMovieDetail.this).load(actors[i].getImg()).into(civ);
+                        Glide.with(ActivityMovieDetail.this).load(actors[i].getActor().getImg()).into(civ);
                         civ.setLayoutParams(mLayoutParams);
                         mLayoutParams.setMargins(40,0,40,0);
                         llDirectorandActor.addView(civ);
@@ -168,7 +168,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
                     score = movieScore.getScore();
 
-                    // 서버로부터 받아오는 값이 0.0이거나 0일 때에는 화면에 평가하기 아이콘이 바뀌지 않도록 처리  
+                    // 서버로부터 받아오는 값이 0.0이거나 0일 때에는 화면에 평가하기 아이콘이 바뀌지 않도록 처리
                     if (!(score.equals("0.0"))) {
                         if (!(score.equals("0"))) {
                             btnRate.setText(score);
