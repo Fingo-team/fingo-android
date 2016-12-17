@@ -6,25 +6,25 @@ package com.teamfingo.android.fingo.model;
 
 public class Movie
 {
+    private String id;
     private Genre[] genre;
-
     private String story;
-
     private Nation_code[] nation_code;
-
     private String title;
-
     private Stillcut[] stillcut;
-
     private String score;
-
     private String img;
-
     private String first_run_date;
-
     private Actors[] actors;
-
     private Director[] director;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public Genre[] getGenre ()
     {

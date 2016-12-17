@@ -44,7 +44,7 @@ public interface FingoService {
 
     // 검색했을 때 Movie Information
     @GET("/api/v1.0/movie/search/")
-    Call<ArrayList<SearchMovie>> getSearchMovie(@Header("Authorization") String authorization, @Query("q") String word);
+    Call<ArrayList<Movie>> getSearchMovie(@Header("Authorization") String authorization, @Query("q") String word);
 
     // Movie Wish - 영화 상세 화면에서 보고싶어요와 관련된 API
     @GET("/api/v1.0/movie/wish/{id}/")
