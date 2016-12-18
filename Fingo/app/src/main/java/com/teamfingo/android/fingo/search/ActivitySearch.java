@@ -12,7 +12,9 @@ import android.widget.TextView;
 
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.model.Movie;
+import com.teamfingo.android.fingo.model.SearchMovie;
 import com.teamfingo.android.fingo.utils.AppController;
+import com.teamfingo.android.fingo.utils.EndlessRecyclerOnScrollListener;
 
 import java.util.ArrayList;
 
@@ -26,12 +28,13 @@ public class ActivitySearch extends AppCompatActivity {
 
     RecyclerView mSearchRecyclerView;
     RecyclerAdapterSearch mRecyclerAdapterSearch;
+    LinearLayoutManager mLinearLayoutManager;
     EditText mToolbarEditText;
+    EndlessRecyclerOnScrollListener mEndlessRecyclerOnScrollListener;
 
     ArrayList<Movie> mSearchMovies = new ArrayList<>();
 
     String searchWord;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,46 +42,60 @@ public class ActivitySearch extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         searchToolbar = (Toolbar) findViewById(R.id.search_toolbar);
-        mSearchRecyclerView = (RecyclerView) findViewById(R.id.search_recyclerView);
+        mSearchRecyclerView = (RecyclerView) findViewById(R.id.recyclerView_search);
         mToolbarEditText = (EditText) findViewById(R.id.editText_toolbar);
 
         mRecyclerAdapterSearch = new RecyclerAdapterSearch(this, mSearchMovies, R.layout.item_search_list);
-        mSearchRecyclerView.setAdapter(mRecyclerAdapterSearch);
-        mSearchRecyclerView.setLayoutManager(new LinearLayoutManager(ActivitySearch.this));
+        mLinearLayoutManager = new LinearLayoutManager(ActivitySearch.this);
+        mEndlessRecyclerOnScrollListener = new EndlessRecyclerOnScrollListener(mLinearLayoutManager) {
+            @Override
+            public void onLoadMore(int currentPage) {
+                loadData(currentPage);
+            }
+        };
 
+        mSearchRecyclerView.setAdapter(mRecyclerAdapterSearch);
+        mSearchRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mSearchRecyclerView.addOnScrollListener(mEndlessRecyclerOnScrollListener);
         mToolbarEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 switch (actionId) {
                     case EditorInfo.IME_ACTION_SEARCH:
                         // 검색 버튼을 누를 때마다 새로 검색
-                        mSearchMovies.clear();                                                                                                  
-
+                        mSearchMovies.clear();
+                        mEndlessRecyclerOnScrollListener.reset();
                         searchWord = mToolbarEditText.getText().toString();
 
-                        Call<ArrayList<Movie>> searchMovieCall = AppController.getFingoService()
-                                .getSearchMovie(AppController.getToken(), searchWord);
+                        loadData(1); // 검색했을 때 처음 page 값은 1
 
-                        searchMovieCall.enqueue(new Callback<ArrayList<Movie>>() {
-                            @Override
-                            public void onResponse(Call<ArrayList<Movie>> call, Response<ArrayList<Movie>> response) {
-                                ArrayList<Movie> data = response.body();
-                                mSearchMovies.addAll(data);
-
-                                mRecyclerAdapterSearch.notifyDataSetChanged();
-                            }
-
-                            @Override
-                            public void onFailure(Call<ArrayList<Movie>> call, Throwable t) {
-
-                            }
-                        });
                         break;
                 }
                 return true;
             }
         });
+    }
 
+    public void loadData(int currentPage) {
+        Call<SearchMovie> searchMovieCall = AppController.getFingoService()
+                .getSearchMovie(AppController.getToken(), searchWord, currentPage);
+
+        searchMovieCall.enqueue(new Callback<SearchMovie>() {
+            @Override
+            public void onResponse(Call<SearchMovie> call, Response<SearchMovie> response) {
+                SearchMovie data = response.body();
+                if (data != null) {
+                    mSearchMovies.addAll(data.getResults());
+                }
+
+                mRecyclerAdapterSearch.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<SearchMovie> call, Throwable t) {
+
+            }
+        });
     }
 
 }
