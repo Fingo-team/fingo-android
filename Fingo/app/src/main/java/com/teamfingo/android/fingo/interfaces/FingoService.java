@@ -100,7 +100,7 @@ public interface FingoService {
 
     // getPersonalComments
     @GET("/api/v1.0/activity/user/comments/")
-    Call<UserComments> getUserComments(@Header("Authorization") String authorization, @Query("page")int page);
+    Call<UserComments> getUserComments(@Header("Authorization") String authorization, @Query("page")int page, @Query("order") String order);
 
     // get user detail
     @GET("/api/v1.0/activity/user/detail/")

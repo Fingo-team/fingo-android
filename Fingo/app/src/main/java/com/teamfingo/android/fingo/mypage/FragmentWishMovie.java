@@ -44,9 +44,9 @@ public class FragmentWishMovie extends Fragment {
 
     private static final int INIT_PAGE = 1;
 
-    private static final int SORT_TIME = 1;
-    private static final int SORT_TITLE = 2;
-    private static final int SORT_SCORE = 3;
+    private static final int SORT_TIME = 0;
+    private static final int SORT_TITLE = 1;
+    private static final int SORT_SCORE = 2;
 
     public FragmentWishMovie() {
         // Required empty public constructor
@@ -70,9 +70,6 @@ public class FragmentWishMovie extends Fragment {
 
     private void initView(View view){
 
-        btnOrdering = (ImageButton) view.findViewById(R.id.button_ordering);
-        tvOrdering = (TextView) view.findViewById(R.id.textView_ordering);
-
         String[] str = getResources().getStringArray(R.array.movie_sorting);
         ArrayAdapter<String> adapter = new ArrayAdapter<>
                 (this.getContext(), android.R.layout.simple_spinner_dropdown_item, str);
@@ -81,6 +78,7 @@ public class FragmentWishMovie extends Fragment {
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mWishMovies.clear();
                 sortingMovie(position);
             }
 

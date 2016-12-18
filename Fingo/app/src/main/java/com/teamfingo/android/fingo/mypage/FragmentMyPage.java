@@ -161,21 +161,21 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
                     new Handler().post(new Runnable() {
                         @Override
                         public void run() {
-                            tvUserName.setText(data.getUser_profile().getNickname());
-                            tvCommentCount.setText(data.getComment_cnt());
-                            tvWishCount.setText(data.getWish_movie_cnt());
-                            tvWatchedCount.setText(data.getWatched_movie_cnt());
+                tvUserName.setText(data.getUser_profile().getNickname());
+                tvCommentCount.setText(data.getComment_cnt());
+                tvWishCount.setText(data.getWish_movie_cnt());
+                tvWatchedCount.setText(data.getWatched_movie_cnt());
 
-                            // 유저 프로필 이미지 세팅
-                            if (data.getUser_profile().getUser_img() == null)
-                                Glide.with(getActivity()).load(R.drawable.com_facebook_profile_picture_blank_portrait).into(ivProfile);
+                // 유저 프로필 이미지 세팅
+                if (data.getUser_profile().getUser_img() == null)
+                    Glide.with(getActivity()).load(R.drawable.com_facebook_profile_picture_blank_portrait).into(ivProfile);
 
-                            else {
-                            }
-//                                Glide.with(getActivity()).load(data.getUser_profile().getUser_img()).into(ivProfile);
-                        }
-                    });
+                else {
                 }
+//                                Glide.with(getActivity()).load(data.getUser_profile().getUser_img()).into(ivProfile);
+            }
+        });
+    }
             }
 
             @Override
@@ -189,7 +189,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
     // User Comment 정보 요청 하는 메소드
     private void callFingoUserComments(int page) {
 
-        Call<UserComments> userCommentsCall = AppController.getFingoService().getUserComments(AppController.getToken(), page);
+        Call<UserComments> userCommentsCall = AppController.getFingoService().getUserComments(AppController.getToken(), page, "activity_time");
         userCommentsCall.enqueue(new Callback<UserComments>() {
             @Override
             public void onResponse(Call<UserComments> call, Response<UserComments> response) {
