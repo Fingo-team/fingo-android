@@ -72,8 +72,18 @@ public class RecyclerAdapterMovie extends RecyclerView.Adapter<RecyclerAdapterMo
                 mContext.startActivity(intent);
             }
         });
-        holder.tvMovieTitle.setText(movieData.getMovie().getTitle());
-        holder.tvMovieRating.setText(movieData.getMovie().getScore());
+
+        String title = movieData.getMovie().getTitle();
+        if(title.length()>=8){
+           String temp = title.substring(0,5);
+            holder.tvMovieTitle.setText(temp+"...");
+        }
+        else
+            holder.tvMovieTitle.setText(title);
+
+        float temp = Float.parseFloat(movieData.getMovie().getScore());
+        String score = String.format("%.2f",temp);
+        holder.tvMovieRating.setText(score);
 
     }
 
