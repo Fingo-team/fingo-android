@@ -8,13 +8,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.model.UserMovies;
 import com.teamfingo.android.fingo.utils.AppController;
-import com.teamfingo.android.fingo.utils.EndlessRecyclerOnScrollListener;
+import com.teamfingo.android.fingo.utils.EndlessGridLayoutOnScrollListener;
 
 import java.util.ArrayList;
 
@@ -33,11 +36,17 @@ public class FragmentWatchedMovie extends Fragment {
     RecyclerView mRecyclerView;
     RecyclerAdapterMovie mAdapter;
     GridLayoutManager mLayoutManager;
-    EndlessRecyclerOnScrollListener mEndlessRecyclerOnScrollListener;
+    EndlessGridLayoutOnScrollListener mEndlessGridLayoutOnScrollListener;
+
+    Spinner mSpinner;
 
     ArrayList<UserMovies.Results> mWatchedMovies = new ArrayList<>();
 
     private static final int INIT_PAGE = 1;
+
+    private static final int SORT_TIME = 1;
+    private static final int SORT_TITLE = 2;
+    private static final int SORT_SCORE = 3;
 
     public FragmentWatchedMovie() {
         // Required empty public constructor
@@ -52,7 +61,7 @@ public class FragmentWatchedMovie extends Fragment {
 
         initView(view);
 
-        callUserMovies(INIT_PAGE);
+        callUserMovies(INIT_PAGE, "");
 
         initRecyclerView(view);
 
@@ -63,27 +72,47 @@ public class FragmentWatchedMovie extends Fragment {
 
         btnOrdering = (ImageButton) view.findViewById(R.id.button_ordering);
         tvOrdering = (TextView) view.findViewById(R.id.textView_ordering);
+
+        String[] str = getResources().getStringArray(R.array.movie_sorting);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>
+                (this.getContext(), android.R.layout.simple_spinner_dropdown_item, str);
+        mSpinner = (Spinner) view.findViewById(R.id.spinner);
+        mSpinner.setAdapter(adapter);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                sortingMovie(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void initRecyclerView(View view){
+
+        mWatchedMovies = new ArrayList<>();
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_watched_movie);
         mAdapter = new RecyclerAdapterMovie(this.getContext(), mWatchedMovies);
         mRecyclerView.setAdapter(mAdapter);
         mLayoutManager = new GridLayoutManager(this.getContext(), 3);
-        mEndlessRecyclerOnScrollListener = new EndlessRecyclerOnScrollListener(mLayoutManager) {
+        mEndlessGridLayoutOnScrollListener = new EndlessGridLayoutOnScrollListener(mLayoutManager) {
             @Override
             public void onLoadMore(int current_page) {
-                callUserMovies(current_page);
+                Log.e("Check Page",">>>>>>>>"+current_page+"");
+                callUserMovies(current_page, "");
             }
         };
         mRecyclerView.setLayoutManager(mLayoutManager);
 
     }
 
-    private void callUserMovies(int page) {
+    private void callUserMovies(int page, String order) {
 
-        Call<UserMovies> watchedMovieCall = AppController.getFingoService().getWatchedMovie(AppController.getToken(), page);
+        Call<UserMovies> watchedMovieCall = AppController.getFingoService().getWatchedMovie(AppController.getToken(), page, order);
         watchedMovieCall.enqueue(new Callback<UserMovies>() {
             @Override
             public void onResponse(Call<UserMovies> call, Response<UserMovies> response) {
@@ -104,4 +133,20 @@ public class FragmentWatchedMovie extends Fragment {
         });
     }
 
+    private void sortingMovie(int position){
+        switch(position){
+
+            case SORT_TIME:
+                callUserMovies(INIT_PAGE, "activity_time");
+                break;
+
+            case SORT_TITLE:
+                callUserMovies(INIT_PAGE, "title");
+                break;
+
+            case SORT_SCORE:
+                callUserMovies(INIT_PAGE, "score");
+                break;
+        }
+    }
 }

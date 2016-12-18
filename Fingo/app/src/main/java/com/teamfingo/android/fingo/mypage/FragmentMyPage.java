@@ -137,6 +137,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
         mEndlessRecyclerOnScrollListener = new EndlessRecyclerOnScrollListener(mLayoutManager) {
             @Override
             public void onLoadMore(int current_page) {
+                Log.e("Check Page",">>>>>>>>"+current_page+"");
                 callFingoUserComments(current_page);
             }
         };

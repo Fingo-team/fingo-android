@@ -8,7 +8,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.teamfingo.android.fingo.R;
@@ -35,9 +38,15 @@ public class FragmentWishMovie extends Fragment {
     GridLayoutManager mLayoutManager;
     EndlessRecyclerOnScrollListener mEndlessRecyclerOnScrollListener;
 
+    Spinner mSpinner;
+
     ArrayList<UserMovies.Results> mWishMovies = new ArrayList<>();
 
     private static final int INIT_PAGE = 1;
+
+    private static final int SORT_TIME = 1;
+    private static final int SORT_TITLE = 2;
+    private static final int SORT_SCORE = 3;
 
     public FragmentWishMovie() {
         // Required empty public constructor
@@ -52,7 +61,7 @@ public class FragmentWishMovie extends Fragment {
 
         initView(view);
 
-        callUserMovies(INIT_PAGE);
+        callUserMovies(INIT_PAGE,"");
 
         initRecyclerView(view);
 
@@ -63,6 +72,23 @@ public class FragmentWishMovie extends Fragment {
 
         btnOrdering = (ImageButton) view.findViewById(R.id.button_ordering);
         tvOrdering = (TextView) view.findViewById(R.id.textView_ordering);
+
+        String[] str = getResources().getStringArray(R.array.movie_sorting);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>
+                (this.getContext(), android.R.layout.simple_spinner_dropdown_item, str);
+        mSpinner = (Spinner) view.findViewById(R.id.spinner);
+        mSpinner.setAdapter(adapter);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                sortingMovie(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void initRecyclerView(View view){
@@ -71,19 +97,20 @@ public class FragmentWishMovie extends Fragment {
         mAdapter = new RecyclerAdapterMovie(this.getContext(), mWishMovies);
         mRecyclerView.setAdapter(mAdapter);
         mLayoutManager = new GridLayoutManager(this.getContext(), 3);
+
         mEndlessRecyclerOnScrollListener = new EndlessRecyclerOnScrollListener(mLayoutManager) {
             @Override
             public void onLoadMore(int current_page) {
-                callUserMovies(current_page);
+                callUserMovies(current_page, "");
             }
         };
         mRecyclerView.setLayoutManager(mLayoutManager);
 
     }
 
-    private void callUserMovies(int page) {
+    private void callUserMovies(int page, String order) {
 
-        Call<UserMovies> wishMovieCall = AppController.getFingoService().getWishMovie(AppController.getToken(), page);
+        Call<UserMovies> wishMovieCall = AppController.getFingoService().getWishMovie(AppController.getToken(), page, order);
         wishMovieCall.enqueue(new Callback<UserMovies>() {
             @Override
             public void onResponse(Call<UserMovies> call, Response<UserMovies> response) {
@@ -103,6 +130,23 @@ public class FragmentWishMovie extends Fragment {
                 t.printStackTrace();
             }
         });
+    }
+
+    private void sortingMovie(int position){
+        switch(position){
+
+            case SORT_TIME:
+                callUserMovies(INIT_PAGE, "activity_time");
+                break;
+
+            case SORT_TITLE:
+                callUserMovies(INIT_PAGE, "title");
+                break;
+
+            case SORT_SCORE:
+                callUserMovies(INIT_PAGE, "score");
+                break;
+        }
     }
 
 }

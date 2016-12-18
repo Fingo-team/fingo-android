@@ -108,11 +108,11 @@ public interface FingoService {
 
     // get wish movie
     @GET("/api/v1.0/activity/user/wish/movies/")
-    Call<UserMovies> getWishMovie(@Header("Authorization") String authorization, @Query("page") int page);
+    Call<UserMovies> getWishMovie(@Header("Authorization") String authorization, @Query("page") int page, @Query("order")String order);
 
     // get watched movie
     @GET("/api/v1.0/activity/user/watched/movies/")
-    Call<UserMovies> getWatchedMovie(@Header("Authorization") String authorization, @Query("page") int page);
+    Call<UserMovies> getWatchedMovie(@Header("Authorization") String authorization, @Query("page") int page, @Query("order")String order);
 
     @FormUrlEncoded
     @POST("/api/v1.0/user/fb_login/")
