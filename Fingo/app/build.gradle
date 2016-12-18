@@ -12,6 +12,16 @@ android {
         }
     }
 
+    // kakao SDK install
+    subprojects {
+        repositories {
+            mavenCentral()
+
+            // kakao SDK install
+            maven { url 'http://devrepo.kakao.com:8088/nexus/content/groups/public/' }
+        }
+    }
+
     defaultConfig {
         applicationId "com.teamfingo.android.fingo"
         minSdkVersion 15
