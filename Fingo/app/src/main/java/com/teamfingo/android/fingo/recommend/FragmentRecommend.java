@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,29 +21,18 @@ public class FragmentRecommend extends Fragment {
 
     public static final int TABCOUNT = 2;
 
-    FragmentStatistics mFragmentStatistics;
-    FragmentRandomMovie mFragmentRandomMovie;
-
     TabLayout mTabLayout;
-    RelativeLayout mContainerRecommend;
-
     ViewPager mViewPager;
+    ViewPagerAdapter viewPagerAdapter = null;
 
     public FragmentRecommend() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recommand, container, false);
-
-        mContainerRecommend = (RelativeLayout) view.findViewById(R.id.container_recommend);
-
-        mFragmentStatistics = new FragmentStatistics();
-        mFragmentRandomMovie = new FragmentRandomMovie();
-
         // Initialize TabLayout
         mTabLayout = (TabLayout) view.findViewById(R.id.tabLayout_recommend);
         mTabLayout.addTab(mTabLayout.newTab().setText("취향 통계"));
@@ -53,7 +42,7 @@ public class FragmentRecommend extends Fragment {
         // Initialie ViewPager
         mViewPager = (ViewPager) view.findViewById(R.id.viewPager_recommend);
 
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getFragmentManager());
+        viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
         mViewPager.setAdapter(viewPagerAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
 
@@ -77,7 +66,7 @@ public class FragmentRecommend extends Fragment {
         return view;
     }
 
-    public class ViewPagerAdapter extends FragmentStatePagerAdapter {
+    private class ViewPagerAdapter extends FragmentPagerAdapter {
 
         public ViewPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -89,10 +78,10 @@ public class FragmentRecommend extends Fragment {
 
             switch (position) {
                 case 0:
-                    fragment = mFragmentStatistics;
+                    fragment = FragmentStatistics.newInstance();
                     break;
                 case 1:
-                    fragment = mFragmentRandomMovie;
+                    fragment = FragmentRandomMovie.newInstance();
                     break;
             }
 
