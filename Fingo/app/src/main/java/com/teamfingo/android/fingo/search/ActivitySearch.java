@@ -12,6 +12,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.model.Movie;
@@ -70,6 +71,12 @@ public class ActivitySearch extends AppCompatActivity {
                         mEndlessRecyclerOnScrollListener.reset();
                         searchWord = mToolbarEditText.getText().toString();
 
+                        // 아무것도 입력하지 않고 검색했을 때 검색어를 입력해 달라는 토스트 창을 띄워줌
+                        if (searchWord.equals("")) {
+                            Toast.makeText(ActivitySearch.this, "검색어를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+
                         // 검색 버튼을 누른 뒤 키보드가 내려가게 처리
                         View view = ActivitySearch.this.getCurrentFocus();
                         if (view != null) {
@@ -94,8 +101,14 @@ public class ActivitySearch extends AppCompatActivity {
             @Override
             public void onResponse(Call<SearchMovie> call, Response<SearchMovie> response) {
                 SearchMovie data = response.body();
+
                 if (data != null) {
-                    mSearchMovies.addAll(data.getResults());
+                    if (data.getCount() == 0) {
+                        Toast.makeText(ActivitySearch.this, "검색 결과가 없습니다.\n\n다시 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    } else {
+
+                        mSearchMovies.addAll(data.getResults());
+                    }
                 }
 
                 mRecyclerAdapterSearch.notifyDataSetChanged();
