@@ -11,15 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:titleTextColor="#161616"
-        android:background="@color/toolbarAndTabBackground"
+        android:background="@color/colorWhiteBackground"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_margin="7dp">
+        android:layout_alignParentLeft="true">
 
         <EditText
             android:id="@+id/editText_toolbar"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_width="match_parent"
             android:hint="@string/editText_hint"
             android:imeOptions="actionSearch"
             android:inputType="text"/>
@@ -29,6 +28,7 @@
         android:id="@+id/recyclerView_search"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
         android:layout_below="@id/search_toolbar">
 
     </android.support.v7.widget.RecyclerView>
