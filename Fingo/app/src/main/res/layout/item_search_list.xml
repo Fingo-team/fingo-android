@@ -6,7 +6,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="20dp">
+    android:padding="5dp"
+    android:background="@color/colorWhiteBackground">
 
     <ImageView
         android:id="@+id/imageView_movie_poster"
@@ -21,17 +22,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/imageView_movie_poster"
-        android:layout_toEndOf="@+id/imageView_movie_poster">
+        android:layout_toRightOf="@+id/imageView_movie_poster">
         <TextView
-            android:id="@+id/textView_movie_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/textView_movie_date"
+            android:id="@+id/textView_movie_title_and_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"/>
+            android:maxLines="1"
+            android:ellipsize="end"/>
     </LinearLayout>
 
     <LinearLayout
