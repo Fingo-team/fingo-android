@@ -22,7 +22,6 @@ import com.teamfingo.android.fingo.model.Movie;
 import com.teamfingo.android.fingo.utils.AppController;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;

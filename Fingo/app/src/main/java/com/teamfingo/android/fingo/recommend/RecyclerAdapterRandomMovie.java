@@ -12,10 +12,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.model.Movie;
-import com.teamfingo.android.fingo.model.RandomMovie;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Jaemin on 2016. 12. 16..

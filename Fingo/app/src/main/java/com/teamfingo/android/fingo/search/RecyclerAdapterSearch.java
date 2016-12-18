@@ -38,8 +38,7 @@ public class RecyclerAdapterSearch extends RecyclerView.Adapter<RecyclerAdapterS
 
         RelativeLayout mRelativeLayout;
         ImageView ivMoviePoster;
-        TextView tvMovieTitle;
-        TextView tvMovieDate;
+        TextView tvMovieTitleAndDate;
         TextView tvMovieGenre;
         TextView tvMovieNation;
 
@@ -48,8 +47,7 @@ public class RecyclerAdapterSearch extends RecyclerView.Adapter<RecyclerAdapterS
 
             mRelativeLayout = (RelativeLayout) itemView.findViewById(R.id.relativeLayout_search);
             ivMoviePoster = (ImageView) itemView.findViewById(R.id.imageView_movie_poster);
-            tvMovieTitle = (TextView) itemView.findViewById(R.id.textView_movie_title);
-            tvMovieDate = (TextView) itemView.findViewById(R.id.textView_movie_date);
+            tvMovieTitleAndDate = (TextView) itemView.findViewById(R.id.textView_movie_title_and_date);
             tvMovieGenre = (TextView) itemView.findViewById(R.id.textView_movie_genre);
             tvMovieNation = (TextView) itemView.findViewById(R.id.textView_movie_nation);
         }
@@ -64,8 +62,8 @@ public class RecyclerAdapterSearch extends RecyclerView.Adapter<RecyclerAdapterS
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         Glide.with(mContext).load(mSearchMovies.get(position).getImg()).into(holder.ivMoviePoster);
-        holder.tvMovieTitle.setText(mSearchMovies.get(position).getTitle());
-        holder.tvMovieDate.setText("(" + mSearchMovies.get(position).getFirst_run_date() + ")");
+        holder.tvMovieTitleAndDate.setText(mSearchMovies.get(position).getTitle()
+                + " (" + mSearchMovies.get(position).getFirst_run_date() + ")");
         Movie.Genre genre[] = mSearchMovies.get(position).getGenre();
         holder.tvMovieGenre.setText(genre[0].toString());
         Movie.Nation_code nationCode[] = mSearchMovies.get(position).getNation_code();

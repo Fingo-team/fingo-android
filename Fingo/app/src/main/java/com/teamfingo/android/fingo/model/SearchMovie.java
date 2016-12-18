@@ -7,9 +7,18 @@ import java.util.ArrayList;
  */
 
 public class SearchMovie {
+    private int count;
     private String next;
     private String previous;
     private ArrayList<Movie> results;
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 
     public String getNext() {
         return next;
