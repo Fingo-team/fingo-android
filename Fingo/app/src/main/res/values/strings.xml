@@ -14,4 +14,8 @@
     <!-- ActivitySearch에 쓰이는 strings -->
     <string name="menu_search">검색</string>
     <string name="editText_hint">영화 제목을 입력하세요</string>
+
+    <string name="kakao_app_key">6360f44e708ebe219113cbe50c08daa4</string>
+    <string name="kakao_scheme">kakao6360f44e708ebe219113cbe50c08daa4</string>
+    <string name="kakaolink_host">kakaolink</string>
 </resources>

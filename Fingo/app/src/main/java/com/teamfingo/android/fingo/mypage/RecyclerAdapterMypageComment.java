@@ -47,53 +47,6 @@ public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerA
         this.mUserComments = mUserComments;
     }
 
-    public void openModifyMenu(View view, int position) {
-
-        final UserComments.Movie movie_info = mUserComments.get(position).getMovie();
-        final UserComments.Results comment_info = mUserComments.get(position);
-
-        new BottomSheet.Builder(mActivity)
-                .title("Comment Options")
-                .sheet(R.menu.item_comment_option)
-                .listener(new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-
-                            case R.id.menu_correct:
-                                Intent intent = new Intent(mActivity, ActivityCorrectComment.class);
-                                intent.putExtra("movie_id", movie_info.getId());
-                                intent.putExtra("movie_title", movie_info.getTitle());
-                                intent.putExtra("comment_score", comment_info.getScore());
-                                Log.e("ckeck score before",comment_info.getScore()+"");
-                                intent.putExtra("comment", comment_info.getComment());
-                                mActivity.startActivity(intent);
-                                break;
-
-                            case R.id.menu_delete:
-                                deleteComment(movie_info.getId());
-                                break;
-                        }
-                    }
-                }).show();
-    }
-
-    private void deleteComment(String movie_id){
-        Call<Void> deleteCommentCall = AppController.getFingoService().deleteUserComment(AppController.getToken(), movie_id);
-        deleteCommentCall.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                Log.e("delete comment check", response.message());
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
-
-    }
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imgUserProfile, imgMovieStilcut;
@@ -135,6 +88,7 @@ public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerA
         UserComments.User user_data = mUserComments.get(position).getUser();
         UserComments.Results comment_data = mUserComments.get(position);
 
+        Glide.with(mActivity).load(R.drawable.com_facebook_profile_picture_blank_portrait).into(holder.imgUserProfile);
         holder.tvUserName.setText(user_data.getNickname());
         holder.rbUserScore.setRating(comment_data.getScore());
         holder.tvCommentDate.setText(comment_data.getActivity_time());
@@ -147,7 +101,7 @@ public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerA
         holder.btnModify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openModifyMenu(v, position);
+                openModifyMenu(v,position);
             }
         });
 
@@ -156,6 +110,58 @@ public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerA
     @Override
     public int getItemCount() {
         return mUserComments.size();
+    }
+
+    public void openModifyMenu(View view, int position) {
+
+        final UserComments.Movie movie_info = mUserComments.get(position).getMovie();
+        final UserComments.Results comment_info = mUserComments.get(position);
+
+        new BottomSheet.Builder(mActivity)
+                .title("Comment Options")
+                .sheet(R.menu.item_comment_option)
+                .listener(new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+
+                            case R.id.menu_correct:
+                                Intent intent = new Intent(mActivity, ActivityCorrectComment.class);
+                                intent.putExtra("movie_id", movie_info.getId());
+                                intent.putExtra("movie_title", movie_info.getTitle());
+                                intent.putExtra("comment_score", comment_info.getScore());
+                                Log.e("ckeck score before", comment_info.getScore() + "");
+                                intent.putExtra("comment", comment_info.getComment());
+                                mActivity.startActivity(intent);
+                                break;
+
+                            case R.id.menu_delete:
+                                deleteComment(movie_info.getId());
+                                break;
+
+                            case R.id.menu_share:
+
+                                break;
+                        }
+                    }
+                }).show();
+    }
+
+    private void deleteComment(String movie_id) {
+        Call<Void> deleteCommentCall = AppController.getFingoService().deleteUserComment(AppController.getToken(), movie_id);
+        deleteCommentCall.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Log.e("delete comment check", response.message());
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
     }
 
 }

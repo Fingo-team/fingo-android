@@ -46,6 +46,7 @@ dependencies {
     // Retrofit
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.0.1'
 
     // Glide
     compile 'com.github.bumptech.glide:glide:3.7.0'
@@ -70,4 +71,9 @@ dependencies {
 
     // GraphView
     compile 'com.jjoe64:graphview:4.2.1'
+
+    // 카카오톡 sdk를 사용하기 위해 필요.
+    compile group: 'com.kakao.sdk', name: 'kakaolink', version: project.KAKAO_SDK_VERSION
+
+
 }

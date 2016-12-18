@@ -19,9 +19,10 @@
             android:layout_height="wrap_content"
             android:id="@+id/button_cancel"
             android:layout_weight="1"
-            style="@style/Widget.AppCompat.Button.Borderless"
+            style="@android:style/Widget.DeviceDefault.Light.Button.Borderless.Small"
             android:textAppearance="@style/TextAppearance.AppCompat"
-            android:layout_width="20dp" />
+            android:textSize="12sp"
+            android:layout_width="35dp" />
 
         <TextView
             android:text="Movie Title"
@@ -36,12 +37,14 @@
 
         <Button
             android:text="완료"
-            android:layout_width="20dp"
             android:layout_height="wrap_content"
             android:id="@+id/button_complete"
             android:layout_weight="1"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:textAppearance="@style/TextAppearance.AppCompat" />
+            style="@android:style/Widget.Holo.Button.Borderless.Small"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="12sp"
+            android:layout_width="35dp" />
     </LinearLayout>
 
     <LinearLayout

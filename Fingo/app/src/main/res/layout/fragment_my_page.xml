@@ -3,31 +3,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
-    tools:context="com.teamfingo.android.fingo.mypage.FragmentMyPage"
-    android:background="?android:attr/colorButtonNormal">
+    tools:context="com.teamfingo.android.fingo.mypage.FragmentMyPage">
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView_mypage_comment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/recyclerView_mypage_comment" />
+        android:layout_height="wrap_content" />
 
     <com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|top"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center_horizontal|top"
         android:clickable="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:clickable="true"
             android:clipToPadding="true"
-            android:clickable="true">
+            android:orientation="vertical">
 
             <!-- 유저 프로필 영역 -->
             <RelativeLayout
@@ -74,11 +74,10 @@
                     android:layout_centerHorizontal="true"
                     android:orientation="vertical">
 
-                    <ImageView
+                    <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/image_profile"
                         android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        app:srcCompat="@drawable/com_facebook_profile_picture_blank_square" />
+                        android:layout_height="100dp" />
 
                     <TextView
                         android:id="@+id/textView_user_nickname"
@@ -88,7 +87,7 @@
                         android:text="Name"
                         android:textAlignment="center"
                         android:textColor="@color/cardview_light_background"
-                        android:textSize="15sp" />
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/textView_user_introduce"
@@ -97,17 +96,18 @@
                         android:text="User Introduce"
                         android:textAlignment="center"
                         android:textColor="@color/cardview_light_background"
-                        android:textSize="15dp" />
+                        android:textSize="10sp"
+                        android:layout_marginTop="10dp" />
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_alignBottom="@+id/image_profile_cover"
                     android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true">
+                    android:layout_alignParentStart="true"
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -197,5 +197,3 @@
     </com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader>
 
 </RelativeLayout>
-
-

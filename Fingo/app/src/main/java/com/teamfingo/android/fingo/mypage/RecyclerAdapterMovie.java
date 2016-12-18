@@ -32,7 +32,7 @@ public class RecyclerAdapterMovie extends RecyclerView.Adapter<RecyclerAdapterMo
 
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imgMoviePoster;
         TextView tvMovieTitle;
@@ -68,12 +68,25 @@ public class RecyclerAdapterMovie extends RecyclerView.Adapter<RecyclerAdapterMo
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ActivityMovieDetail.class);
-                intent.putExtra("movieId",movieData.getMovie().getId());
+                intent.putExtra("movieId", movieData.getMovie().getId());
                 mContext.startActivity(intent);
             }
         });
-        holder.tvMovieTitle.setText(movieData.getMovie().getTitle());
-        holder.tvMovieRating.setText(movieData.getMovie().getScore());
+
+        // 영화 제목이 8자 이상일땐 제목을 자른다
+        String title = movieData.getMovie().getTitle();
+        if (title.length() >= 8) {
+            // 다섯번째 글자까지 표시 한 후,
+            String temp = title.substring(0, 5);
+            // 텍스트를 '...' 으로 마무리 한다.
+            holder.tvMovieTitle.setText(temp + "...");
+        } else
+            holder.tvMovieTitle.setText(title);
+
+        // 평점을 소수점 둘째 자리까지 표시
+        float temp = Float.parseFloat(movieData.getMovie().getScore());
+        String score = String.format("%.2f", temp);
+        holder.tvMovieRating.setText(score);
 
     }
 
