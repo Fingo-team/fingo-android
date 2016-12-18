@@ -26,10 +26,10 @@ import retrofit2.Response;
  */
 public class FragmentStatistics extends Fragment {
 
-    public FragmentStatistics() {
-        // Required empty public constructor
+    public static FragmentStatistics newInstance() {
+        FragmentStatistics f = new FragmentStatistics();
+        return f;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -92,7 +92,6 @@ public class FragmentStatistics extends Fragment {
                     if (movieCount > 5) { // User가 평가한 영화가 5개 이상일 때부터 통계 데이터를 보여준다
 
                     }
-
                 }
             }
 

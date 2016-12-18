@@ -5,19 +5,16 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.teamfingo.android.fingo.R;
-import com.teamfingo.android.fingo.model.BoxOfficeRanking;
 import com.teamfingo.android.fingo.model.Movie;
 import com.teamfingo.android.fingo.model.RandomMovie;
 import com.teamfingo.android.fingo.utils.AppController;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,8 +29,9 @@ public class FragmentRandomMovie extends Fragment {
     RecyclerAdapterRandomMovie mRecyclerAdapterRandomMovie;
     ArrayList<Movie> mRandomMovies = new ArrayList<>();
 
-    public FragmentRandomMovie() {
-        // Required empty public constructor
+    public static FragmentRandomMovie newInstance() {
+        FragmentRandomMovie f = new FragmentRandomMovie();
+        return f;
     }
 
 
@@ -55,7 +53,6 @@ public class FragmentRandomMovie extends Fragment {
             public void onResponse(Call<RandomMovie> call, Response<RandomMovie> response) {
                 if (response.isSuccessful()) {
                     RandomMovie randomMovie = response.body();
-                    Log.e("log", "connection success");
 
                     for (int i=0; i<randomMovie.getData().size(); i++) {
                         mRandomMovies.add(randomMovie.getData().get(i));
