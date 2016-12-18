@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -137,7 +139,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
         mEndlessRecyclerOnScrollListener = new EndlessRecyclerOnScrollListener(mLayoutManager) {
             @Override
             public void onLoadMore(int current_page) {
-                Log.e("Check Page",">>>>>>>>"+current_page+"");
+                Log.e("Check Page", ">>>>>>>>" + current_page + "");
                 callFingoUserComments(current_page);
             }
         };
@@ -161,21 +163,30 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
                     new Handler().post(new Runnable() {
                         @Override
                         public void run() {
-                tvUserName.setText(data.getUser_profile().getNickname());
-                tvCommentCount.setText(data.getComment_cnt());
-                tvWishCount.setText(data.getWish_movie_cnt());
-                tvWatchedCount.setText(data.getWatched_movie_cnt());
+                            tvUserName.setText(data.getUser_profile().getNickname());
+                            tvCommentCount.setText(data.getComment_cnt());
+                            tvWishCount.setText(data.getWish_movie_cnt());
+                            tvWatchedCount.setText(data.getWatched_movie_cnt());
 
-                // 유저 프로필 이미지 세팅
-                if (data.getUser_profile().getUser_img() == null)
-                    Glide.with(getActivity()).load(R.drawable.com_facebook_profile_picture_blank_portrait).into(ivProfile);
+                            // 유저 프로필 이미지 세팅
+                            if (data.getUser_profile().getUser_img() == null)
+                                Glide.with(getActivity()).load(R.drawable.com_facebook_profile_picture_blank_portrait).into(ivProfile);
 
-                else {
-                }
+                            else {
 //                                Glide.with(getActivity()).load(data.getUser_profile().getUser_img()).into(ivProfile);
-            }
-        });
-    }
+                            }
+
+                            if(data.getUser_profile().getCover_img() == null){
+                                Glide.with(getActivity()).load(R.drawable.image_profile_cover).into(ivProfileCover);
+                                ivProfileCover.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY);
+                            }
+                            else{
+//                                Glide.with(getActivity()).load(data.getUser_profile()).into(ivProfileCover);
+//                                ivProfileCover.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY);
+                            }
+                        }
+                    });
+                }
             }
 
             @Override
@@ -265,7 +276,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
 
             // 프로필 커버 이미지
             case R.id.image_profile_cover:
-
+                editProfileImage(v);
                 break;
 
             // 코멘트 디테일 프레그먼트 호출
@@ -296,7 +307,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
 
     public void openSettingMenu(View view) {
 
-        new BottomSheet.Builder(this.getActivity()).title("Profile options").sheet(R.menu.item_android_bottom_menu).listener(new DialogInterface.OnClickListener() {
+        new BottomSheet.Builder(this.getActivity()).title("Settings").sheet(R.menu.item_android_bottom_menu).listener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
@@ -322,8 +333,15 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
 
     public void editProfileImage(View view) {
 
+        String menuTitle;
+
+        if (view.getId() == R.id.image_profile)
+            menuTitle = "Profile Options";
+        else
+            menuTitle = "Cover Image Options";
+
         new BottomSheet.Builder(this.getActivity())
-                .title("Profile Setting")
+                .title(menuTitle)
                 .sheet(R.menu.item_profile_image)
                 .listener(new DialogInterface.OnClickListener() {
 

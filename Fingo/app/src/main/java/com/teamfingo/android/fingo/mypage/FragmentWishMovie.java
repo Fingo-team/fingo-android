@@ -10,9 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.model.UserMovies;
@@ -29,9 +27,6 @@ import retrofit2.Response;
  * A simple {@link Fragment} subclass.
  */
 public class FragmentWishMovie extends Fragment {
-
-    ImageButton btnOrdering;
-    TextView tvOrdering;
 
     RecyclerView mRecyclerView;
     RecyclerAdapterMovie mAdapter;
