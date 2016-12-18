@@ -1,12 +1,15 @@
 package com.teamfingo.android.fingo.search;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -66,6 +69,13 @@ public class ActivitySearch extends AppCompatActivity {
                         mSearchMovies.clear();
                         mEndlessRecyclerOnScrollListener.reset();
                         searchWord = mToolbarEditText.getText().toString();
+
+                        // 검색 버튼을 누른 뒤 키보드가 내려가게 처리
+                        View view = ActivitySearch.this.getCurrentFocus();
+                        if (view != null) {
+                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                        }
 
                         loadData(1); // 검색했을 때 처음 page 값은 1
 
