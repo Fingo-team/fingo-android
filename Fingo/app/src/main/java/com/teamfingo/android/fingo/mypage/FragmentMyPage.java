@@ -50,20 +50,21 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
     RecyclerView mRecyclerView;
     RecyclerAdapterMypageComment mAdapter;
     RecyclerViewHeader header;
+    RecyclerView.LayoutManager mLayoutManager;
 
     Uri imageUri;
 
     ArrayList<UserComments.Results> mUserComments = new ArrayList<>();
 
-    public static final int MY_PAGE_COMMENT = 0;
-    public static final int MY_PAGE_WISH = 1;
-    public static final int MY_PAGE_WATCHED = 2;
+    private static final int MY_PAGE_COMMENT = 0;
+    private static final int MY_PAGE_WISH = 1;
+    private static final int MY_PAGE_WATCHED = 2;
 
+    private static final int maxCommentsPerRequest = 10;
 
     public FragmentMyPage() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,6 +73,24 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_page, container, false);
 
+        // Mypage layout component init
+        initView(view);
+
+        // Mypage contents data load
+        // Profile data load
+        callFingoUserProfile();
+
+        // User comments data load
+        callFingoUserComments();
+
+        // inflate user comments in mypage
+        initRecyclerView(view);
+
+        return view;
+    }
+
+    private void initView(View view) {
+
         btnMyPageSetting = (ImageButton) view.findViewById(R.id.button_mypage_setting);
         btnMyPageSetting.setOnClickListener(this);
 
@@ -79,7 +98,6 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
         btnMyPageAdd.setOnClickListener(this);
 
         ivProfile = (ImageView) view.findViewById(R.id.image_profile);
-        Glide.with(this.getActivity()).load(R.drawable.com_facebook_profile_picture_blank_portrait).into(ivProfile);
         ivProfile.setOnClickListener(this);
 
         ivProfileCover = (ImageView) view.findViewById(R.id.image_profile_cover);
@@ -102,52 +120,170 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
         tvWatchedCount = (TextView) view.findViewById(R.id.textView_watched_count);
 
         header = (RecyclerViewHeader) view.findViewById(R.id.header);
+    }
 
-        callFingoService();
-        callFingoComment();
-
+    private void initRecyclerView(View view) {
+        // Standard Recycler View Setting
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_mypage_comment);
         mAdapter = new RecyclerAdapterMypageComment(this.getContext(), this.getActivity(), mUserComments);
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        header.attachTo(mRecyclerView);
+        mLayoutManager = new LinearLayoutManager(this.getContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
-        return view;
+        // Recycler view Header library call
+        header.attachTo(mRecyclerView);
     }
+
+    // User Profile 정보 요청 하는 메소드
+    private void callFingoUserProfile() {
+
+        Call<UserDetail> userDetailCall = AppController.getFingoService().getUserDetail(AppController.getToken());
+        userDetailCall.enqueue(new Callback<UserDetail>() {
+            @Override
+            public void onResponse(Call<UserDetail> call, Response<UserDetail> response) {
+                if (response.isSuccessful()) {
+                    final UserDetail data = response.body();
+
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            tvUserName.setText(data.getUser_profile().getNickname());
+                            tvCommentCount.setText(data.getComment_cnt());
+                            tvWishCount.setText(data.getWish_movie_cnt());
+                            tvWatchedCount.setText(data.getWatched_movie_cnt());
+
+                            // 유저 프로필 이미지 세팅
+                            if (data.getUser_profile().getUser_img() == null)
+                                Glide.with(getActivity()).load(R.drawable.com_facebook_profile_picture_blank_portrait).into(ivProfile);
+
+                            else {
+                            }
+//                                Glide.with(getActivity()).load(data.getUser_profile().getUser_img()).into(ivProfile);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserDetail> call, Throwable t) {
+                t.printStackTrace();
+            }
+
+        });
+    }
+
+    // User Comment 정보 요청 하는 메소드
+    private void callFingoUserComments() {
+
+        // TODO 싱글톤으로 좀 더 깔끔하게 표현 가능
+        // 호출 될 때마다 초기화
+        mUserComments = new ArrayList<>();
+
+        Call<UserComments> userCommentsCall = AppController.getFingoService().getUserComments(AppController.getToken());
+        userCommentsCall.enqueue(new Callback<UserComments>() {
+            @Override
+            public void onResponse(Call<UserComments> call, Response<UserComments> response) {
+                if (response.isSuccessful()) {
+
+                    UserComments data = response.body();
+                    for (UserComments.Results comment : data.getResults()) {
+                        mUserComments.add(comment);
+                    }
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserComments> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    // Fingo Token 삭제 요청 메소드
+    private void expireFingoToken() {
+
+        Call<Void> fingoLogoutCall = AppController.getFingoService().userEmailLogout(AppController.getToken());
+        fingoLogoutCall.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+                Log.e("Check Login Status", ">>>>>>>>" + response.message());
+
+                if (response.isSuccessful()) {
+
+                    removeAccessToken();
+                    Log.e("CHECK_TOKEN_AFTER", AppController.getToken());
+                    Log.e("Check Login Status", ">>>> 로그아웃 성공!!");
+
+                    Intent intent = new Intent(getActivity(), ActivityLogin.class);
+                    startActivity(intent);
+                    getActivity().finish();
+
+                } else
+                    Log.e("Check Login Status", ">>>> 로그아웃 실패!!");
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                t.printStackTrace();
+            }
+
+        });
+    }
+
 
     @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
+
+            // 설정
             case R.id.button_mypage_setting:
                 expireFingoToken();
                 break;
 
+            // TODO 추가기능버튼 구현
             case R.id.button_mypage_add:
                 openSettingMenu(v);
                 break;
 
+            // 프로필 이미지
             case R.id.image_profile:
                 editProfileImage(v);
                 break;
 
+            // 프로필 커버 이미지
             case R.id.image_profile_cover:
 
                 break;
 
+            // 코멘트 디테일 프레그먼트 호출
             case R.id.button_comment:
                 sendFragment(MY_PAGE_COMMENT);
                 break;
 
+            // 보고싶어요 디테일 프레그먼트 호출
             case R.id.button_wish:
                 sendFragment(MY_PAGE_WISH);
                 break;
 
+            // 봤어요 디테일 프레그먼트 호출
             case R.id.button_watched:
                 sendFragment(MY_PAGE_WATCHED);
                 break;
         }
     }
+
+    // Sub Activity 로 fragment 정보를 전송해주는 메소드
+    public void sendFragment(int fragment_id) {
+
+        Intent intent = new Intent(getActivity(), ActivityMyPage.class);
+        intent.putExtra("Fragment", fragment_id);
+        startActivity(intent);
+    }
+
 
     public void openSettingMenu(View view) {
 
@@ -156,19 +292,19 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case R.id.menu_help:
-                        // TODO when help menu/button is clicked
+
                         break;
 
                     case R.id.menu_call:
-                        // TODO when call menu/button is clicked
+
                         break;
 
                     case R.id.menu_upload:
-                        // TODO when upload menu/button is clicked
+
                         break;
 
                     case R.id.menu_share:
-                        // TODO when share menu/button is clicked
+
                         break;
                 }
             }
@@ -207,106 +343,13 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
                 }).show();
     }
 
-    public void sendFragment(int fragment_id) {
+    @Override
+    public void takePhoto() {
 
-        Intent intent = new Intent(getActivity(), ActivityMyPage.class);
-        intent.putExtra("Fragment", fragment_id);
-        startActivity(intent);
-    }
-
-    private void expireFingoToken() {
-
-        Call<Void> fingoLogoutCall = AppController.getFingoService().userEmailLogout(AppController.getToken());
-        fingoLogoutCall.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-
-                Log.e("Check Login Status", ">>>>>>>>" + response.message());
-
-                if (response.isSuccessful()) {
-
-                    removeAccessToken();
-                    Log.e("CHECK_TOKEN_AFTER", AppController.getToken());
-                    Log.e("Check Login Status", ">>>> 로그아웃 성공!!");
-
-                    Intent intent = new Intent(getActivity(), ActivityLogin.class);
-                    startActivity(intent);
-                    getActivity().finish();
-
-                } else
-                    Log.e("Check Login Status", ">>>> 로그아웃 실패!!");
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                t.printStackTrace();
-            }
-
-        });
-    }
-
-    private void callFingoService() {
-
-        Call<UserDetail> userDetailCall = AppController.getFingoService().getUserDetail(AppController.getToken());
-        userDetailCall.enqueue(new Callback<UserDetail>() {
-            @Override
-            public void onResponse(Call<UserDetail> call, Response<UserDetail> response) {
-                if (response.isSuccessful()) {
-                    final UserDetail data = response.body();
-
-                    new Handler().post(new Runnable() {
-                        @Override
-                        public void run() {
-                            tvUserName.setText(data.getUser_profile().getNickname());
-                            tvCommentCount.setText(data.getComment_cnt());
-                            tvWishCount.setText(data.getWish_movie_cnt());
-                            tvWatchedCount.setText(data.getWatched_movie_cnt());
-
-                            // 유저 프로필 이미지 세팅
-                            if (data.getUser_profile().getUser_img() == null)
-                                Glide.with(getActivity()).load(R.drawable.com_facebook_profile_picture_blank_portrait).into(ivProfile);
-
-                            else{}
-//                                Glide.with(getActivity()).load(data.getUser_profile().getUser_img()).into(ivProfile);
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserDetail> call, Throwable t) {
-                t.printStackTrace();
-            }
-
-        });
-    }
-
-    private void callFingoComment() {
-
-        // TODO 싱글톤으로 좀 더 깔끔하게 표현 가능
-        // 호출 될 때마다 초기화
-        mUserComments = new ArrayList<>();
-
-        Call<UserComments> userCommentsCall = AppController.getFingoService().getUserComments(AppController.getToken());
-        userCommentsCall.enqueue(new Callback<UserComments>() {
-            @Override
-            public void onResponse(Call<UserComments> call, Response<UserComments> response) {
-                if (response.isSuccessful()) {
-
-                    UserComments data = response.body();
-                    for (UserComments.Results comment : data.getResults()) {
-                        mUserComments.add(comment);
-                    }
-                    mAdapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserComments> call, Throwable t) {
-
-            }
-        });
-
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        // requestCode지정해서 인텐트 실행
+        startActivityForResult(intent, 1);
     }
 
     @Override
@@ -314,11 +357,15 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
         super.onActivityResult(requestCode, resultCode, data);
 
         Bundle extras = data.getExtras();
+        Log.e("CHECK URI", ">>>>>>>>>>" + extras.get("data"));
         Bitmap imageBitmap = (Bitmap) extras.get("data");
 
         ivProfile.setImageBitmap(imageBitmap);
-//        imageUri = getImageUri(getActivity(),imageBitmap);
-//        String filePath = getRealPathFromURI(imageUri);
+        imageUri = getImageUri(getActivity(), imageBitmap);
+        String filePath = getRealPathFromURI(imageUri);
+        Log.e("CHECK URI", ">>>>>>>>>>" + filePath);
+
+
 ////        imageUri = data.getData();
 ////        Log.e("check uri", imageUri+"");
 ////
@@ -350,12 +397,6 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
     }
 
     @Override
-    public void takePhoto() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent,1);
-    }
-
-    @Override
     public void getGallery() {
 
     }
@@ -371,9 +412,9 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
     }
 
     @Override
-    public String getRealPathFromURI(Uri contentUri){
+    public String getRealPathFromURI(Uri contentUri) {
 
-        try{
+        try {
             String[] proj = {MediaStore.Images.Media.DATA};
             Cursor cursor = getActivity().getContentResolver().query(contentUri, proj, null, null, null);
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -381,7 +422,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
             cursor.moveToFirst();
 
             return cursor.getString(column_index);
-        }catch (Exception e){
+        } catch (Exception e) {
 
             e.printStackTrace();
             return contentUri.getPath();

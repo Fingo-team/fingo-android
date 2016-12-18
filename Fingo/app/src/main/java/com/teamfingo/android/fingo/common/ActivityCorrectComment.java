@@ -149,6 +149,7 @@ public class ActivityCorrectComment extends AppCompatActivity implements View.On
 
                 final String ratedScore;
                 ratedScore = String.valueOf(rbScore_detail.getRating());
+                rbScore.setRating(rbScore_detail.getRating());
 
                 Call<Void> postMovieScoreCall = getFingoService().postMovieScore(AppController.getToken(), mMovie_id, ratedScore); // POST
                 postMovieScoreCall.enqueue(new Callback<Void>() {
