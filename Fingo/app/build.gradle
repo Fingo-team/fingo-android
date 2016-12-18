@@ -7,6 +7,9 @@ android {
     // facebook login을 위한 mavenCentral 추가
     repositories {
         mavenCentral()
+        maven {
+            url "https://jitpack.io"
+        }
     }
 
     defaultConfig {
@@ -65,8 +68,7 @@ dependencies {
     
     // Bottom sheet library
     compile 'com.cocosw:bottomsheet:1.+@aar'
-    
-    // MPAndroidChart
-    compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
-    
+
+    // GraphView
+    compile 'com.jjoe64:graphview:4.2.1'
 }

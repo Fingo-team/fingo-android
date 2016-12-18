@@ -6,8 +6,8 @@ import com.teamfingo.android.fingo.model.Movie;
 import com.teamfingo.android.fingo.model.MovieComment;
 import com.teamfingo.android.fingo.model.MovieScore;
 import com.teamfingo.android.fingo.model.MovieWish;
+import com.teamfingo.android.fingo.model.RandomMovie;
 import com.teamfingo.android.fingo.model.SearchList;
-import com.teamfingo.android.fingo.model.SearchMovie;
 import com.teamfingo.android.fingo.model.Statistics;
 import com.teamfingo.android.fingo.model.UserComments;
 import com.teamfingo.android.fingo.model.UserDetail;
@@ -47,7 +47,7 @@ public interface FingoService {
 
     // 검색했을 때 Movie Information
     @GET("/api/v1.0/movie/search/")
-    Call<ArrayList<SearchMovie>> getSearchMovie(@Header("Authorization") String authorization, @Query("q") String word);
+    Call<ArrayList<Movie>> getSearchMovie(@Header("Authorization") String authorization, @Query("q") String word);
 
     // Movie Wish - 영화 상세 화면에서 보고싶어요와 관련된 API
     @GET("/api/v1.0/movie/wish/{id}/")
@@ -76,6 +76,10 @@ public interface FingoService {
     // Statistics - User의 취향 통계를 나타내주는 API
     @GET("/api/v1.0/statistics/all/")
     Call<Statistics> getStatistics(@Header("Authorization") String authorization);
+
+    // Recommend화면의 영화 평가 늘리기 - 영화 30개를 랜덤으로 불러오는 API
+    @GET("/api/v1.0/movie/random/")
+    Call<RandomMovie> getRandomMovie(@Header("Authorization") String authorization);
 
     // SignUp function
     @FormUrlEncoded
