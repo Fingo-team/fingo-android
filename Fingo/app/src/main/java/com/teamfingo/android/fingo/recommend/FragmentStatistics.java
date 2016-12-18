@@ -17,13 +17,6 @@ import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.model.Statistics;
 import com.teamfingo.android.fingo.utils.AppController;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import lecho.lib.hellocharts.model.Axis;
-import lecho.lib.hellocharts.model.ChartData;
-import lecho.lib.hellocharts.model.Line;
-import lecho.lib.hellocharts.view.LineChartView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
