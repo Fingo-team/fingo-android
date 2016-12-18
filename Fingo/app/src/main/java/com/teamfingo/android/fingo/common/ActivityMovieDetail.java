@@ -3,6 +3,7 @@ package com.teamfingo.android.fingo.common;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import retrofit2.Response;
 
 
 public class ActivityMovieDetail extends AppCompatActivity implements View.OnClickListener{
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     ImageView ivMovieBackgroundStillCut, ivMoviePoster;
     TextView tvMovieTitle, tvMovieScore;
@@ -68,12 +70,47 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
 
-        Log.e("log", "movie detail token ==== " + AppController.getToken());
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh_movie_detail);
 
         movieId = getIntent().getStringExtra("movieId");
 
         // Movie Detail 화면 초기화
         initMovieDetailView();
+
+        loadData();
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadData();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+    }
+
+    public void initMovieDetailView() {
+
+        ivMovieBackgroundStillCut = (ImageView) findViewById(R.id.imageView_movie_detail_backgroundStillcut);
+        ivMoviePoster = (ImageView) findViewById(R.id.imageView_movie_detail_movie_post);
+        tvMovieTitle = (TextView) findViewById(R.id.textView_movie_detail_movie_title);
+        tvMovieScore = (TextView) findViewById(R.id.textView_movie_detail_movie_score);
+        btnWishMovie = (Button) findViewById(R.id.button_wish_movie);
+        btnRate = (Button) findViewById(R.id.button_rate);
+        btnComment= (Button) findViewById(R.id.button_comment);
+        btnShare = (Button) findViewById(R.id.button_share);
+        tvMovieDate = (TextView) findViewById(R.id.textView_date);
+        tvMovieGenre = (TextView) findViewById(R.id.textView_genre);
+        tvMovieStory = (TextView) findViewById(R.id.textView_story);
+        ivStillCut1 = (ImageView) findViewById(R.id.imageView_stillCut1);
+        ivStillCut2 = (ImageView) findViewById(R.id.imageView_stillCut2);
+        ivStillCut3 = (ImageView) findViewById(R.id.imageView_stillCut3);
+        ivStillCut4 = (ImageView) findViewById(R.id.imageView_stillCut4);
+        ivStillCut5 = (ImageView) findViewById(R.id.imageView_stillCut5);
+        llDirectorandActor = (LinearLayout) findViewById(R.id.linearLayout_director_and_actor);
+
+    }
+
+    public void loadData() {
 
         Call<Movie> movieCall = AppController.getFingoService()
                 .getMovie(AppController.getToken(), movieId);
@@ -134,6 +171,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
             @Override
             public void onFailure(Call<Movie> call, Throwable t) {
                 Log.e("log", "error message ==== " + t.getMessage());
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
 
@@ -153,6 +191,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
             @Override
             public void onFailure(Call<MovieWish> call, Throwable t) {
                 Log.e("log", "error message ==== " + t.getMessage());
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
 
@@ -182,6 +221,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
             @Override
             public void onFailure(Call<MovieScore> call, Throwable t) {
                 Log.e("log", "error message ==== " + t.getMessage());
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
 
@@ -205,56 +245,11 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
             @Override
             public void onFailure(Call<MovieComment> call, Throwable t) {
                 Log.e("log", "error message ==== " + t.getMessage());
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
     }
 
-    public void initMovieDetailView() {
-
-        ivMovieBackgroundStillCut = (ImageView) findViewById(R.id.imageView_movie_detail_backgroundStillcut);
-        ivMoviePoster = (ImageView) findViewById(R.id.imageView_movie_detail_movie_post);
-        tvMovieTitle = (TextView) findViewById(R.id.textView_movie_detail_movie_title);
-        tvMovieScore = (TextView) findViewById(R.id.textView_movie_detail_movie_score);
-        btnWishMovie = (Button) findViewById(R.id.button_wish_movie);
-        btnRate = (Button) findViewById(R.id.button_rate);
-        btnComment= (Button) findViewById(R.id.button_comment);
-        btnShare = (Button) findViewById(R.id.button_share);
-        tvMovieDate = (TextView) findViewById(R.id.textView_date);
-        tvMovieGenre = (TextView) findViewById(R.id.textView_genre);
-        tvMovieStory = (TextView) findViewById(R.id.textView_story);
-        ivStillCut1 = (ImageView) findViewById(R.id.imageView_stillCut1);
-        ivStillCut2 = (ImageView) findViewById(R.id.imageView_stillCut2);
-        ivStillCut3 = (ImageView) findViewById(R.id.imageView_stillCut3);
-        ivStillCut4 = (ImageView) findViewById(R.id.imageView_stillCut4);
-        ivStillCut5 = (ImageView) findViewById(R.id.imageView_stillCut5);
-        llDirectorandActor = (LinearLayout) findViewById(R.id.linearLayout_director_and_actor);
-
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button_wish_movie:
-                wishMovieState = !wishMovieState;
-                Log.e("log", "wish button clicked, wishMovieState ==== " + wishMovieState);
-                btnWishMovie.setActivated(wishMovieState);
-                setWishButtonState();
-                break;
-            case R.id.button_rate:
-                openDialogRating();
-                break;
-            case R.id.button_comment:
-                if (score.equals("0.0")) {
-                    Toast.makeText(v.getContext(), "평가 먼저 남겨주세요^.^", Toast.LENGTH_SHORT).show();
-                    break;
-                } else {
-                    openDialogComment();
-                    break;
-                }
-            case R.id.button_share:
-                break;
-        }
-    }
 
     private void setWishButtonState() {
         String wishMovieStateToString; // 서버로 보내주기위해 wishMovieState를 String 값으로 바꿈
@@ -293,6 +288,31 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
             }
         });
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.button_wish_movie:
+                wishMovieState = !wishMovieState;
+                Log.e("log", "wish button clicked, wishMovieState ==== " + wishMovieState);
+                btnWishMovie.setActivated(wishMovieState);
+                setWishButtonState();
+                break;
+            case R.id.button_rate:
+                openDialogRating();
+                break;
+            case R.id.button_comment:
+                if (score.equals("0.0")) {
+                    Toast.makeText(v.getContext(), "평가 먼저 남겨주세요^.^", Toast.LENGTH_SHORT).show();
+                    break;
+                } else {
+                    openDialogComment();
+                    break;
+                }
+            case R.id.button_share:
+                break;
+        }
     }
 
     private void openDialogRating() {
