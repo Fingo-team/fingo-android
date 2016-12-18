@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.MEDIA_CONTENT_CONTROL"/>
+    <uses-permission android:name="android.permission.MEDIA_CONTENT_CONTROL" />
 
     <application
         android:name=".utils.AppController"
@@ -26,12 +26,32 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".main.ActivityMain" />
+
+        <activity android:name=".main.ActivityMain">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="@string/kakaolink_host"
+                    android:scheme="@string/kakao_scheme" />
+            </intent-filter>
+
+        </activity>
+
         <activity android:name=".login.ActivityLogin" />
         <activity android:name=".search.ActivitySearch" />
         <activity android:name=".common.ActivityMovieDetail" />
+
         <activity android:name=".mypage.ActivityMyPage" />
+
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="@string/kakao_app_key" />
+
         <activity android:name=".common.ActivityCorrectComment"></activity>
     </application>
 

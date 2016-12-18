@@ -27,6 +27,9 @@ import android.widget.TextView;
 import com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader;
 import com.bumptech.glide.Glide;
 import com.cocosw.bottomsheet.BottomSheet;
+import com.kakao.kakaolink.KakaoLink;
+import com.kakao.kakaolink.KakaoTalkLinkMessageBuilder;
+import com.kakao.util.KakaoParameterException;
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.login.ActivityLogin;
 import com.teamfingo.android.fingo.model.UserComments;
@@ -67,7 +70,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
 
     private static final int INIT_PAGE = 1;
 
-    public FragmentMyPage() {
+    public FragmentMyPage() throws KakaoParameterException {
         // Required empty public constructor
     }
 
@@ -463,6 +466,24 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
 
         return Uri.parse(path);
+    }
+
+    private void sharToKakao() throws KakaoParameterException {
+        final KakaoLink kakaoLink = KakaoLink.getKakaoLink(this.getContext().getApplicationContext());
+        final KakaoTalkLinkMessageBuilder kakaoTalkLinkMessageBuilder = kakaoLink.createKakaoTalkLinkMessageBuilder();
+
+        // 링크 메세지 작성
+        String text = "";
+        kakaoTalkLinkMessageBuilder.addText(text);
+
+        String imageSrc = "";
+        int width = 300;
+        int height = 300;
+        kakaoTalkLinkMessageBuilder.addImage(imageSrc, width, height);
+
+        kakaoTalkLinkMessageBuilder.addAppButton("감동을 전하는 놀이터 - Fingo");
+        kakaoLink.sendMessage(kakaoTalkLinkMessageBuilder,getContext());
+
     }
 
 }
