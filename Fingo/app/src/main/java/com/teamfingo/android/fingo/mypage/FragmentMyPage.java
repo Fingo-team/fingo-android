@@ -30,6 +30,7 @@ import com.teamfingo.android.fingo.login.ActivityLogin;
 import com.teamfingo.android.fingo.model.UserComments;
 import com.teamfingo.android.fingo.model.UserDetail;
 import com.teamfingo.android.fingo.utils.AppController;
+import com.teamfingo.android.fingo.utils.EndlessRecyclerOnScrollListener;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -50,7 +51,9 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
     RecyclerView mRecyclerView;
     RecyclerAdapterMypageComment mAdapter;
     RecyclerViewHeader header;
-    RecyclerView.LayoutManager mLayoutManager;
+    LinearLayoutManager mLayoutManager;
+
+    EndlessRecyclerOnScrollListener mEndlessRecyclerOnScrollListener;
 
     Uri imageUri;
 
@@ -60,7 +63,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
     private static final int MY_PAGE_WISH = 1;
     private static final int MY_PAGE_WATCHED = 2;
 
-    private static final int maxCommentsPerRequest = 10;
+    private static final int INIT_PAGE = 1;
 
     public FragmentMyPage() {
         // Required empty public constructor
@@ -81,7 +84,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
         callFingoUserProfile();
 
         // User comments data load
-        callFingoUserComments();
+        callFingoUserComments(INIT_PAGE);
 
         // inflate user comments in mypage
         initRecyclerView(view);
@@ -123,15 +126,25 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
     }
 
     private void initRecyclerView(View view) {
+
+        mUserComments = new ArrayList<>();
+
         // Standard Recycler View Setting
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_mypage_comment);
         mAdapter = new RecyclerAdapterMypageComment(this.getContext(), this.getActivity(), mUserComments);
         mRecyclerView.setAdapter(mAdapter);
         mLayoutManager = new LinearLayoutManager(this.getContext());
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        mEndlessRecyclerOnScrollListener = new EndlessRecyclerOnScrollListener(mLayoutManager) {
+            @Override
+            public void onLoadMore(int current_page) {
+                callFingoUserComments(current_page);
+            }
+        };
 
+        mRecyclerView.setLayoutManager(mLayoutManager);
         // Recycler view Header library call
         header.attachTo(mRecyclerView);
+        mRecyclerView.addOnScrollListener(mEndlessRecyclerOnScrollListener);
     }
 
     // User Profile 정보 요청 하는 메소드
@@ -173,13 +186,9 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
     }
 
     // User Comment 정보 요청 하는 메소드
-    private void callFingoUserComments() {
+    private void callFingoUserComments(int page) {
 
-        // TODO 싱글톤으로 좀 더 깔끔하게 표현 가능
-        // 호출 될 때마다 초기화
-        mUserComments = new ArrayList<>();
-
-        Call<UserComments> userCommentsCall = AppController.getFingoService().getUserComments(AppController.getToken());
+        Call<UserComments> userCommentsCall = AppController.getFingoService().getUserComments(AppController.getToken(), page);
         userCommentsCall.enqueue(new Callback<UserComments>() {
             @Override
             public void onResponse(Call<UserComments> call, Response<UserComments> response) {
@@ -232,7 +241,6 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
 
         });
     }
-
 
     @Override
     public void onClick(View v) {

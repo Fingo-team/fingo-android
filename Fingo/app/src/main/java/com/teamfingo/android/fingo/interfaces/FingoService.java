@@ -14,8 +14,6 @@ import com.teamfingo.android.fingo.model.UserComments;
 import com.teamfingo.android.fingo.model.UserDetail;
 import com.teamfingo.android.fingo.model.UserMovies;
 
-import java.util.ArrayList;
-
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -102,7 +100,7 @@ public interface FingoService {
 
     // getPersonalComments
     @GET("/api/v1.0/activity/user/comments/")
-    Call<UserComments> getUserComments(@Header("Authorization") String authorization);
+    Call<UserComments> getUserComments(@Header("Authorization") String authorization, @Query("page")int page);
 
     // get user detail
     @GET("/api/v1.0/activity/user/detail/")
@@ -110,11 +108,11 @@ public interface FingoService {
 
     // get wish movie
     @GET("/api/v1.0/activity/user/wish/movies/")
-    Call<UserMovies> getWishMovie(@Header("Authorization") String authorization);
+    Call<UserMovies> getWishMovie(@Header("Authorization") String authorization, @Query("page") int page);
 
     // get watched movie
     @GET("/api/v1.0/activity/user/watched/movies/")
-    Call<UserMovies> getWatchedMovie(@Header("Authorization") String authorization);
+    Call<UserMovies> getWatchedMovie(@Header("Authorization") String authorization, @Query("page") int page);
 
     @FormUrlEncoded
     @POST("/api/v1.0/user/fb_login/")

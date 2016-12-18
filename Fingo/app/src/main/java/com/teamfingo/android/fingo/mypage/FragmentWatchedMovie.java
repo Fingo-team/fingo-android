@@ -1,6 +1,5 @@
 package com.teamfingo.android.fingo.mypage;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,6 +14,7 @@ import android.widget.TextView;
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.model.UserMovies;
 import com.teamfingo.android.fingo.utils.AppController;
+import com.teamfingo.android.fingo.utils.EndlessRecyclerOnScrollListener;
 
 import java.util.ArrayList;
 
@@ -32,8 +32,12 @@ public class FragmentWatchedMovie extends Fragment {
 
     RecyclerView mRecyclerView;
     RecyclerAdapterMovie mAdapter;
+    GridLayoutManager mLayoutManager;
+    EndlessRecyclerOnScrollListener mEndlessRecyclerOnScrollListener;
 
     ArrayList<UserMovies.Results> mWatchedMovies = new ArrayList<>();
+
+    private static final int INIT_PAGE = 1;
 
     public FragmentWatchedMovie() {
         // Required empty public constructor
@@ -46,36 +50,50 @@ public class FragmentWatchedMovie extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_watched_movie, container, false);
 
-        Log.e("Frgement", ">>>>>>>>>> 진입 체크");
-        btnOrdering = (ImageButton) view.findViewById(R.id.button_ordering);
-        tvOrdering = (TextView) view.findViewById(R.id.textView_ordering);
+        initView(view);
 
-        callFingoService();
+        callUserMovies(INIT_PAGE);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_watched_movie);
-        mAdapter = new RecyclerAdapterMovie(this.getContext(), mWatchedMovies);
-        mRecyclerView.setAdapter(mAdapter);
-
-        GridLayoutManager manager = new GridLayoutManager(this.getContext(), 3);
-        mRecyclerView.setLayoutManager(manager);
+        initRecyclerView(view);
 
         return view;
     }
 
-    private void callFingoService() {
+    private void initView(View view){
 
-        Call<UserMovies> watchedMovieCall = AppController.getFingoService().getWatchedMovie(AppController.getToken());
+        btnOrdering = (ImageButton) view.findViewById(R.id.button_ordering);
+        tvOrdering = (TextView) view.findViewById(R.id.textView_ordering);
+    }
+
+    private void initRecyclerView(View view){
+
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_watched_movie);
+        mAdapter = new RecyclerAdapterMovie(this.getContext(), mWatchedMovies);
+        mRecyclerView.setAdapter(mAdapter);
+        mLayoutManager = new GridLayoutManager(this.getContext(), 3);
+        mEndlessRecyclerOnScrollListener = new EndlessRecyclerOnScrollListener(mLayoutManager) {
+            @Override
+            public void onLoadMore(int current_page) {
+                callUserMovies(current_page);
+            }
+        };
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+    }
+
+    private void callUserMovies(int page) {
+
+        Call<UserMovies> watchedMovieCall = AppController.getFingoService().getWatchedMovie(AppController.getToken(), page);
         watchedMovieCall.enqueue(new Callback<UserMovies>() {
             @Override
             public void onResponse(Call<UserMovies> call, Response<UserMovies> response) {
                 if (response.isSuccessful()) {
                     UserMovies data = response.body();
                     for (UserMovies.Results movie : data.getResults()) {
-                        Log.e("check watched movie", ">>>>>>" + movie.getMovie().getTitle());
                         mWatchedMovies.add(movie);
+                        Log.e("check",">>>>>"+movie.getMovie().getTitle());
                     }
-                } else
-                    Log.e("check watched movie", ">>>>>>" + response.message());
+                }
                 mAdapter.notifyDataSetChanged();
             }
 

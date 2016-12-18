@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.model.UserComments;
 import com.teamfingo.android.fingo.utils.AppController;
+import com.teamfingo.android.fingo.utils.EndlessRecyclerOnScrollListener;
 
 import java.util.ArrayList;
 
@@ -32,8 +33,12 @@ public class FragmentCommentDetail extends Fragment {
 
     RecyclerView mRecyclerView;
     RecyclerAdapterCommentDetail mAdapter;
+    LinearLayoutManager mLayoutManager;
+    EndlessRecyclerOnScrollListener mEndlessRecyclerOnScrollListener;
 
     ArrayList<UserComments.Results> mUserComments = new ArrayList<>();
+
+    private static final int INIT_PAGE = 1;
 
     public FragmentCommentDetail() {
         // Required empty public constructor
@@ -46,23 +51,41 @@ public class FragmentCommentDetail extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_comment_detail, container, false);
 
-        btnOrdering = (ImageButton) view.findViewById(R.id.button_ordering);
-        tvOrdering = (TextView) view.findViewById(R.id.textView_ordering);
+        initView(view);
 
-        callFingoService();
+        callFingoUserComments(INIT_PAGE);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_comment_detail);
-        mAdapter = new RecyclerAdapterCommentDetail(this.getContext(), mUserComments);
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        initRecyclerView(view);
 
         return view;
     }
 
-    private void callFingoService() {
+    private void initView(View view){
 
+        btnOrdering = (ImageButton) view.findViewById(R.id.button_ordering);
+        tvOrdering = (TextView) view.findViewById(R.id.textView_ordering);
+    }
 
-        Call<UserComments> userCommentsCall = AppController.getFingoService().getUserComments(AppController.getToken());
+    private void initRecyclerView(View view){
+
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_comment_detail);
+        mAdapter = new RecyclerAdapterCommentDetail(this.getContext(), mUserComments);
+        mRecyclerView.setAdapter(mAdapter);
+        mLayoutManager = new LinearLayoutManager(this.getContext());
+        mEndlessRecyclerOnScrollListener = new EndlessRecyclerOnScrollListener(mLayoutManager) {
+            @Override
+            public void onLoadMore(int current_page) {
+                callFingoUserComments(current_page);
+            }
+        };
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.addOnScrollListener(mEndlessRecyclerOnScrollListener);
+
+    }
+
+    private void callFingoUserComments(int page) {
+
+        Call<UserComments> userCommentsCall = AppController.getFingoService().getUserComments(AppController.getToken(), page);
         userCommentsCall.enqueue(new Callback<UserComments>() {
             @Override
             public void onResponse(Call<UserComments> call, Response<UserComments> response) {

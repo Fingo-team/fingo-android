@@ -1,10 +1,10 @@
 package com.teamfingo.android.fingo.mypage;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.model.UserMovies;
 import com.teamfingo.android.fingo.utils.AppController;
+import com.teamfingo.android.fingo.utils.EndlessRecyclerOnScrollListener;
 
 import java.util.ArrayList;
 
@@ -31,8 +32,12 @@ public class FragmentWishMovie extends Fragment {
 
     RecyclerView mRecyclerView;
     RecyclerAdapterMovie mAdapter;
+    GridLayoutManager mLayoutManager;
+    EndlessRecyclerOnScrollListener mEndlessRecyclerOnScrollListener;
 
     ArrayList<UserMovies.Results> mWishMovies = new ArrayList<>();
+
+    private static final int INIT_PAGE = 1;
 
     public FragmentWishMovie() {
         // Required empty public constructor
@@ -45,23 +50,40 @@ public class FragmentWishMovie extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragement_wish_movie, container, false);
 
-        btnOrdering = (ImageButton) view.findViewById(R.id.button_ordering);
-        tvOrdering = (TextView) view.findViewById(R.id.textView_ordering);
+        initView(view);
 
-        callFingoService();
+        callUserMovies(INIT_PAGE);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_wish_movie);
-        mAdapter = new RecyclerAdapterMovie(this.getContext(), mWishMovies);
-        mRecyclerView.setAdapter(mAdapter);
-        GridLayoutManager manager = new GridLayoutManager(this.getContext(), 3);
-        mRecyclerView.setLayoutManager(manager);
+        initRecyclerView(view);
 
         return view;
     }
 
-    private void callFingoService() {
+    private void initView(View view){
 
-        Call<UserMovies> wishMovieCall = AppController.getFingoService().getWishMovie(AppController.getToken());
+        btnOrdering = (ImageButton) view.findViewById(R.id.button_ordering);
+        tvOrdering = (TextView) view.findViewById(R.id.textView_ordering);
+    }
+
+    private void initRecyclerView(View view){
+
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_wish_movie);
+        mAdapter = new RecyclerAdapterMovie(this.getContext(), mWishMovies);
+        mRecyclerView.setAdapter(mAdapter);
+        mLayoutManager = new GridLayoutManager(this.getContext(), 3);
+        mEndlessRecyclerOnScrollListener = new EndlessRecyclerOnScrollListener(mLayoutManager) {
+            @Override
+            public void onLoadMore(int current_page) {
+                callUserMovies(current_page);
+            }
+        };
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+    }
+
+    private void callUserMovies(int page) {
+
+        Call<UserMovies> wishMovieCall = AppController.getFingoService().getWishMovie(AppController.getToken(), page);
         wishMovieCall.enqueue(new Callback<UserMovies>() {
             @Override
             public void onResponse(Call<UserMovies> call, Response<UserMovies> response) {
@@ -70,6 +92,7 @@ public class FragmentWishMovie extends Fragment {
                     UserMovies data = response.body();
                     for(UserMovies.Results movie : data.getResults()){
                         mWishMovies.add(movie);
+                        Log.e("check",">>>>>"+movie.getMovie().getTitle());
                     }
                 }
                 mAdapter.notifyDataSetChanged();
