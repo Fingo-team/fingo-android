@@ -46,6 +46,14 @@ public class ActivitySearch extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         searchToolbar = (Toolbar) findViewById(R.id.search_toolbar);
+        setSupportActionBar(searchToolbar); // back arrow를 달아주기 위해 설정
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        searchToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         mSearchRecyclerView = (RecyclerView) findViewById(R.id.recyclerView_search);
         mToolbarEditText = (EditText) findViewById(R.id.editText_toolbar);
 
