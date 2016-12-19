@@ -82,11 +82,7 @@ public class FragmentRandomMovie extends Fragment {
                 if (response.isSuccessful()) {
                     RandomMovie randomMovie = response.body();
 
-//                    for (int i=0; i<randomMovie.getData().size(); i++) {
-//                        mRandomMovies.add(randomMovie.getData().get(i));
-//                    }
                     mRandomMovies.addAll(randomMovie.getData());
-
                     mRecyclerAdapterRandomMovie.notifyDataSetChanged();
                 }
                 mSwipeRefreshLayout.setRefreshing(false);
