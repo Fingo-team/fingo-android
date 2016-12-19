@@ -60,39 +60,46 @@ public class RecyclerAdapterRandomMovie extends RecyclerView.Adapter<RecyclerAda
         View view = LayoutInflater.from(parent.getContext()).inflate(itemLayout, parent, false);
         return new ViewHolder(view);
     }
-
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
 
         Glide.with(mContext).load(mRandomMovies.get(position).getImg()).into(holder.ivMoviePoster);
         holder.tvMovieTitle.setText(mRandomMovies.get(position).getTitle());
         holder.tvMovieDate.setText(mRandomMovies.get(position).getFirst_run_date());
-        //score = mRandomMovies.get(position).getScore();
         holder.rbScore.setRating(Float.parseFloat(mRandomMovies.get(position).getScore()));
         holder.rbScore.setTag(position);
         Log.e("log", "score1 === "+ mRandomMovies.get(position).getScore());
+        Log.e("log","score set");
 
+        String movieId = mRandomMovies.get(position).getId();
+        CustomOnRatingChanged rC = new CustomOnRatingChanged(position, movieId);
+        holder.rbScore.setOnRatingBarChangeListener(rC);
+    }
+    private class CustomOnRatingChanged implements  RatingBar.OnRatingBarChangeListener{
+        int position;
+        String movieId;
 
-        final String movieId = mRandomMovies.get(position).getId();
-        holder.rbScore.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+        public CustomOnRatingChanged(int position, String movieId) {
+            this.position = position;
+            this.movieId = movieId;
+        }
 
-                if(ratingBar.getTag().equals(position)) {
+        @Override
+        public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+            if(fromUser) {
+                if (ratingBar.getTag().equals(position)) {
                     final String score = Float.toString(rating);
                     ratingBar.setRating(rating);
 
-                    Log.e("tag","score = " + mRandomMovies.get(position).getScore());
+                    Log.e("tag", "score = " + mRandomMovies.get(position).getScore());
                     Call<Void> postMovieScoreCall = AppController.getFingoService()
                             .postMovieScore(AppController.getToken(), movieId, score);
                     postMovieScoreCall.enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
                             if (response.code() == 200) {
-                                Log.e("log", "post movie score ==== success");
                                 Toast.makeText(mContext, "점수가 입력되었습니다.", Toast.LENGTH_SHORT).show();
                                 mRandomMovies.get(position).setScore(score);
-                                notifyItemChanged(position);
                             }
                         }
 
@@ -102,9 +109,8 @@ public class RecyclerAdapterRandomMovie extends RecyclerView.Adapter<RecyclerAda
                         }
                     });
                 }
-
             }
-        });
+        }
     }
 
     @Override
