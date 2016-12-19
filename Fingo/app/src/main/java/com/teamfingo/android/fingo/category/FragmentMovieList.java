@@ -40,7 +40,7 @@ public class FragmentMovieList extends Fragment {
     ImageView imgViewMoviePoster;
     TextView tvMovieTitle;
     TextView tvAverageScore;
-    TextView tvTotalAttendance;
+    TextView tvMovieGenre;
     TextView tvReleaseDate;
 
 
@@ -126,15 +126,15 @@ public class FragmentMovieList extends Fragment {
             imgViewMoviePoster = (ImageView) convertView.findViewById(R.id.imageView_movie_poster);
             tvMovieTitle = (TextView) convertView.findViewById(R.id.textView_movie_title);
             tvAverageScore = (TextView) convertView.findViewById(R.id.textView_average_score);
-            tvTotalAttendance = (TextView) convertView.findViewById(R.id.textView_total_attendance);
+            tvMovieGenre = (TextView) convertView.findViewById(R.id.textView_genre);
             tvReleaseDate = (TextView) convertView.findViewById(R.id.textView_release_date);
 
             Glide.with(getContext()).load(mRanks.get(position).getMovie().getImg()).into(imgViewMoviePoster);
             tvMovieTitle.setText(mRanks.get(position).getMovie().getTitle());
-            tvAverageScore.setText(mRanks.get(position).getMovie().getScore());
+            tvAverageScore.setText(getString(R.string.fingo_user_average_score) +" "+ mRanks.get(position).getMovie().getScore());
             Movie.Genre genre[] = mRanks.get(position).getMovie().getGenre();
-            tvTotalAttendance.setText(genre[0].toString());
-            tvReleaseDate.setText(mRanks.get(position).getMovie().getFirst_run_date());
+            tvMovieGenre.setText(genre[0].toString());
+            tvReleaseDate.setText(" ・ " + mRanks.get(position).getMovie().getFirst_run_date());
 
             return convertView;
         }

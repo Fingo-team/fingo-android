@@ -12,4 +12,6 @@
     <color name="colorButtonActivate">#feff5a39</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorLightGray">#efefef</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorBrown">#de8900</color>
 </resources>
