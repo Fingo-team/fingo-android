@@ -468,7 +468,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
         return Uri.parse(path);
     }
 
-    private void sharToKakao() throws KakaoParameterException {
+    private void shareToKakao() throws KakaoParameterException {
         final KakaoLink kakaoLink = KakaoLink.getKakaoLink(this.getContext().getApplicationContext());
         final KakaoTalkLinkMessageBuilder kakaoTalkLinkMessageBuilder = kakaoLink.createKakaoTalkLinkMessageBuilder();
 
