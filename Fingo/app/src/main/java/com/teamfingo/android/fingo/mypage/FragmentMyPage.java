@@ -28,8 +28,6 @@ import android.widget.TextView;
 import com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader;
 import com.bumptech.glide.Glide;
 import com.cocosw.bottomsheet.BottomSheet;
-import com.kakao.kakaolink.KakaoLink;
-import com.kakao.kakaolink.KakaoTalkLinkMessageBuilder;
 import com.kakao.util.KakaoParameterException;
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.login.ActivityLogin;
@@ -40,6 +38,8 @@ import com.teamfingo.android.fingo.utils.EndlessRecyclerOnScrollListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import okhttp3.MediaType;
@@ -389,15 +389,17 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
 
         Uri uri = data.getData();
 
-        if (requestCode == REQ_CODE_TAKE_PHOTO) {
-            if (resultCode == Activity.RESULT_OK) {
+        switch (requestCode) {
 
-                Bundle extras = data.getExtras();
-                Log.e("CHECK URI", ">>>>>>>>>>" + extras.get("data"));
-                Bitmap imageBitmap = (Bitmap) extras.get("data");
-
-                ivProfile.setImageBitmap(imageBitmap);
-                imageUri = getImageUri(getActivity(), imageBitmap);
+            case REQ_CODE_TAKE_PHOTO:
+//                if (resultCode == Activity.RESULT_OK) {
+//
+//                    Bundle extras = data.getExtras();
+//                    Log.e("CHECK URI", ">>>>>>>>>>" + extras.get("data"));
+//                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+//
+//                    ivProfile.setImageBitmap(imageBitmap);
+//                    imageUri = getImageUri(getActivity(), imageBitmap);
 //                String filePath = getRealPathFromURI(imageUri);
 //                Log.e("CHECK URI", ">>>>>>>>>>" + filePath);
 //
@@ -429,54 +431,52 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
 //                        Log.e("Upload error:", t.getMessage());
 //                    }
 //                });
-            }
-        } else if (requestCode == REQ_CODE_SELECT_IMAGE) {
-            if (resultCode == Activity.RESULT_OK) {
-                try {
-                    if (null != data.getData()) {
+//                }
+//                break;1
 
-                        Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), data.getData());
+            case REQ_CODE_SELECT_IMAGE:
+                if (resultCode == Activity.RESULT_OK) {
+                    try {
+                        if (null != data.getData()) {
 
-                        //배치해놓은 ImageView에 set
-                        ivProfile.setImageBitmap(image_bitmap);
+                            Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), data.getData());
 
-                        // Uri에서 이미지 이름을 얻어온다.
-                        String filePath = getRealPathFromURI(data.getData());
-                        Log.e("CHECK", ">>>>>>" + filePath);
+                            //배치해놓은 ImageView에 set
+                            ivProfile.setImageBitmap(image_bitmap);
 
-                        // 서버에 전송 할 multipart form data 를 생성
-                        File file = new File(filePath);
-                        RequestBody reqFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-                        MultipartBody.Part body = MultipartBody.Part.createFormData("user_img", file.getName(), reqFile);
-                        Call<ResponseBody> uploadImageCall = AppController.getFingoService().uploadImage(AppController.getToken(), body);
-                        uploadImageCall.enqueue(new Callback<ResponseBody>() {
-                            @Override
-                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                                if(response.isSuccessful()){
-                                    Log.e("CHECK API", response.message());
-                                    Log.e("http",response.code()+"");
+                            // Uri에서 이미지 이름을 얻어온다.
+                            String filePath = getRealPathFromURI(data.getData());
+                            Log.e("CHECK", ">>>>>>" + filePath);
+
+                            // 서버에 전송 할 multipart form data 를 생성
+                            File file = new File(filePath);
+                            RequestBody reqFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+                            MultipartBody.Part body = MultipartBody.Part.createFormData("user_img", file.getName(), reqFile);
+
+                            Call<ResponseBody> uploadImageCall = AppController.getFingoService().uploadImage(AppController.getToken(), body);
+                            uploadImageCall.enqueue(new Callback<ResponseBody>() {
+                                @Override
+                                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                    if (response.isSuccessful()) {
+                                        Log.e("CHECK API", response.message());
+                                        Log.e("http", response.code() + "");
+                                    }
                                 }
-                            }
 
-                            @Override
-                            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                                t.printStackTrace();
-                            }
-                        });
+                                @Override
+                                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                    t.printStackTrace();
+                                }
+                            });
+                        }
+                        break;
+
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-
-//
-//                    Bundle extras = data.getExtras();
-//                    Log.e("CHECK URI", ">>>>>>>>>>" + extras.get("data"));
-//                    Bitmap image_Bitmap = (Bitmap) extras.get("data");
-//                    ivProfile.setImageBitmap(image_Bitmap);
-
-//                    Toast.makeText(getBaseContext(), "name_Str : "+name_Str , Toast.LENGTH_SHORT).show();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-            }
         }
 
     }
@@ -488,6 +488,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         // requestCode지정해서 인텐트 실행
         startActivityForResult(intent, REQ_CODE_TAKE_PHOTO);
+
     }
 
     @Override
@@ -536,22 +537,5 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
         return Uri.parse(path);
     }
 
-    private void shareToKakao() throws KakaoParameterException {
-        final KakaoLink kakaoLink = KakaoLink.getKakaoLink(this.getContext().getApplicationContext());
-        final KakaoTalkLinkMessageBuilder kakaoTalkLinkMessageBuilder = kakaoLink.createKakaoTalkLinkMessageBuilder();
-
-        // 링크 메세지 작성
-        String text = "";
-        kakaoTalkLinkMessageBuilder.addText(text);
-
-        String imageSrc = "";
-        int width = 300;
-        int height = 500;
-        kakaoTalkLinkMessageBuilder.addImage(imageSrc, width, height);
-
-        kakaoTalkLinkMessageBuilder.addAppButton("감동을 전하는 놀이터 - Fingo");
-        kakaoLink.sendMessage(kakaoTalkLinkMessageBuilder, getContext());
-
-    }
 
 }

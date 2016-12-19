@@ -91,7 +91,10 @@ public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerA
         UserComments.User user_data = mUserComments.get(position).getUser();
         UserComments.Results comment_data = mUserComments.get(position);
 
-        Glide.with(mActivity).load(R.drawable.com_facebook_profile_picture_blank_portrait).into(holder.imgUserProfile);
+        if (mUserComments.get(position).getUser().getUser_img() != null)
+            Glide.with(mActivity).load(mUserComments.get(position).getUser().getUser_img()).into(holder.imgUserProfile);
+        else
+            Glide.with(mActivity).load(R.drawable.com_facebook_profile_picture_blank_portrait).into(holder.imgUserProfile);
         holder.tvUserName.setText(user_data.getNickname());
         holder.rbUserScore.setRating(comment_data.getScore());
         holder.tvCommentDate.setText(comment_data.getActivity_time());
@@ -104,7 +107,7 @@ public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerA
         holder.btnModify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openModifyMenu(v,position);
+                openModifyMenu(v, position);
             }
         });
 
@@ -145,7 +148,7 @@ public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerA
 
                             case R.id.menu_share:
                                 try {
-                                    shareToKakao(movie_info.getTitle() ,movie_info.getImg());
+                                    shareToKakao(movie_info.getTitle(), movie_info.getImg());
                                 } catch (KakaoParameterException e) {
                                     e.printStackTrace();
                                 }
