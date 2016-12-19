@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhiteBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,19 +21,27 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp">
             <TextView
                 android:id="@+id/textView_movie_title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textStyle="bold"/>
             <TextView
                 android:id="@+id/textView_movie_date"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textStyle="bold"/>
             <RatingBar
                 android:id="@+id/ratingBar_score"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:progressTint="@color/colorAccent"
+                android:progressBackgroundTint="@color/colorAccent"
+                android:secondaryProgressTint="@color/colorAccent"/>
 
         </LinearLayout>
 
