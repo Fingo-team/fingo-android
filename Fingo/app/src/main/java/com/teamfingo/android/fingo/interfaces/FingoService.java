@@ -15,7 +15,6 @@ import com.teamfingo.android.fingo.model.UserDetail;
 import com.teamfingo.android.fingo.model.UserMovies;
 
 import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.DELETE;
@@ -129,6 +128,6 @@ public interface FingoService {
     // 이미지 업로드
     @Multipart
     @POST("/api/v1.0/user/upload_profile/")
-    Call<ResponseBody> uploadImage(@Header("Authorization") String authorization, @Part MultipartBody.Part image, @Part("name") RequestBody name);
+    Call<ResponseBody> uploadImage(@Header("Authorization") String authorization, @Part MultipartBody.Part image);
 
 }
