@@ -40,7 +40,7 @@ public class FragmentCategory extends Fragment {
         mImageViewCategory = (ImageView) view.findViewById(R.id.imageView_category);
 
         Call<Movie> getMovieCall = AppController.getFingoService()
-                .getMovie(AppController.getToken(), "26"); // 라라랜드
+                .getMovie(AppController.getToken(), "2"); // 라라랜드
 
         getMovieCall.enqueue(new Callback<Movie>() {
             @Override
@@ -66,7 +66,7 @@ public class FragmentCategory extends Fragment {
             public void onClick(View v) {
                 Fragment fragment = new FragmentMovieList();
                 FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction().addToBackStack(null);
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.main_container, fragment);
                 transaction.commit();
             }
