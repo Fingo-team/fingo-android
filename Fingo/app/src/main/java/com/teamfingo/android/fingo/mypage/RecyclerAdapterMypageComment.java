@@ -19,6 +19,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.cocosw.bottomsheet.BottomSheet;
+import com.kakao.kakaolink.KakaoLink;
+import com.kakao.kakaolink.KakaoTalkLinkMessageBuilder;
+import com.kakao.util.KakaoParameterException;
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.common.ActivityCorrectComment;
 import com.teamfingo.android.fingo.model.UserComments;
@@ -88,7 +91,10 @@ public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerA
         UserComments.User user_data = mUserComments.get(position).getUser();
         UserComments.Results comment_data = mUserComments.get(position);
 
-        Glide.with(mActivity).load(R.drawable.com_facebook_profile_picture_blank_portrait).into(holder.imgUserProfile);
+        if (mUserComments.get(position).getUser().getUser_img() != null)
+            Glide.with(mActivity).load(mUserComments.get(position).getUser().getUser_img()).into(holder.imgUserProfile);
+        else
+            Glide.with(mActivity).load(R.drawable.com_facebook_profile_picture_blank_portrait).into(holder.imgUserProfile);
         holder.tvUserName.setText(user_data.getNickname());
         holder.rbUserScore.setRating(comment_data.getScore());
         holder.tvCommentDate.setText(comment_data.getActivity_time());
@@ -101,7 +107,7 @@ public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerA
         holder.btnModify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openModifyMenu(v,position);
+                openModifyMenu(v, position);
             }
         });
 
@@ -141,7 +147,11 @@ public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerA
                                 break;
 
                             case R.id.menu_share:
-
+                                try {
+                                    shareToKakao(movie_info.getTitle(), movie_info.getImg());
+                                } catch (KakaoParameterException e) {
+                                    e.printStackTrace();
+                                }
                                 break;
                         }
                     }
@@ -161,6 +171,23 @@ public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerA
                 t.printStackTrace();
             }
         });
+    }
+
+    private void shareToKakao(String movieTitle, String moviePoster) throws KakaoParameterException {
+        final KakaoLink kakaoLink = KakaoLink.getKakaoLink(mContext.getApplicationContext());
+        final KakaoTalkLinkMessageBuilder kakaoTalkLinkMessageBuilder = kakaoLink.createKakaoTalkLinkMessageBuilder();
+
+        // 링크 메세지 작성
+        String text = movieTitle;
+        kakaoTalkLinkMessageBuilder.addText(text);
+
+        String imageSrc = moviePoster;
+        int width = 300;
+        int height = 500;
+        kakaoTalkLinkMessageBuilder.addImage(imageSrc, width, height);
+
+        kakaoTalkLinkMessageBuilder.addAppButton("감동을 전하는 놀이터 - Fingo");
+        kakaoLink.sendMessage(kakaoTalkLinkMessageBuilder, mContext);
 
     }
 
