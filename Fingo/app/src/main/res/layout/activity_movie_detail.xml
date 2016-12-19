@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.teamfingo.android.fingo.common.ActivityMovieDetail"
-    android:background="@color/colorPrimaryDark">
+    android:background="@color/colorLightGray">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swiperefresh_movie_detail"
@@ -16,8 +16,7 @@
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/movie_detail_scrollview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorWhiteBackground">
+            android:layout_height="match_parent">
 
             <!-- 영화 포스터 영역 -->
             <RelativeLayout
@@ -29,18 +28,19 @@
                     android:id="@+id/imageView_movie_detail_backgroundStillcut"
                     android:layout_width="match_parent"
                     android:layout_height="220dp"
-                    app:srcCompat="@mipmap/ic_launcher"
-                    android:scaleType="fitXY"/>
+                    android:scaleType="fitXY"
+                    android:background="@color/colorLightGray"/>
 
                 <ImageView
                     android:id="@+id/imageView_movie_detail_movie_post"
-                    android:layout_width="90dp"
-                    android:layout_height="110dp"
+                    android:layout_width="100dp"
+                    android:layout_height="130dp"
                     android:layout_marginLeft="24dp"
-                    android:layout_marginTop="100dp"
+                    android:layout_marginTop="70dp"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    app:srcCompat="@mipmap/ic_launcher"/>
+                    android:scaleType="fitXY"
+                    android:background="@color/colorLightGray"/>
 
                 <TextView
                     android:id="@+id/textView_movie_detail_movie_title"
@@ -52,10 +52,10 @@
                     android:layout_toEndOf="@+id/imageView_movie_detail_movie_post"
                     android:layout_marginLeft="13dp"
                     android:layout_marginStart="13dp"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="70dp"
                     android:textColor="@color/movieDetail_movitTitle"
                     android:textStyle="bold"
-                    android:textSize="17dp"
+                    android:textSize="19dp"
                     android:shadowColor="@color/colorTextShadow"
                     android:shadowDx="1.0"
                     android:shadowDy="1.0"
@@ -67,8 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView_movie_detail_movie_title"
-                    android:layout_alignRight="@+id/textView_movie_detail_movie_title"
-                    android:layout_alignEnd="@+id/textView_movie_detail_movie_title"
+                    android:layout_alignLeft="@id/textView_movie_detail_movie_title"
                     android:layout_marginTop="13dp"
                     android:textColor="@color/movieDetail_movitTitle"
                     android:textStyle="bold"
@@ -85,7 +84,8 @@
                     android:orientation="horizontal"
                     android:layout_below="@id/imageView_movie_detail_backgroundStillcut"
                     android:id="@+id/button_bar_layout"
-                    android:padding="3dp">
+                    android:padding="3dp"
+                    android:background="@color/colorWhite">
                     <Button
                         android:id="@+id/button_wish_movie"
                         android:layout_width="70dp"
@@ -93,7 +93,7 @@
                         android:layout_weight="1"
                         android:drawableTop="@drawable/button_wish_movie_color_selector"
                         android:text="보고싶어요"
-                        android:background="@color/colorWhiteBackground"/>
+                        android:background="@color/colorWhite"/>
                     <Button
                         android:id="@+id/button_rate"
                         android:layout_width="70dp"
@@ -101,7 +101,7 @@
                         android:layout_weight="1"
                         android:drawableTop="@drawable/button_rate_color_selector"
                         android:text="평가하기"
-                        android:background="@color/colorWhiteBackground"/>
+                        android:background="@color/colorWhite"/>
                     <Button
                         android:id="@+id/button_comment"
                         android:layout_width="70dp"
@@ -109,7 +109,7 @@
                         android:layout_weight="1"
                         android:drawableTop="@drawable/button_comment_color_selector"
                         android:text="코멘트"
-                        android:background="@color/colorWhiteBackground"/>
+                        android:background="@color/colorWhite"/>
                     <Button
                         android:id="@+id/button_share"
                         android:layout_width="70dp"
@@ -118,7 +118,7 @@
                         android:drawableTop="@drawable/ic_share_black_30dp"
                         android:drawableTint="@color/colorAccent"
                         android:text="공유"
-                        android:background="@color/colorWhiteBackground"/>
+                        android:background="@color/colorWhite"/>
                 </android.support.v7.widget.ButtonBarLayout>
 
                 <!-- 상세정보 영역 -->
@@ -127,41 +127,47 @@
                     android:layout_below="@id/button_bar_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorWhiteBackground">
+                    android:background="@color/colorWhite"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp">
                     <TextView
                         android:id="@+id/textView_movie_information"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:layout_marginLeft="15dp"
-                        android:text="@string/movie_informatioin"/>
+                        android:gravity="center_vertical"
+                        android:text="@string/movie_informatioin"
+                        android:textStyle="bold"/>
+                    <View
+                        android:id="@+id/view1"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorLightGray"
+                        android:layout_below="@id/textView_movie_information"/>
 
                     <LinearLayout
                         android:id="@+id/linearLayout_date_and_genre"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginLeft="15dp"
-                        android:layout_below="@id/textView_movie_information">
+                        android:layout_below="@id/view1">
                         <TextView
                             android:id="@+id/textView_date"
                             android:layout_width="wrap_content"
-                            android:layout_height="25dp"
-                            android:text="날짜"/>
+                            android:layout_height="25dp"/>
                         <TextView
                             android:id="@+id/textView_genre"
                             android:layout_width="wrap_content"
                             android:layout_height="25dp"
-                            android:layout_marginLeft="20dp"
-                            android:text="장르"/>
+                            android:layout_marginLeft="20dp"/>
                     </LinearLayout>
 
                     <TextView
                         android:id="@+id/textView_story"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"
-                        android:layout_below="@id/linearLayout_date_and_genre"/>
+                        android:layout_below="@id/linearLayout_date_and_genre"
+                        android:textColor="@color/colorBlack"/>
                 </RelativeLayout>
 
                 <!-- 갤러리(스틸컷) 영역 -->
@@ -169,17 +175,22 @@
                     android:id="@+id/movie_detail_gallery_text"
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
-                    android:layout_margin="15dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="3dp"
+                    android:gravity="center_vertical"
                     android:text="@string/movie_detail_gallery"
-                    android:background="@color/colorWhiteBackground"
+                    android:textStyle="bold"
+                    android:background="@color/colorWhite"
                     android:layout_below="@id/movie_detail_relative_layout_movie_information">
                 </TextView>
+
                 <HorizontalScrollView
                     android:id="@+id/horizontalScrollView_stillCut"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:background="@color/colorWhiteBackground"
+                    android:background="@color/colorWhite"
                     android:layout_below="@id/movie_detail_gallery_text">
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -221,21 +232,28 @@
                     android:id="@+id/movie_detail_director_and_actor_text"
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
-                    android:layout_margin="15dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="16dp"
                     android:text="@string/movie_detail_director_and_actor"
-                    android:background="@color/colorWhiteBackground"
+                    android:textStyle="bold"
+                    android:background="@color/colorWhite"
                     android:layout_below="@id/horizontalScrollView_stillCut"/>
                 <HorizontalScrollView
                     android:id="@+id/horizontalScrollView_director_and_actor"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:background="@color/colorWhiteBackground"
-                    android:layout_below="@id/movie_detail_director_and_actor_text">
+                    android:layout_height="150dp"
+                    android:layout_below="@id/movie_detail_director_and_actor_text"
+                    android:background="@color/colorWhite"
+                    android:paddingTop="5dp">
                     <LinearLayout
                         android:id="@+id/linearLayout_director_and_actor"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp">
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/textView_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
                     </LinearLayout>
                 </HorizontalScrollView>
             </RelativeLayout>
