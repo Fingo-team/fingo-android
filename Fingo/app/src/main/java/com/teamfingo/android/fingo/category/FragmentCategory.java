@@ -40,7 +40,7 @@ public class FragmentCategory extends Fragment {
         mImageViewCategory = (ImageView) view.findViewById(R.id.imageView_category);
 
         Call<Movie> getMovieCall = AppController.getFingoService()
-                .getMovie(AppController.getToken(), "26"); // 라라랜드
+                .getMovie(AppController.getToken(), "2"); // 라라랜드
 
         getMovieCall.enqueue(new Callback<Movie>() {
             @Override
