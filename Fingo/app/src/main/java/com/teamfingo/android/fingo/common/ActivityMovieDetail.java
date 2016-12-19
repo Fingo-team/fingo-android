@@ -214,7 +214,6 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                         if (!(score.equals("0"))) {
                             btnRate.setText(score);
                             btnRate.setActivated(true);
-                            Toast.makeText(ActivityMovieDetail.this, "!(score.equals(\"0.0\")) " + score.equals("0.0"), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -347,43 +346,40 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
         mBuilderRating.setPositiveButton("완료", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-            Toast.makeText(ActivityMovieDetail.this, "완료", Toast.LENGTH_SHORT).show();
+                final String ratedScore;
+                ratedScore = String.valueOf(rbScore.getRating());
 
-            final String ratedScore;
-            ratedScore = String.valueOf(rbScore.getRating());
+                Call<Void> postMovieScoreCall = AppController.getFingoService().postMovieScore(AppController.getToken(), movieId, ratedScore); // POST
 
-            Call<Void> postMovieScoreCall = AppController.getFingoService().postMovieScore(AppController.getToken(), movieId, ratedScore); // POST
+                postMovieScoreCall.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.isSuccessful()) {
+                            score = ratedScore; // 사용자가 영화에 대한 평가 점수를 남기면, 평가 점수가 실시간으로 화면에 반영될 수 있게 처리
 
-            postMovieScoreCall.enqueue(new Callback<Void>() {
-                @Override
-                public void onResponse(Call<Void> call, Response<Void> response) {
-                    if (response.isSuccessful()) {
-                        score = ratedScore; // 사용자가 영화에 대한 평가 점수를 남기면, 평가 점수가 실시간으로 화면에 반영될 수 있게 처리
+                            if (ratedScore.equals("0.0")) {
+                                btnRate.setText("평가하기");
+                                btnRate.setActivated(false);
+                            } else {
+                                Log.d("log", "2/ score == "+score);
+                                btnRate.setText(ratedScore);
+                                btnRate.setActivated(true);
 
-                        if (ratedScore.equals("0.0")) {
-                            btnRate.setText("평가하기");
-                            btnRate.setActivated(false);
-                        } else {
-                            Log.d("log", "2/ score == "+score);
-                            btnRate.setText(ratedScore);
-                            btnRate.setActivated(true);
-
-                            // 보고싶어요 버튼이 클릭되어있는 영화가 평가됐을 경우, 보고싶어요 버튼 비활성화되게 처리
-                            if (btnWishMovie.isActivated()) {
-                                wishMovieState = !wishMovieState;
-                                btnWishMovie.setActivated(wishMovieState);
+                                // 보고싶어요 버튼이 클릭되어있는 영화가 평가됐을 경우, 보고싶어요 버튼 비활성화되게 처리
+                                if (btnWishMovie.isActivated()) {
+                                    wishMovieState = !wishMovieState;
+                                    btnWishMovie.setActivated(wishMovieState);
+                                }
                             }
+                        } else {
+                            Log.e("log", "response message ==== " + response.message());
                         }
-
-                    } else {
-                        Log.e("log", "response message ==== " + response.message());
                     }
-                }
-                @Override
-                public void onFailure(Call<Void> call, Throwable t) {
-                    Log.e("log", "error message ==== " + t.getMessage());
-                }
-            });
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Log.e("log", "error message ==== " + t.getMessage());
+                    }
+                });
 
             }
         });
@@ -426,30 +422,60 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
         mBuilderComment.setPositiveButton("완료", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(ActivityMovieDetail.this, "완료", Toast.LENGTH_SHORT).show();
+                if (comment == null) { // 처음 코멘트를 쓰는 경우 -> POST로 코멘트를 서버로 보냄
+                    String writtenComment = etComment.getText().toString();
+                    comment = writtenComment;
 
-                String writtenComment = etComment.getText().toString();
-                comment = writtenComment;
+                    if (writtenComment.equals("")) { // 아무 내용도 입력하지 않았을 때 토스트 메세지를 띄움
+                        Toast.makeText(ActivityMovieDetail.this, "코멘트를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Call<Void> postMovieComment = AppController.getFingoService()
+                                .postMovieComment(AppController.getToken(), movieId, writtenComment); // POST
 
-                Call<Void> postMovieComment = AppController.getFingoService().postMovieComment(AppController.getToken(), movieId, writtenComment); // POST
+                        postMovieComment.enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if (response.isSuccessful()) {
+                                    Log.e("log", "response message ==== " + response.message());
 
-                postMovieComment.enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        if (response.isSuccessful()) {
-                            Log.e("log", "response message ==== " + response.message());
+                                    // 댓글이 써졌을 경우 코멘트 아이콘 색상 변경
+                                    btnComment.setActivated(true);
+                                } else {
+                                    Log.e("log", "response message ==== " + response.message());
+                                }
+                            }
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Log.e("log", "error message ==== " + t.getMessage());
+                            }
+                        });
+                    }
+                } else { // 이미 작성된 코멘트가 있을 경우 -> 코멘트 수정은 PATCH를 사용
+                    Log.e("log", "comment not null");
+                    String writtenComment = etComment.getText().toString();
+                    comment = writtenComment;
 
-                            // 댓글이 써졌을 경우 코멘트 아이콘 색상 변경
-                            btnComment.setActivated(true);
-                        } else {
-                            Log.e("log", "response message ==== " + response.message());
+                    Call<Void> patchMovieComment = AppController.getFingoService()
+                            .patchMovieComment(AppController.getToken(), movieId, writtenComment); // POST
+
+                    patchMovieComment.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.isSuccessful()) {
+                                Log.e("log", "response message ==== " + response.message());
+
+                                // 댓글이 써졌을 경우 코멘트 아이콘 색상 변경
+                                btnComment.setActivated(true);
+                            } else {
+                                Log.e("log", "response message ==== " + response.message());
+                            }
                         }
-                    }
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                        Log.e("log", "error message ==== " + t.getMessage());
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Log.e("log", "error message ==== " + t.getMessage());
+                        }
+                    });
+                }
 
             }
         });
