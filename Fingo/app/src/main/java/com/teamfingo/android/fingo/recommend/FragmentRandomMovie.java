@@ -76,17 +76,16 @@ public class FragmentRandomMovie extends Fragment {
 
         Call<RandomMovie> getRandomMovieCall = AppController.getFingoService()
                 .getRandomMovie(AppController.getToken());
-
         getRandomMovieCall.enqueue(new Callback<RandomMovie>() {
             @Override
             public void onResponse(Call<RandomMovie> call, Response<RandomMovie> response) {
                 if (response.isSuccessful()) {
                     RandomMovie randomMovie = response.body();
 
-                    for (int i=0; i<randomMovie.getData().size(); i++) {
-                        mRandomMovies.add(randomMovie.getData().get(i));
-                    }
-                    //mRandomMovies.addAll(randomMovie.getData());
+//                    for (int i=0; i<randomMovie.getData().size(); i++) {
+//                        mRandomMovies.add(randomMovie.getData().get(i));
+//                    }
+                    mRandomMovies.addAll(randomMovie.getData());
 
                     mRecyclerAdapterRandomMovie.notifyDataSetChanged();
                 }
