@@ -2,18 +2,25 @@ package com.teamfingo.android.fingo.recommend;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.model.Movie;
+import com.teamfingo.android.fingo.utils.AppController;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Jaemin on 2016. 12. 16..
@@ -24,7 +31,7 @@ public class RecyclerAdapterRandomMovie extends RecyclerView.Adapter<RecyclerAda
     Context mContext;
     ArrayList<Movie> mRandomMovies = new ArrayList<>();
     private int itemLayout;
-
+    String score;
 
     public RecyclerAdapterRandomMovie(Context context, ArrayList<Movie> randomMovies, int itemLayout) {
         this.mContext = context;
@@ -33,13 +40,12 @@ public class RecyclerAdapterRandomMovie extends RecyclerView.Adapter<RecyclerAda
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-
         ImageView ivMoviePoster;
         TextView tvMovieTitle;
         TextView tvMovieDate;
         RatingBar rbScore;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(final View itemView) {
             super(itemView);
 
             ivMoviePoster = (ImageView) itemView.findViewById(R.id.imageView_movie_poster);
@@ -56,12 +62,49 @@ public class RecyclerAdapterRandomMovie extends RecyclerView.Adapter<RecyclerAda
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
 
         Glide.with(mContext).load(mRandomMovies.get(position).getImg()).into(holder.ivMoviePoster);
         holder.tvMovieTitle.setText(mRandomMovies.get(position).getTitle());
         holder.tvMovieDate.setText(mRandomMovies.get(position).getFirst_run_date());
+        //score = mRandomMovies.get(position).getScore();
         holder.rbScore.setRating(Float.parseFloat(mRandomMovies.get(position).getScore()));
+        holder.rbScore.setTag(position);
+        Log.e("log", "score1 === "+ mRandomMovies.get(position).getScore());
+
+
+        final String movieId = mRandomMovies.get(position).getId();
+        holder.rbScore.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+
+                if(ratingBar.getTag().equals(position)) {
+                    final String score = Float.toString(rating);
+                    ratingBar.setRating(rating);
+
+                    Log.e("tag","score = " + mRandomMovies.get(position).getScore());
+                    Call<Void> postMovieScoreCall = AppController.getFingoService()
+                            .postMovieScore(AppController.getToken(), movieId, score);
+                    postMovieScoreCall.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.code() == 200) {
+                                Log.e("log", "post movie score ==== success");
+                                Toast.makeText(mContext, "점수가 입력되었습니다.", Toast.LENGTH_SHORT).show();
+                                mRandomMovies.get(position).setScore(score);
+                                notifyItemChanged(position);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+
+                        }
+                    });
+                }
+
+            }
+        });
     }
 
     @Override
