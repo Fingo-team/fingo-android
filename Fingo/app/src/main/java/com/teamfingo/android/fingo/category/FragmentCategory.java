@@ -66,7 +66,7 @@ public class FragmentCategory extends Fragment {
             public void onClick(View v) {
                 Fragment fragment = new FragmentMovieList();
                 FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction().addToBackStack(null);
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.main_container, fragment);
                 transaction.commit();
             }
