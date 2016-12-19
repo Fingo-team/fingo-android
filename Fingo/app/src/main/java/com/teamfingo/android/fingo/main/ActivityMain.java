@@ -13,14 +13,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
 
+import com.kakao.util.KakaoParameterException;
 import com.teamfingo.android.fingo.R;
-import com.teamfingo.android.fingo.search.ActivitySearch;
-import com.teamfingo.android.fingo.utils.AppController;
-import com.teamfingo.android.fingo.utils.FingoPreferences;
 import com.teamfingo.android.fingo.category.FragmentCategory;
 import com.teamfingo.android.fingo.home.FragmentHome;
 import com.teamfingo.android.fingo.mypage.FragmentMyPage;
 import com.teamfingo.android.fingo.recommend.FragmentRecommend;
+import com.teamfingo.android.fingo.search.ActivitySearch;
+import com.teamfingo.android.fingo.utils.AppController;
 
 public class ActivityMain extends AppCompatActivity {
 
@@ -41,7 +41,11 @@ public class ActivityMain extends AppCompatActivity {
         fragmentHome = new FragmentHome();
         fragmentCategory = new FragmentCategory();
         fragmentRecommend = new FragmentRecommend();
-        fragmentMyPage = new FragmentMyPage();
+        try {
+            fragmentMyPage = new FragmentMyPage();
+        } catch (KakaoParameterException e) {
+            e.printStackTrace();
+        }
 
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         mainContainer = (RelativeLayout) findViewById(R.id.main_container);
