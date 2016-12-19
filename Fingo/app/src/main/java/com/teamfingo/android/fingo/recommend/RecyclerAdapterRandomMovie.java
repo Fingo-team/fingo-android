@@ -1,6 +1,7 @@
 package com.teamfingo.android.fingo.recommend;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.teamfingo.android.fingo.R;
+import com.teamfingo.android.fingo.common.ActivityMovieDetail;
 import com.teamfingo.android.fingo.model.Movie;
 import com.teamfingo.android.fingo.utils.AppController;
 
@@ -72,10 +74,15 @@ public class RecyclerAdapterRandomMovie extends RecyclerView.Adapter<RecyclerAda
         Log.e("log","score set");
 
         String movieId = mRandomMovies.get(position).getId();
+        // 영화에 별점을 남기면 통신하여 평점 값을 보내도록 처리
         CustomOnRatingChanged rC = new CustomOnRatingChanged(position, movieId);
         holder.rbScore.setOnRatingBarChangeListener(rC);
+        // 영화 포스터를 누르면 영화에 대한 디테일 화면이 보여지도록 처리
+        CustomOnImageViewListener imageViewListener = new CustomOnImageViewListener(position, movieId);
+        holder.ivMoviePoster.setOnClickListener(imageViewListener);
     }
-    private class CustomOnRatingChanged implements  RatingBar.OnRatingBarChangeListener{
+
+    private class CustomOnRatingChanged implements  RatingBar.OnRatingBarChangeListener {
         int position;
         String movieId;
 
@@ -110,6 +117,23 @@ public class RecyclerAdapterRandomMovie extends RecyclerView.Adapter<RecyclerAda
                     });
                 }
             }
+        }
+    }
+
+    private class CustomOnImageViewListener implements ImageView.OnClickListener {
+        int position;
+        String movieId;
+
+        public CustomOnImageViewListener(int position, String movieId) {
+            this.position = position;
+            this.movieId = movieId;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(mContext, ActivityMovieDetail.class);
+            intent.putExtra("movieId", movieId);
+            mContext.startActivity(intent);
         }
     }
 
