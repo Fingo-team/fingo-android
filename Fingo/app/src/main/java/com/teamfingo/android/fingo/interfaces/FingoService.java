@@ -71,6 +71,10 @@ public interface FingoService {
     @POST("/api/v1.0/movie/{id}/comment/")
     Call<Void> postMovieComment(@Header("Authorization") String authorization, @Path("id") String id, @Field("comment") String comment);
 
+    @FormUrlEncoded
+    @PATCH("/api/v1.0/movie/{id}/comment/")
+    Call<Void> patchMovieComment(@Header("Authorization") String authorization, @Path("id") String id, @Field("comment") String comment);
+
     // Statistics - User의 취향 통계를 나타내주는 API
     @GET("/api/v1.0/statistics/all/")
     Call<Statistics> getStatistics(@Header("Authorization") String authorization);
