@@ -107,7 +107,6 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
         ivStillCut4 = (ImageView) findViewById(R.id.imageView_stillCut4);
         ivStillCut5 = (ImageView) findViewById(R.id.imageView_stillCut5);
         llDirectorandActor = (LinearLayout) findViewById(R.id.linearLayout_director_and_actor);
-
     }
 
     public void loadData() {
@@ -128,16 +127,16 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
                     Glide.with(ActivityMovieDetail.this).load(movie.getImg()).into(ivMoviePoster);
                     tvMovieTitle.setText(movie.getTitle());
-                    tvMovieScore.setText(movie.getScore());
+                    tvMovieScore.setText(getString(R.string.average_score) + "  " + movie.getScore());
 
                     btnWishMovie.setOnClickListener(ActivityMovieDetail.this);
                     btnRate.setOnClickListener(ActivityMovieDetail.this);
                     btnComment.setOnClickListener(ActivityMovieDetail.this);
                     btnShare.setOnClickListener(ActivityMovieDetail.this);
 
-                    tvMovieDate.setText("개봉일: " + movie.getFirst_run_date());
+                    tvMovieDate.setText(getString(R.string.date) + " " + movie.getFirst_run_date());
                     Movie.Genre[] genre = movie.getGenre();
-                    tvMovieGenre.setText("장르: " + genre[0]);
+                    tvMovieGenre.setText(getString(R.string.genre) + " " + genre[0]);
                     tvMovieStory.setText(movie.getStory());
 
                     Glide.with(ActivityMovieDetail.this).load(stillCutImg[0].getImg()).into(ivStillCut1);
@@ -155,7 +154,10 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                         Glide.with(ActivityMovieDetail.this).load(directors[i].getImg()).into(civ);
                         civ.setLayoutParams(mLayoutParams);
                         mLayoutParams.setMargins(40,0,40,0);
+                        TextView tv = new TextView(ActivityMovieDetail.this);
+                        tv.setText(directors[i].getName());
                         llDirectorandActor.addView(civ);
+
                     }
 
                     for (int i=0; i<actors.length; i++) {
