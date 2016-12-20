@@ -1,6 +1,7 @@
 package com.teamfingo.android.fingo.mypage;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,10 +25,14 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader;
 import com.bumptech.glide.Glide;
 import com.cocosw.bottomsheet.BottomSheet;
+import com.facebook.login.LoginManager;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 import com.kakao.util.KakaoParameterException;
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.login.ActivityLogin;
@@ -61,6 +66,8 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
     RecyclerAdapterMypageComment mAdapter;
     RecyclerViewHeader header;
     LinearLayoutManager mLayoutManager;
+
+    LoginManager mFacebookLoginManager;
 
     EndlessRecyclerOnScrollListener mEndlessRecyclerOnScrollListener;
 
@@ -360,11 +367,10 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
                         switch (which) {
 
                             case R.id.menu_takePhoto:
-                                takePhoto();
+                                setRuntimePermission();
                                 break;
 
                             case R.id.menu_getGallery:
-
                                 getGallery();
                                 break;
 
@@ -386,7 +392,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
         super.onActivityResult(requestCode, resultCode, data);
 
         try {
-            if (data.getData() != null && resultCode == Activity.RESULT_OK) {
+            if (data != null && resultCode == Activity.RESULT_OK) {
 
                 Uri uri = data.getData();
                 String filePath = "";
@@ -396,8 +402,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
                 switch (requestCode) {
 
                     case REQ_CODE_TAKE_PHOTO:
-
-                        image_bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), data.getData());
+                        image_bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
 
                         ivProfile.setImageBitmap(image_bitmap);
 
@@ -411,7 +416,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
                         break;
 
                     case REQ_CODE_SELECT_IMAGE:
-                        image_bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), data.getData());
+                        image_bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
 
                         //배치해놓은 ImageView에 set
                         ivProfile.setImageBitmap(image_bitmap);
@@ -426,7 +431,8 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
 
                         break;
                 }
-            }
+            }else
+                Log.e("FAIL","//////");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -436,8 +442,8 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
     @Override
     public void takePhoto() {
 
+        // 사진 촬영을 할 때, 런타임 권한 요청을 하도록 설정
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         // requestCode지정해서 인텐트 실행
         startActivityForResult(intent, REQ_CODE_TAKE_PHOTO);
 
@@ -455,16 +461,18 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
     @Override
     public void getFacebookImage() {
 
+//        mFacebookLoginManager
+
     }
 
     @Override
     public void deleteImage() {
-
+        Glide.with(getContext()).load(R.drawable.com_facebook_profile_picture_blank_square).into(ivProfile);
     }
 
     @Override
     public void sendImage(File file) {
-        Log.e("TEST", ">>>>>" + file.getAbsolutePath());
+        Log.e("send Image", "+++++++++" + file.getAbsolutePath());
         RequestBody reqFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("user_img", file.getName(), reqFile);
 
@@ -510,6 +518,30 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
 
         return Uri.parse(path);
+    }
+
+    public void setRuntimePermission() {
+
+        PermissionListener mPermissionListener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                takePhoto();
+                Toast.makeText(getContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                Toast.makeText(getContext(), "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        new TedPermission(getContext())
+                .setPermissionListener(mPermissionListener)
+                .setRationaleMessage("해당 서비스 이용을 위한 자원 접근 권한이 필요합니다.")
+                .setDeniedMessage("[설정] > [권한] 에서 권한을 허용할 수 있습니다.")
+                .setPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .check();
     }
 
 }
