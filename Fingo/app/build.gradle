@@ -75,5 +75,7 @@ dependencies {
     // 카카오톡 sdk를 사용하기 위해 필요.
     compile group: 'com.kakao.sdk', name: 'kakaolink', version: project.KAKAO_SDK_VERSION
 
+    // 마시멜로우 이상 런타임 퍼미션 설정
+    compile 'gun0912.ted:tedpermission:1.0.2'
 
 }

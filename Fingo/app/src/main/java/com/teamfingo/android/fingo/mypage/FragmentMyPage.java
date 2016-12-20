@@ -38,8 +38,6 @@ import com.teamfingo.android.fingo.utils.EndlessRecyclerOnScrollListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import okhttp3.MediaType;
@@ -387,105 +385,59 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Uri uri = data.getData();
+        try {
+            if (data.getData() != null && resultCode == Activity.RESULT_OK) {
 
-        switch (requestCode) {
+                Uri uri = data.getData();
+                String filePath = "";
+                File file = null;
+                Bitmap image_bitmap = null;
 
-            case REQ_CODE_TAKE_PHOTO:
-//                if (resultCode == Activity.RESULT_OK) {
-//
-//                    Bundle extras = data.getExtras();
-//                    Log.e("CHECK URI", ">>>>>>>>>>" + extras.get("data"));
-//                    Bitmap imageBitmap = (Bitmap) extras.get("data");
-//
-//                    ivProfile.setImageBitmap(imageBitmap);
-//                    imageUri = getImageUri(getActivity(), imageBitmap);
-//                String filePath = getRealPathFromURI(imageUri);
-//                Log.e("CHECK URI", ">>>>>>>>>>" + filePath);
-//
-//
-//                imageUri = data.getData();
-//                Log.e("check uri", imageUri+"");
-//
-//                String filePath = getRealPathFromURI(imageUri);
-//
-//                File file = new File(filePath);
-//                RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-//                MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
-//                RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_test");
-//
-//                Call<ResponseBody> uploadImageCall = AppController.getFingoService().uploadImage(AppController.getToken(), body, name);
-//                uploadImageCall.enqueue(new Callback<ResponseBody>() {
-//                    @Override
-//                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//                        if (response.isSuccessful()) {
-//                            Log.e("Upload", "success");
-//                        }
-//
-//                        else
-//                            Log.e("Upload", "Fail");
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                        Log.e("Upload error:", t.getMessage());
-//                    }
-//                });
-//                }
-//                break;1
+                switch (requestCode) {
 
-            case REQ_CODE_SELECT_IMAGE:
-                if (resultCode == Activity.RESULT_OK) {
-                    try {
-                        if (null != data.getData()) {
+                    case REQ_CODE_TAKE_PHOTO:
 
-                            Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), data.getData());
+                        image_bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), data.getData());
 
-                            //배치해놓은 ImageView에 set
-                            ivProfile.setImageBitmap(image_bitmap);
+                        ivProfile.setImageBitmap(image_bitmap);
 
-                            // Uri에서 이미지 이름을 얻어온다.
-                            String filePath = getRealPathFromURI(data.getData());
-                            Log.e("CHECK", ">>>>>>" + filePath);
+                        imageUri = getImageUri(getActivity(), image_bitmap);
+                        filePath = getRealPathFromURI(imageUri);
+                        Log.e("CHECK URI", ">>>>>>>>>>" + filePath);
 
-                            // 서버에 전송 할 multipart form data 를 생성
-                            File file = new File(filePath);
-                            RequestBody reqFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-                            MultipartBody.Part body = MultipartBody.Part.createFormData("user_img", file.getName(), reqFile);
+                        file = new File(filePath);
+                        sendImage(file);
 
-                            Call<ResponseBody> uploadImageCall = AppController.getFingoService().uploadImage(AppController.getToken(), body);
-                            uploadImageCall.enqueue(new Callback<ResponseBody>() {
-                                @Override
-                                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                                    if (response.isSuccessful()) {
-                                        Log.e("CHECK API", response.message());
-                                        Log.e("http", response.code() + "");
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                                    t.printStackTrace();
-                                }
-                            });
-                        }
                         break;
 
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-        }
+                    case REQ_CODE_SELECT_IMAGE:
+                        image_bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), data.getData());
 
+                        //배치해놓은 ImageView에 set
+                        ivProfile.setImageBitmap(image_bitmap);
+
+                        // Uri에서 이미지 이름을 얻어온다.
+                        filePath = getRealPathFromURI(data.getData());
+                        Log.e("CHECK", ">>>>>>" + filePath);
+
+                        // 서버에 전송 할 multipart form data 를 생성
+                        file = new File(filePath);
+                        sendImage(file);
+
+                        break;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void takePhoto() {
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         // requestCode지정해서 인텐트 실행
         startActivityForResult(intent, REQ_CODE_TAKE_PHOTO);
 
@@ -508,6 +460,29 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
     @Override
     public void deleteImage() {
 
+    }
+
+    @Override
+    public void sendImage(File file) {
+        Log.e("TEST", ">>>>>" + file.getAbsolutePath());
+        RequestBody reqFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("user_img", file.getName(), reqFile);
+
+        Call<ResponseBody> uploadImageCall = AppController.getFingoService().uploadImage(AppController.getToken(), body);
+        uploadImageCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Log.e("CHECK API", response.message());
+                    Log.e("http", response.code() + "");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -536,6 +511,5 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
 
         return Uri.parse(path);
     }
-
 
 }

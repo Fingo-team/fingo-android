@@ -127,7 +127,7 @@ public interface FingoService {
 
     // 이미지 업로드
     @Multipart
-    @POST("/api/v1.0/user/upload_profile/")
+    @PATCH("/api/v1.0/user/upload_profile/")
     Call<ResponseBody> uploadImage(@Header("Authorization") String authorization, @Part MultipartBody.Part image);
 
 }
