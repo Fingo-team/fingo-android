@@ -12,7 +12,7 @@
         android:layout_height="100dp"
         android:layout_width="80dp"
         app:srcCompat="@mipmap/ic_launcher"
-        android:layout_margin="10dp"/>
+        android:layout_marginLeft="10dp"/>
 
     <LinearLayout
         android:id="@+id/linearLayout_title_and_average_score"
@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView"
-            android:textColor="@color/colorBrown"
+            android:textColor="@color/colorPink"
             android:layout_marginTop="10dp"/>
     </LinearLayout>
 
@@ -53,18 +53,22 @@
         android:layout_toEndOf="@id/imageView_movie_poster"
         android:layout_marginLeft="7dp"
         android:layout_below="@id/linearLayout_title_and_average_score"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="5dp">
 
         <TextView
             android:id="@+id/textView_genre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"/>
+            android:text="TextView"
+            android:textSize="12sp"
+            android:textColor="@color/colorGray"/>
 
         <TextView
             android:id="@+id/textView_release_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"/>
+            android:text="TextView"
+            android:textSize="12sp"
+            android:textColor="@color/colorGray"/>
     </LinearLayout>
 </RelativeLayout>

@@ -7,7 +7,7 @@
     <string name="facebook_app_id"> 638541519685008</string>
 
     <!-- Movie List -->
-    <string name="fingo_user_average_score">핑고 유저 평균 별점 : </string>
+    <string name="fingo_user_average_score">핑고 유저 평균 별점 ☆ </string>
     <string name="genre">장르 : </string>
     <string name="date">개봉일 : </string>
 
@@ -16,6 +16,7 @@
     <string name="movie_informatioin">상세정보</string>
     <string name="movie_detail_gallery">갤러리</string>
     <string name="movie_detail_director_and_actor">배우 / 제작진</string>
+    <string name="star_score">별점</string>
 
     <!-- ActivitySearch에 쓰이는 strings -->
     <string name="menu_search">검색</string>
