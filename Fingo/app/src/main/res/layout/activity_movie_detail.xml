@@ -187,44 +187,19 @@
 
                 <HorizontalScrollView
                     android:id="@+id/horizontalScrollView_stillCut"
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:background="@color/colorWhite"
+                    android:paddingTop="7dp"
                     android:layout_below="@id/movie_detail_gallery_text">
-                    <RelativeLayout
+                    <LinearLayout
+                        android:id="@+id/linearLayout_stillCut"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <ImageView
-                            android:id="@+id/imageView_stillCut1"
-                            android:layout_width="150dp"
-                            android:layout_height="110dp"
-                            android:layout_margin="5dp"/>
-                        <ImageView
-                            android:id="@+id/imageView_stillCut2"
-                            android:layout_width="150dp"
-                            android:layout_height="110dp"
-                            android:layout_margin="5dp"
-                            android:layout_toRightOf="@id/imageView_stillCut1"/>
-                        <ImageView
-                            android:id="@+id/imageView_stillCut3"
-                            android:layout_width="150dp"
-                            android:layout_height="110dp"
-                            android:layout_margin="5dp"
-                            android:layout_toRightOf="@id/imageView_stillCut2"/>
-                        <ImageView
-                            android:id="@+id/imageView_stillCut4"
-                            android:layout_width="150dp"
-                            android:layout_height="110dp"
-                            android:layout_margin="5dp"
-                            android:layout_toRightOf="@id/imageView_stillCut3"/>
-                        <ImageView
-                            android:id="@+id/imageView_stillCut5"
-                            android:layout_width="150dp"
-                            android:layout_height="110dp"
-                            android:layout_margin="5dp"
-                            android:layout_toRightOf="@id/imageView_stillCut4"/>
-                    </RelativeLayout>
+                        android:layout_height="130dp"
+                        android:layout_gravity="center_vertical"
+                        android:orientation="horizontal">
+                    </LinearLayout>
                 </HorizontalScrollView>
 
                 <!-- 출연/제작 영역 -->

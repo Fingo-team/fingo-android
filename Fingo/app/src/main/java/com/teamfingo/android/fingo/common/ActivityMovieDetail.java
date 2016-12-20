@@ -39,8 +39,8 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
     TextView tvMovieTitle, tvMovieScore;
     Button btnWishMovie, btnRate, btnComment, btnShare;
     TextView tvMovieDate, tvMovieGenre, tvMovieStory;
-    ImageView ivStillCut1, ivStillCut2, ivStillCut3, ivStillCut4, ivStillCut5;
-    LinearLayout llDirectorandActor;
+    //ImageView ivStillCut1, ivStillCut2, ivStillCut3, ivStillCut4, ivStillCut5;
+    LinearLayout llStillCut, llDirectorandActor;
 
     LinearLayout.LayoutParams mLayoutParams;
 
@@ -89,7 +89,6 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
     }
 
     public void initMovieDetailView() {
-
         ivMovieBackgroundStillCut = (ImageView) findViewById(R.id.imageView_movie_detail_backgroundStillcut);
         ivMoviePoster = (ImageView) findViewById(R.id.imageView_movie_detail_movie_post);
         tvMovieTitle = (TextView) findViewById(R.id.textView_movie_detail_movie_title);
@@ -101,11 +100,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
         tvMovieDate = (TextView) findViewById(R.id.textView_date);
         tvMovieGenre = (TextView) findViewById(R.id.textView_genre);
         tvMovieStory = (TextView) findViewById(R.id.textView_story);
-        ivStillCut1 = (ImageView) findViewById(R.id.imageView_stillCut1);
-        ivStillCut2 = (ImageView) findViewById(R.id.imageView_stillCut2);
-        ivStillCut3 = (ImageView) findViewById(R.id.imageView_stillCut3);
-        ivStillCut4 = (ImageView) findViewById(R.id.imageView_stillCut4);
-        ivStillCut5 = (ImageView) findViewById(R.id.imageView_stillCut5);
+        llStillCut = (LinearLayout) findViewById(R.id.linearLayout_stillCut);
         llDirectorandActor = (LinearLayout) findViewById(R.id.linearLayout_director_and_actor);
     }
 
@@ -144,19 +139,24 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                     tvMovieGenre.setText(getString(R.string.genre) + " " + genre[0]);
                     tvMovieStory.setText(movie.getStory());
 
+                    mLayoutParams = new LinearLayout.LayoutParams(500, 300);
                     if (stillCutImg.length == 0) {
 
                     } else {
-                        Glide.with(ActivityMovieDetail.this).load(stillCutImg[0].getImg()).into(ivStillCut1);
-                        Glide.with(ActivityMovieDetail.this).load(stillCutImg[1].getImg()).into(ivStillCut2);
-                        Glide.with(ActivityMovieDetail.this).load(stillCutImg[2].getImg()).into(ivStillCut3);
-                        Glide.with(ActivityMovieDetail.this).load(stillCutImg[3].getImg()).into(ivStillCut4);
-                        Glide.with(ActivityMovieDetail.this).load(stillCutImg[4].getImg()).into(ivStillCut5);
+                        for (int i=0; i<stillCutImg.length; i++) {
+                            ImageView iv = new ImageView(ActivityMovieDetail.this);
+                            Glide.with(ActivityMovieDetail.this).load(stillCutImg[i].getImg()).into(iv);
+                            iv.setLayoutParams(mLayoutParams);
+                            iv.setLayoutParams(mLayoutParams);
+                            iv.setScaleType(ImageView.ScaleType.FIT_XY);
+                            mLayoutParams.setMargins(10,0,10,0);
+                            llStillCut.addView(iv);
+                        }
                     }
 
-                    mLayoutParams = new LinearLayout.LayoutParams(200, 200);
                     Movie.Director[] directors = movie.getDirector();
                     Movie.Actors[] actors = movie.getActors();
+                    mLayoutParams = new LinearLayout.LayoutParams(200, 200);
 
                     for (int i=0; i<directors.length; i++) {
                         CircleImageView civ = new CircleImageView(ActivityMovieDetail.this);
