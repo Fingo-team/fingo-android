@@ -96,6 +96,7 @@ public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerA
             Glide.with(mActivity).load(mUserComments.get(position).getUser().getUser_img_url()).into(holder.imgUserProfile);
         else
             Glide.with(mActivity).load(R.drawable.com_facebook_profile_picture_blank_portrait).into(holder.imgUserProfile);
+
         holder.tvUserName.setText(user_data.getNickname());
         holder.rbUserScore.setRating(comment_data.getScore());
         holder.tvCommentDate.setText(comment_data.getActivity_time());

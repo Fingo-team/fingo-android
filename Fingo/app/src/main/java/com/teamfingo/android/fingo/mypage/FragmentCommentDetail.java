@@ -88,7 +88,7 @@ public class FragmentCommentDetail extends Fragment{
     private void initRecyclerView(View view){
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_comment_detail);
-        mAdapter = new RecyclerAdapterCommentDetail(this.getContext(), mUserComments);
+        mAdapter = new RecyclerAdapterCommentDetail(this.getContext(), this.getActivity(), mUserComments);
         mRecyclerView.setAdapter(mAdapter);
         mLayoutManager = new LinearLayoutManager(this.getContext());
         mEndlessRecyclerOnScrollListener = new EndlessRecyclerOnScrollListener(mLayoutManager) {

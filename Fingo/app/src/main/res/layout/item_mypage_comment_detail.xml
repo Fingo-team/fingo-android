@@ -16,13 +16,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/image_comment_detail_profile"
-                android:layout_width="55dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="16dp"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/com_facebook_profile_picture_blank_square" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="50dp"
+                android:layout_height="match_parent">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/image_comment_detail_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    app:srcCompat="@drawable/com_facebook_profile_picture_blank_square" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/bs_ic_more_light"
+                    android:id="@+id/imageView_modify" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -32,7 +43,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingLeft="16dp">
@@ -79,35 +90,6 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                     android:layout_marginTop="10dp" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="16dp"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/button_like"
-                        style="@style/Widget.AppCompat.Button.Borderless"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:drawableLeft="@drawable/icon_heart_gray"
-                        android:drawablePadding="5dp"
-                        android:text="Like"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
-
-                    <Button
-                        android:id="@+id/button_comment"
-                        style="@style/Widget.AppCompat.Button.Borderless"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:drawableLeft="@drawable/icon_comment_gray"
-                        android:drawablePadding="10dp"
-                        android:text="Comment"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
-                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>
