@@ -7,7 +7,6 @@ import com.teamfingo.android.fingo.interfaces.FingoService;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.HEAD;
 
 /**
  * Created by Jaemin on 2016. 12. 9..
@@ -15,7 +14,7 @@ import retrofit2.http.HEAD;
 
 public class AppController extends Application { // 앱이 실행되면 무조건 초기화 됨
 
-    //private static String FINGO_BASE_URL = "http://eb-fingo-real.ap-northeast-2.elasticbeanstalk.com/";
+//    private static String FINGO_BASE_URL = "http://eb-fingo-real.ap-northeast-2.elasticbeanstalk.com/";
     private static String FINGO_BASE_URL = "http://fingo2-dev.ap-northeast-2.elasticbeanstalk.com/";
 
 

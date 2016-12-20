@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
 
+import com.facebook.FacebookSdk;
 import com.kakao.util.KakaoParameterException;
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.category.FragmentCategory;
@@ -35,6 +36,9 @@ public class ActivityMain extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.main_tool_bar));
 
