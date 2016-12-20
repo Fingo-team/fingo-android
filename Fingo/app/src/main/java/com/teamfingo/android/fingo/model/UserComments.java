@@ -162,60 +162,72 @@ public class UserComments {
         }
     }
 
-    public class User {
+    public class User
+    {
+        private String cover_img_url;
+
         private String id;
+
+        private String user_img_url;
 
         private String level;
 
         private String nickname;
 
-        private String user_img;
+        public String getCover_img_url ()
+        {
+            return cover_img_url;
+        }
 
-        private String cover_img;
+        public void setCover_img_url (String cover_img_url)
+        {
+            this.cover_img_url = cover_img_url;
+        }
 
-        public String getId() {
+        public String getId ()
+        {
             return id;
         }
 
-        public void setId(String id) {
+        public void setId (String id)
+        {
             this.id = id;
         }
 
-        public String getLevel() {
+        public String getUser_img_url ()
+        {
+            return user_img_url;
+        }
+
+        public void setUser_img_url (String user_img_url)
+        {
+            this.user_img_url = user_img_url;
+        }
+
+        public String getLevel ()
+        {
             return level;
         }
 
-        public void setLevel(String level) {
+        public void setLevel (String level)
+        {
             this.level = level;
         }
 
-        public String getNickname() {
+        public String getNickname ()
+        {
             return nickname;
         }
 
-        public void setNickname(String nickname) {
+        public void setNickname (String nickname)
+        {
             this.nickname = nickname;
         }
 
-        public String getUser_img() {
-            return user_img;
-        }
-
-        public void setUser_img(String user_img) {
-            this.user_img = user_img;
-        }
-
-        public String getCover_img() {
-            return cover_img;
-        }
-
-        public void setCover_img(String cover_img) {
-            this.cover_img = cover_img;
-        }
-
         @Override
-        public String toString() {
-            return "ClassPojo [id = " + id + ", level = " + level + ", nickname = " + nickname + ", user_img = " + user_img + ", cover_img = " + cover_img + "]";
+        public String toString()
+        {
+            return "ClassPojo [cover_img_url = "+cover_img_url+", id = "+id+", user_img_url = "+user_img_url+", level = "+level+", nickname = "+nickname+"]";
         }
     }
 

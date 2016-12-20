@@ -27,7 +27,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragmentCommentDetail extends Fragment {
+public class FragmentCommentDetail extends Fragment{
 
     RecyclerView mRecyclerView;
     RecyclerAdapterCommentDetail mAdapter;
@@ -40,6 +40,7 @@ public class FragmentCommentDetail extends Fragment {
 
     private static final int INIT_PAGE = 1;
 
+//    private static final int SORT_INIT = 0;
     private static final int SORT_TIME = 0;
     private static final int SORT_TITLE = 1;
     private static final int SORT_SCORE = 2;
@@ -56,9 +57,7 @@ public class FragmentCommentDetail extends Fragment {
         View view = inflater.inflate(R.layout.fragment_comment_detail, container, false);
 
         initView(view);
-
-        callFingoUserComments(INIT_PAGE, "activity_time");
-
+        callFingoUserComments(INIT_PAGE, "");
         initRecyclerView(view);
 
         return view;
@@ -67,8 +66,8 @@ public class FragmentCommentDetail extends Fragment {
     private void initView(View view){
 
         String[] str = getResources().getStringArray(R.array.movie_sorting);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>
-                (this.getContext(), android.R.layout.simple_spinner_dropdown_item, str);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, str);
+
         mSpinner = (Spinner) view.findViewById(R.id.spinner);
         mSpinner.setAdapter(adapter);
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -80,9 +79,10 @@ public class FragmentCommentDetail extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                mUserComments.clear();
             }
         });
+
     }
 
     private void initRecyclerView(View view){
@@ -121,7 +121,7 @@ public class FragmentCommentDetail extends Fragment {
 
             @Override
             public void onFailure(Call<UserComments> call, Throwable t) {
-
+                t.printStackTrace();
             }
         });
     }

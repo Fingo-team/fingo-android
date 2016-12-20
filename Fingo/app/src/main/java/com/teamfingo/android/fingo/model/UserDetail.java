@@ -60,18 +60,27 @@ public class UserDetail
         return "ClassPojo [watched_movie_cnt = "+watched_movie_cnt+", user_profile = "+user_profile+", comment_cnt = "+comment_cnt+", wish_movie_cnt = "+wish_movie_cnt+"]";
     }
 
-
     public class User_profile
     {
+        private String cover_img_url;
+
         private String id;
+
+        private String user_img_url;
 
         private String level;
 
         private String nickname;
 
-        private String user_img;
+        public String getCover_img_url ()
+        {
+            return cover_img_url;
+        }
 
-        private String cover_img;
+        public void setCover_img_url (String cover_img_url)
+        {
+            this.cover_img_url = cover_img_url;
+        }
 
         public String getId ()
         {
@@ -81,6 +90,16 @@ public class UserDetail
         public void setId (String id)
         {
             this.id = id;
+        }
+
+        public String getUser_img_url ()
+        {
+            return user_img_url;
+        }
+
+        public void setUser_img_url (String user_img_url)
+        {
+            this.user_img_url = user_img_url;
         }
 
         public String getLevel ()
@@ -103,30 +122,10 @@ public class UserDetail
             this.nickname = nickname;
         }
 
-        public String getUser_img ()
-    {
-        return user_img;
-    }
-
-        public void setUser_img (String user_img)
-        {
-            this.user_img = user_img;
-        }
-
-        public String getCover_img ()
-    {
-        return cover_img;
-    }
-
-        public void setCover_img (String cover_img)
-        {
-            this.cover_img = cover_img;
-        }
-
         @Override
         public String toString()
         {
-            return "ClassPojo [id = "+id+", level = "+level+", nickname = "+nickname+", user_img = "+user_img+", cover_img = "+cover_img+"]";
+            return "ClassPojo [cover_img_url = "+cover_img_url+", id = "+id+", user_img_url = "+user_img_url+", level = "+level+", nickname = "+nickname+"]";
         }
     }
 }
