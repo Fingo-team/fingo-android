@@ -84,7 +84,7 @@
                     android:orientation="horizontal"
                     android:layout_below="@id/imageView_movie_detail_backgroundStillcut"
                     android:id="@+id/button_bar_layout"
-                    android:padding="3dp"
+                    android:paddingTop="7dp"
                     android:background="@color/colorWhite">
                     <Button
                         android:id="@+id/button_wish_movie"
@@ -233,6 +233,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
                     android:layout_marginTop="10dp"
+                    android:paddingTop="3dp"
                     android:paddingLeft="16dp"
                     android:text="@string/movie_detail_director_and_actor"
                     android:textStyle="bold"
@@ -244,7 +245,7 @@
                     android:layout_height="150dp"
                     android:layout_below="@id/movie_detail_director_and_actor_text"
                     android:background="@color/colorWhite"
-                    android:paddingTop="5dp">
+                    android:paddingTop="10dp">
                     <LinearLayout
                         android:id="@+id/linearLayout_director_and_actor"
                         android:orientation="horizontal"

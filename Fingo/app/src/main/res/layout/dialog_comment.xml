@@ -8,18 +8,20 @@
     <TextView
         android:id="@+id/textView_movie_title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="17dp"
+        android:layout_marginTop="5dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginLeft="17dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:text="평가 : "
-            android:textSize="17dp"/>
+            android:text="@string/star_score"/>
         <RatingBar
             android:id="@+id/ratingBar_rated"
             style="?android:attr/ratingBarStyleSmall"
@@ -30,11 +32,13 @@
             android:rating="0.0"
             android:stepSize="0.5"
             android:layout_gravity="center_vertical"
-            android:progressTint="@color/colorAccent"/>
+            android:progressTint="@color/colorAccent"
+            android:layout_marginTop="2dp"/>
     </LinearLayout>
 
     <EditText
         android:id="@+id/editText_comment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"/>
 </LinearLayout>

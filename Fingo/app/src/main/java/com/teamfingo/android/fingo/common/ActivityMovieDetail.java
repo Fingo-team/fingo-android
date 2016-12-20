@@ -121,9 +121,14 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                     Movie movie = response.body();
 
                     Movie.Stillcut[] stillCutImg = movie.getStillcut();
-                    Glide.with(ActivityMovieDetail.this).load(stillCutImg[1].getImg()).into(ivMovieBackgroundStillCut);
-                    // movie title, movie score 글씨를 더 잘 보이게 하기 위해 배경 이미지를 반투명 처리
-                    ivMovieBackgroundStillCut.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY);
+                    if (stillCutImg.length == 0) { // 스틸컷이 하나도 없을 때
+                        ivMovieBackgroundStillCut.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                        ivMovieBackgroundStillCut.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY);
+                    } else {
+                        Glide.with(ActivityMovieDetail.this).load(stillCutImg[0].getImg()).into(ivMovieBackgroundStillCut);
+                        // movie title, movie score 글씨를 더 잘 보이게 하기 위해 배경 이미지를 반투명 처리
+                        ivMovieBackgroundStillCut.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY);
+                    }
 
                     Glide.with(ActivityMovieDetail.this).load(movie.getImg()).into(ivMoviePoster);
                     tvMovieTitle.setText(movie.getTitle());
@@ -139,11 +144,15 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                     tvMovieGenre.setText(getString(R.string.genre) + " " + genre[0]);
                     tvMovieStory.setText(movie.getStory());
 
-                    Glide.with(ActivityMovieDetail.this).load(stillCutImg[0].getImg()).into(ivStillCut1);
-                    Glide.with(ActivityMovieDetail.this).load(stillCutImg[1].getImg()).into(ivStillCut2);
-                    Glide.with(ActivityMovieDetail.this).load(stillCutImg[2].getImg()).into(ivStillCut3);
-                    Glide.with(ActivityMovieDetail.this).load(stillCutImg[3].getImg()).into(ivStillCut4);
-                    Glide.with(ActivityMovieDetail.this).load(stillCutImg[4].getImg()).into(ivStillCut5);
+                    if (stillCutImg.length == 0) {
+
+                    } else {
+                        Glide.with(ActivityMovieDetail.this).load(stillCutImg[0].getImg()).into(ivStillCut1);
+                        Glide.with(ActivityMovieDetail.this).load(stillCutImg[1].getImg()).into(ivStillCut2);
+                        Glide.with(ActivityMovieDetail.this).load(stillCutImg[2].getImg()).into(ivStillCut3);
+                        Glide.with(ActivityMovieDetail.this).load(stillCutImg[3].getImg()).into(ivStillCut4);
+                        Glide.with(ActivityMovieDetail.this).load(stillCutImg[4].getImg()).into(ivStillCut5);
+                    }
 
                     mLayoutParams = new LinearLayout.LayoutParams(200, 200);
                     Movie.Director[] directors = movie.getDirector();
@@ -156,8 +165,8 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                         mLayoutParams.setMargins(40,0,40,0);
                         TextView tv = new TextView(ActivityMovieDetail.this);
                         tv.setText(directors[i].getName());
-                        llDirectorandActor.addView(civ);
 
+                        llDirectorandActor.addView(civ);
                     }
 
                     for (int i=0; i<actors.length; i++) {
@@ -415,24 +424,52 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
         etComment.setText(comment);
 
-
         rbRatedScore.setRating(Float.parseFloat(score));
-
 
         mBuilderComment.setPositiveButton("완료", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (comment == null) { // 처음 코멘트를 쓰는 경우 -> POST로 코멘트를 서버로 보냄
                     String writtenComment = etComment.getText().toString();
-                    comment = writtenComment;
-
                     if (writtenComment.equals("")) { // 아무 내용도 입력하지 않았을 때 토스트 메세지를 띄움
                         Toast.makeText(ActivityMovieDetail.this, "코멘트를 입력해주세요.", Toast.LENGTH_SHORT).show();
                     } else {
+                        comment = writtenComment;
                         Call<Void> postMovieComment = AppController.getFingoService()
                                 .postMovieComment(AppController.getToken(), movieId, writtenComment); // POST
 
                         postMovieComment.enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if (response.isSuccessful()) {
+                                    Log.e("log", "response message ==== " + response.message());
+
+                                    // 댓글이 써졌을 경우 코멘트 아이콘 색상 변경
+                                    btnComment.setActivated(true);
+                                    Log.e("log", "Post 상태일 때 댓글 ==== " + btnComment.isActivated());
+                                } else {
+                                    Log.e("log", "response message ==== " + response.message());
+                                }
+                            }
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Log.e("log", "error message ==== " + t.getMessage());
+                            }
+                        });
+                    }
+                } else if (comment != null){ // 이미 작성된 코멘트가 있을 경우 -> 코멘트 수정은 PATCH를 사용
+                    Log.e("log", "comment not null");
+
+                    String writtenComment = etComment.getText().toString();
+
+                    if (writtenComment.equals("")) { // 아무 내용도 입력하지 않았을 때 토스트 메세지를 띄움
+                        Toast.makeText(ActivityMovieDetail.this, "코멘트를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        comment = writtenComment;
+                        Call<Void> patchMovieComment = AppController.getFingoService()
+                                .patchMovieComment(AppController.getToken(), movieId, writtenComment); // POST
+
+                        patchMovieComment.enqueue(new Callback<Void>() {
                             @Override
                             public void onResponse(Call<Void> call, Response<Void> response) {
                                 if (response.isSuccessful()) {
@@ -450,31 +487,6 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                             }
                         });
                     }
-                } else { // 이미 작성된 코멘트가 있을 경우 -> 코멘트 수정은 PATCH를 사용
-                    Log.e("log", "comment not null");
-                    String writtenComment = etComment.getText().toString();
-                    comment = writtenComment;
-
-                    Call<Void> patchMovieComment = AppController.getFingoService()
-                            .patchMovieComment(AppController.getToken(), movieId, writtenComment); // POST
-
-                    patchMovieComment.enqueue(new Callback<Void>() {
-                        @Override
-                        public void onResponse(Call<Void> call, Response<Void> response) {
-                            if (response.isSuccessful()) {
-                                Log.e("log", "response message ==== " + response.message());
-
-                                // 댓글이 써졌을 경우 코멘트 아이콘 색상 변경
-                                btnComment.setActivated(true);
-                            } else {
-                                Log.e("log", "response message ==== " + response.message());
-                            }
-                        }
-                        @Override
-                        public void onFailure(Call<Void> call, Throwable t) {
-                            Log.e("log", "error message ==== " + t.getMessage());
-                        }
-                    });
                 }
 
             }
