@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -74,6 +75,7 @@ public class ActivitySearch extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 switch (actionId) {
                     case EditorInfo.IME_ACTION_SEARCH:
+                        Log.e("log", "IME_ACTION_SEARCH ==== T_T");
                         // 검색 버튼을 누를 때마다 새로 검색
                         mSearchMovies.clear();
                         mEndlessRecyclerOnScrollListener.reset();
@@ -93,7 +95,6 @@ public class ActivitySearch extends AppCompatActivity {
                         }
 
                         loadData(1); // 검색했을 때 처음 page 값은 1
-
                         break;
                 }
                 return true;
@@ -102,6 +103,10 @@ public class ActivitySearch extends AppCompatActivity {
     }
 
     public void loadData(int currentPage) {
+        if (currentPage == 1) {
+            mSearchMovies.clear();
+        }
+
         Call<SearchMovie> searchMovieCall = AppController.getFingoService()
                 .getSearchMovie(AppController.getToken(), searchWord, currentPage);
 
@@ -118,7 +123,6 @@ public class ActivitySearch extends AppCompatActivity {
                         mSearchMovies.addAll(data.getResults());
                     }
                 }
-
                 mRecyclerAdapterSearch.notifyDataSetChanged();
             }
 

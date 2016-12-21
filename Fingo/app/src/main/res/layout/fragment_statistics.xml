@@ -38,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/relativeLayout_no_data"
-            android:visibility="visible">
+            android:visibility="gone">
             <!-- 별점 분포 -->
             <LinearLayout
                 android:id="@+id/linearLayout_scores"
