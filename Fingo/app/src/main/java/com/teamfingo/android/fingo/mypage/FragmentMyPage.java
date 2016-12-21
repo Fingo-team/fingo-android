@@ -35,7 +35,6 @@ import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -46,6 +45,9 @@ import com.teamfingo.android.fingo.model.UserComments;
 import com.teamfingo.android.fingo.model.UserDetail;
 import com.teamfingo.android.fingo.utils.AppController;
 import com.teamfingo.android.fingo.utils.EndlessRecyclerOnScrollListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -425,8 +427,6 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
 
                     case REQ_CODE_TAKE_PHOTO:
                         image_bitmap = (Bitmap) data.getExtras().get("data");
-//                        type = data.getStringExtra("Type");
-//                        Log.e("CHECK TYPE", type + "");
 
                         imageUri = getImageUri(getActivity(), image_bitmap);
                         filePath = getRealPathFromURI(imageUri);
@@ -437,9 +437,6 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
                         break;
 
                     case REQ_CODE_SELECT_IMAGE:
-//
-//                        type = data.getStringExtra("Type");
-//                        Log.e("CHECK TYPE", type + "");
 
                         // Uri에서 이미지 이름을 얻어온다.
                         filePath = getRealPathFromURI(data.getData());
@@ -483,23 +480,50 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
     @Override
     public void getFacebookImage() {
 
-        if (AccessToken.getCurrentAccessToken().isExpired() == false) {
-            Log.e("아아아", "끝이났다 왜 만료되는거냐아");
+        if (upload_type == UPLOAD_COVER) {
+            GraphRequest request = GraphRequest.newMeRequest(
+                    AccessToken.getCurrentAccessToken(),
+                    new GraphRequest.GraphJSONObjectCallback() {
+                        @Override
+                        public void onCompleted(JSONObject object, GraphResponse response) {
+
+                            try {
+                                String mFacebookUrl = object.getJSONObject("cover").getString("source");
+                                Log.e("CHECK IMAGE", "++++++++++++++++++++++" + mFacebookUrl);
+                                sendFacebookImage(mFacebookUrl);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+            Bundle parameters = new Bundle();
+            parameters.putString("fields", "cover");
+            request.setParameters(parameters);
+            request.executeAsync();
+
+        } else if (upload_type == UPLOAD_PROFILE) {
+
+            GraphRequest request = GraphRequest.newGraphPathRequest(
+                    AccessToken.getCurrentAccessToken(),
+                    "/me/picture",
+                    new GraphRequest.Callback() {
+                        @Override
+                        public void onCompleted(GraphResponse response) {
+                            JSONObject data = response.getJSONObject();
+                            String mFacebookUrl = null;
+                            try {
+                                mFacebookUrl = data.getJSONObject("picture").getJSONObject("data").getString("url");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            Log.e("CHECK IMAGE", "++++++++++++++++++++++" + mFacebookUrl);
+                            sendFacebookImage(mFacebookUrl);
+                        }
+                    });
+            request.executeAsync();
         }
-
-        new GraphRequest(AccessToken.getCurrentAccessToken()    // 최근 Accesstoken 을 가져온다
-                , "/{user-id}?fields={cover}"    // Graph API 에 필요한 쿼리문
-                , null
-                , HttpMethod.GET
-                // 쿼리의 결과 값을 Callback 함수로 받아 온다.
-                , new GraphRequest.Callback() {
-            public void onCompleted(GraphResponse response) {
-
-                Log.e("CHECK Response", "User_Cover_image : " + response.getError());
-            }
-        }
-        ).executeAsync();
-
 //        mFacebookLoginManager
 
     }
@@ -554,20 +578,62 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
     }
 
     @Override
-    public String getRealPathFromURI(Uri contentUri) {
+    public void sendFacebookImage(String url) {
+        Log.e("CHECK UPLOAD", "++++++++++++++++++++++" + url);
+        if (upload_type == UPLOAD_PROFILE) {
+            Call<ResponseBody> uploadFacebookProfileCall = AppController.getFingoService().uploadFacebookProfile(AppController.getToken(), url);
+            uploadFacebookProfileCall.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        Log.e("CHECK API", response.message());
+                        Log.e("http", response.code() + "profile");
+                    }
+                }
 
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+
+        } else if (upload_type == UPLOAD_COVER) {
+            Call<ResponseBody> uploadFacebookCoverCall = AppController.getFingoService().uploadFacebookCover(AppController.getToken(), url);
+            uploadFacebookCoverCall.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        Log.e("CHECK API", response.message());
+                        Log.e("http", response.code() + "cover");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+        }
+
+    }
+
+    @Override
+    public String getRealPathFromURI(Uri contentUri) {
+        Cursor cursor = null;
         try {
             String[] proj = {MediaStore.Images.Media.DATA};
-            Cursor cursor = getActivity().getContentResolver().query(contentUri, proj, null, null, null);
+            cursor = getActivity().getContentResolver().query(contentUri, proj, null, null, null);
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 
             cursor.moveToFirst();
-
+            cursor.close();
             return cursor.getString(column_index);
         } catch (Exception e) {
 
             e.printStackTrace();
             return contentUri.getPath();
+        }finally{
+            cursor.close();
         }
     }
 

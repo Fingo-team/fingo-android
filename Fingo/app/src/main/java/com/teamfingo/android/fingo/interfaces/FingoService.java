@@ -134,4 +134,13 @@ public interface FingoService {
     @PATCH("/api/v1.0/user/upload_profile/")
     Call<ResponseBody> uploadImage(@Header("Authorization") String authorization, @Part MultipartBody.Part image);
 
+    // 페이스북 이미지 업로드
+    @FormUrlEncoded
+    @PATCH("/api/v1.0/user/fb_user_img/")
+    Call<ResponseBody> uploadFacebookProfile(@Header("Authorization") String authorization, @Field("user_img_url")String type);
+
+    @FormUrlEncoded
+    @PATCH("/api/v1.0/user/fb_user_img/")
+    Call<ResponseBody> uploadFacebookCover(@Header("Authorization") String authorization, @Field("cover_img_url")String type);
+
 }
