@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +62,8 @@ public class FragmentWatchedMovie extends Fragment implements InterfaceFragmentM
     private static final int SORT_TITLE = 1;    // 가나다 순
     private static final int SORT_SCORE = 2;    // 평점 순
 
+    String mSortType = "activity_time";
+
     public FragmentWatchedMovie() {
         // Required empty public constructor
     }
@@ -115,7 +116,6 @@ public class FragmentWatchedMovie extends Fragment implements InterfaceFragmentM
                     UserMovies data = response.body();
                     for (UserMovies.Results movie : data.getResults()) {
                         mWatchedMovies.add(movie);
-                        Log.e("check", ">>>>>" + movie.getMovie().getTitle());
                     }
                 }
                 // 2.1.2 이후 데이터 셋에 변경 사항이 생겼을 때, 이를 적용하기 위한 리스너 부착
@@ -148,17 +148,20 @@ public class FragmentWatchedMovie extends Fragment implements InterfaceFragmentM
 
             // 1. 작성 순 정렬
             case SORT_TIME:
-                loadData(INIT_PAGE, "activity_time");
+                mSortType = "activity_time";
+                loadData(INIT_PAGE, mSortType);
                 break;
 
             // 2. 가나다 순 정렬
             case SORT_TITLE:
-                loadData(INIT_PAGE, "title");
+                mSortType = "title";
+                loadData(INIT_PAGE, mSortType);
                 break;
 
             // 3. 평점 순 정렬 (유저가 직접 매긴 평점 순)
             case SORT_SCORE:
-                loadData(INIT_PAGE, "score");
+                mSortType = "score";
+                loadData(INIT_PAGE, mSortType);
                 break;
         }
     }
@@ -173,8 +176,7 @@ public class FragmentWatchedMovie extends Fragment implements InterfaceFragmentM
                 mWatchedMovies.clear();
 
                 // 1.2 작성 순(기본 값) 으로 정렬된 데이터 입력
-                // TODO 새로고침 전 정렬 상태를 전달받아 새로고침을 진행 할 수 있도록 구현해야 함.
-                loadData(INIT_PAGE, "activity_time");
+                loadData(INIT_PAGE, mSortType);
 
                 // 1.3 화면 새로고침 진행
                 mSwipeRefreshLayout.setRefreshing(false);
@@ -209,7 +211,7 @@ public class FragmentWatchedMovie extends Fragment implements InterfaceFragmentM
             public void onLoadMore(int current_page) {
                 // 3.1.1 서버로부터 다음 페이지의 데이터들을 불러온다.
                 // TODO Comment 데이터 전체가 정렬되는것이 아닌 페이지별로 재 정렬 되는 문제 발생
-                loadData(current_page, "activity_time");
+                loadData(current_page, mSortType);
             }
         };
         // 3.2 생성 된 스크롤 리스너를 리사이클러 뷰에 부착
