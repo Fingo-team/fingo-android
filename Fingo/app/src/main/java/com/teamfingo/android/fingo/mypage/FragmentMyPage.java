@@ -522,7 +522,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.isSuccessful()) {
                         Log.e("CHECK API", response.message());
-                        Log.e("http", response.code() + "");
+                        Log.e("http", response.code() + "profile");
                     }
                 }
 
@@ -531,6 +531,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
                     t.printStackTrace();
                 }
             });
+
         } else if (upload_type == UPLOAD_COVER) {
             MultipartBody.Part body = MultipartBody.Part.createFormData("cover_img", file.getName(), reqFile);
             Call<ResponseBody> uploadImageCall = AppController.getFingoService().uploadImage(AppController.getToken(), body);
@@ -539,7 +540,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.isSuccessful()) {
                         Log.e("CHECK API", response.message());
-                        Log.e("http", response.code() + "");
+                        Log.e("http", response.code() + "cover");
                     }
                 }
 
