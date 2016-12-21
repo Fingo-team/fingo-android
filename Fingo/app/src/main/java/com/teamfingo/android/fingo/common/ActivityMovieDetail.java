@@ -430,71 +430,40 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
         mBuilderComment.setPositiveButton("완료", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (comment == null) { // 처음 코멘트를 쓰는 경우 -> POST로 코멘트를 서버로 보냄
-                    String writtenComment = etComment.getText().toString();
+                Log.e("log", "comment not null");
 
-                    if (writtenComment.equals("")) { // 아무 내용도 입력하지 않았을 때 토스트 메세지를 띄움
-                        Toast.makeText(ActivityMovieDetail.this, "코멘트를 입력해주세요.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        comment = writtenComment;
-                        Call<Void> postMovieCommentCall = AppController.getFingoService()
-                                .postMovieComment(AppController.getToken(), movieId, writtenComment); // POST
+                String writtenComment = etComment.getText().toString();
 
-                        postMovieCommentCall.enqueue(new Callback<Void>() {
-                            @Override
-                            public void onResponse(Call<Void> call, Response<Void> response) {
-                                if (response.isSuccessful()) {
-                                    Log.e("log", "response message ==== " + response.message());
+                if (writtenComment.equals("")) { // 아무 내용도 입력하지 않았을 때 토스트 메세지를 띄움
+                    Toast.makeText(ActivityMovieDetail.this, "코멘트를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                } else {
+                    comment = writtenComment;
+                    Call<Void> patchMovieCommentCall = AppController.getFingoService()
+                            .patchMovieComment(AppController.getToken(), movieId, writtenComment); // POST
 
-                                    // 댓글이 써졌을 경우 코멘트 아이콘 색상 변경
-                                    btnComment.setActivated(true);
-                                    Toast.makeText(ActivityMovieDetail.this, "입력되었습니다.", Toast.LENGTH_SHORT).show();
-                                    Log.e("log", "Post 상태일 때 댓글 ==== " + btnComment.isActivated());
-                                } else {
-                                    Log.e("log", "response message ==== " + response.message());
-                                }
+                    patchMovieCommentCall.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.isSuccessful()) {
+                                Log.e("log", "response message ==== " + response.message());
+
+                                Toast.makeText(ActivityMovieDetail.this, "입력되었습니다.", Toast.LENGTH_SHORT).show();
+                                // 댓글이 써졌을 경우 코멘트 아이콘 색상 변경
+                                btnComment.setActivated(true);
+                            } else {
+                                Log.e("log", "response message ==== " + response.message());
                             }
-                            @Override
-                            public void onFailure(Call<Void> call, Throwable t) {
-                                Log.e("log", "error message ==== " + t.getMessage());
-                            }
-                        });
-                    }
-                } else if (comment != null){ // 이미 작성된 코멘트가 있을 경우 -> 코멘트 수정은 PATCH를 사용
-                    Log.e("log", "comment not null");
+                        }
 
-                    String writtenComment = etComment.getText().toString();
-
-                    if (writtenComment.equals("")) { // 아무 내용도 입력하지 않았을 때 토스트 메세지를 띄움
-                        Toast.makeText(ActivityMovieDetail.this, "2코멘트를 입력해주세요.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        comment = writtenComment;
-                        Call<Void> patchMovieCommentCall = AppController.getFingoService()
-                                .patchMovieComment(AppController.getToken(), movieId, writtenComment); // POST
-
-                        patchMovieCommentCall.enqueue(new Callback<Void>() {
-                            @Override
-                            public void onResponse(Call<Void> call, Response<Void> response) {
-                                if (response.isSuccessful()) {
-                                    Log.e("log", "response message ==== " + response.message());
-
-                                    Toast.makeText(ActivityMovieDetail.this, "patch입력되었습니다.", Toast.LENGTH_SHORT).show();
-                                    // 댓글이 써졌을 경우 코멘트 아이콘 색상 변경
-                                    btnComment.setActivated(true);
-                                } else {
-                                    Log.e("log", "response message ==== " + response.message());
-                                }
-                            }
-                            @Override
-                            public void onFailure(Call<Void> call, Throwable t) {
-                                Log.e("log", "error message ==== " + t.getMessage());
-                            }
-                        });
-                    }
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Log.e("log", "error message ==== " + t.getMessage());
+                        }
+                    });
                 }
-
             }
         });
+
         mBuilderComment.setNegativeButton("취소", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
