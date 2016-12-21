@@ -2,25 +2,33 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:context="com.teamfingo.android.fingo.recommend.FragmentStatistics">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:background="@color/colorLightGray">
         <!-- User가 평가한 영화 개수가 5개 미만을 경우 나타나는 화면 -->
         <RelativeLayout
             android:id="@+id/relativeLayout_no_data"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/colorWhite"
             android:visibility="gone">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="140dp"
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
                 android:text="평가된 영화의 개수가 5개 이상일 때부터"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="160dp"
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
                 android:text="통계 화면이 보입니다."/>
         </RelativeLayout>
 
@@ -30,22 +38,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/relativeLayout_no_data"
-            android:visibility="gone">
+            android:visibility="visible">
             <!-- 별점 분포 -->
             <LinearLayout
                 android:id="@+id/linearLayout_scores"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@color/colorWhite"
+                android:layout_marginTop="10dp">
                 <TextView
                     android:id="@+id/textView_score_distribution"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/score_distribution"/>
+                    android:textStyle="bold"
+                    android:text="@string/score_distribution"
+                    android:padding="10dp"/>
                 <com.jjoe64.graphview.GraphView
                     android:id="@+id/graphView"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"/>
+                    android:layout_width="300dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"/>
             </LinearLayout>
 
             <!-- 선호배우 TOP3 -->
@@ -54,16 +67,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_below="@id/linearLayout_scores">
+                android:layout_below="@id/linearLayout_scores"
+                android:background="@color/colorWhite"
+                android:layout_marginTop="10dp"
+                android:padding="10dp">
                 <TextView
                     android:id="@+id/textView_prefer_actors"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textStyle="bold"
                     android:text="@string/prefer_actor_top3"/>
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_margin="5dp">
                     <ImageView
                         android:id="@+id/imageView_actor1"
                         android:layout_width="50dp"
@@ -73,16 +91,20 @@
                     <TextView
                         android:id="@+id/textView_actor1_name"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="15sp"
+                        android:paddingLeft="10dp"/>
                     <TextView
                         android:id="@+id/textView_actor1_score"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_margin="5dp">
                     <ImageView
                         android:id="@+id/imageView_actor2"
                         android:layout_width="50dp"
@@ -92,16 +114,20 @@
                     <TextView
                         android:id="@+id/textView_actor2_name"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="15sp"
+                        android:paddingLeft="10dp"/>
                     <TextView
                         android:id="@+id/textView_actor2_score"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_margin="5dp">
                     <ImageView
                         android:id="@+id/imageView_actor3"
                         android:layout_width="50dp"
@@ -111,7 +137,10 @@
                     <TextView
                         android:id="@+id/textView_actor3_name"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="15sp"
+                        android:paddingLeft="10dp"/>
                     <TextView
                         android:id="@+id/textView_actor3_score"
                         android:layout_width="wrap_content"
@@ -125,16 +154,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_below="@id/linearLayout_actors">
+                android:layout_below="@id/linearLayout_actors"
+                android:background="@color/colorWhite"
+                android:layout_marginTop="10dp"
+                android:padding="10dp">
                 <TextView
                     android:id="@+id/textView_prefer_directors"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textStyle="bold"
                     android:text="@string/prefer_director_top3"/>
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_margin="5dp">
                     <ImageView
                         android:id="@+id/imageView_director1"
                         android:layout_width="50dp"
@@ -144,16 +178,20 @@
                     <TextView
                         android:id="@+id/textView_director1_name"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="15sp"
+                        android:paddingLeft="10dp"/>
                     <TextView
                         android:id="@+id/textView_director1_score"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_margin="5dp">
                     <ImageView
                         android:id="@+id/imageView_director2"
                         android:layout_width="50dp"
@@ -163,16 +201,20 @@
                     <TextView
                         android:id="@+id/textView_director2_name"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="15sp"
+                        android:paddingLeft="10dp"/>
                     <TextView
                         android:id="@+id/textView_director2_score"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_margin="5dp">
                     <ImageView
                         android:id="@+id/imageView_director3"
                         android:layout_width="50dp"
@@ -182,7 +224,10 @@
                     <TextView
                         android:id="@+id/textView_director3_name"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="15sp"
+                        android:paddingLeft="10dp"/>
                     <TextView
                         android:id="@+id/textView_director3_score"
                         android:layout_width="wrap_content"
