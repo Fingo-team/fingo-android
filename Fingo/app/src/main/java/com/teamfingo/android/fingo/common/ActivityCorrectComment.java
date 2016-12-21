@@ -25,17 +25,19 @@ import static com.teamfingo.android.fingo.utils.AppController.getFingoService;
 
 public class ActivityCorrectComment extends AppCompatActivity implements View.OnClickListener {
 
+    // 코멘트 수정 view components
     Button btnComplete, btnCancel;
     RatingBar rbScore ,rbScore_detail;
     TextView tvTitle;
     EditText etComment;
 
-    // comment 수정 view 에 필요한 data
-    String mMovie_id;
-    String mComment;
-    String mTitle;
-    float mScore;
-    String mCorrectComment;
+    // comment 수정 view 에 필요한 기본 data set
+    String mMovie_id;   // 영화 고유 id
+    String mComment;    // 평가 코멘트
+    String mTitle;      // 영화 제목
+    float mScore;       // 평가 점수
+
+    String mCorrectComment; // 수정 한 코멘트
 
     // Rating 다이얼 components
     AlertDialog.Builder mBuilderRating;
@@ -50,10 +52,21 @@ public class ActivityCorrectComment extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_correct_comment);
 
+        initView();
+
+        loadData();
+
+    }
+
+    private void initView(){
+
         btnComplete = (Button)findViewById(R.id.button_complete);
         btnComplete.setOnClickListener(this);
         btnCancel = (Button) findViewById(R.id.button_cancel);
         btnCancel.setOnClickListener(this);
+
+        tvTitle = (TextView) findViewById(R.id.textView_title);
+        etComment = (EditText) findViewById(R.id.editText_comment);
 
         rbScore = (RatingBar) findViewById(R.id.ratingBar_score);
         rbScore.setOnTouchListener(new View.OnTouchListener() {
@@ -63,11 +76,21 @@ public class ActivityCorrectComment extends AppCompatActivity implements View.On
                 return false;
             }
         });
-        tvTitle = (TextView) findViewById(R.id.textView_title);
-        etComment = (EditText) findViewById(R.id.editText_comment);
+    }
 
-        getCommentInfo();
-        initView();
+    private void loadData(){
+
+        // 수정을 위한 작성 코멘트 정보 받아오기
+        mMovie_id = getIntent().getStringExtra("movie_id");
+        mTitle = getIntent().getStringExtra("movie_title");
+        mScore = getIntent().getFloatExtra("comment_score", 0);
+        mComment = getIntent().getStringExtra("comment");
+
+        // 수정 전 comment 및 score 초기화
+        tvTitle.setText(mTitle);
+        rbScore.setRating(mScore);
+        etComment.setText(mComment);
+        mCorrectComment = "";
 
     }
 
@@ -90,23 +113,6 @@ public class ActivityCorrectComment extends AppCompatActivity implements View.On
                 break;
         }
 
-    }
-
-    // 수정 전 comment 및 score 초기화
-    private void initView(){
-        tvTitle.setText(mTitle);
-        rbScore.setRating(mScore);
-        Log.e("check rating", ""+mScore);
-        etComment.setText(mComment);
-        mCorrectComment = "";
-    }
-
-    // 수정을 위한 작성 코멘트 정보 받아오기
-    private void getCommentInfo(){
-        mMovie_id = getIntent().getStringExtra("movie_id");
-        mTitle = getIntent().getStringExtra("movie_title");
-        mScore = getIntent().getFloatExtra("comment_score", 0);
-        mComment = getIntent().getStringExtra("comment");
     }
 
     // 코멘트 수정 요청
