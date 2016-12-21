@@ -12,7 +12,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
@@ -95,6 +94,12 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
     private static final int REQ_CODE_TAKE_PHOTO = 0;
     private static final int REQ_CODE_SELECT_IMAGE = 1;
     private static final int REQ_CODE_FACEBOOK_IMAGE = 2;
+
+    // 업로드 할 이미지 유형
+    private static final int UPLOAD_PROFILE = 0;
+    private static final int UPLOAD_COVER = 1;
+
+    private int upload_type;
 
     public FragmentMyPage() throws KakaoParameterException {
         // Required empty public constructor
@@ -198,19 +203,19 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
                             tvWatchedCount.setText(data.getWatched_movie_cnt());
 
                             // 유저 프로필 이미지 세팅
-                            if (data.getUser_profile().getUser_img_url() == null) {
+                            if (data.getUser_profile().getUser_img_url() == "")
                                 Glide.with(getActivity()).load(R.drawable.com_facebook_profile_picture_blank_portrait).into(ivProfile);
-                            } else {
-                                Log.e("CHECK IMAGE", "*****************************" + data.getUser_profile().getUser_img_url());
+                            else
                                 Glide.with(getActivity()).load(data.getUser_profile().getUser_img_url()).into(ivProfile);
-                            }
 
-                            if (data.getUser_profile().getCover_img_url() == null) {
+
+                            // 유저 커버 이미지 세팅
+                            if (data.getUser_profile().getCover_img_url() == "") {
                                 Glide.with(getActivity()).load(R.drawable.image_profile_cover).into(ivProfileCover);
                                 ivProfileCover.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY);
                             } else {
-//                                Glide.with(getActivity()).load(data.getUser_profile()).into(ivProfileCover);
-//                                ivProfileCover.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY);
+                                Glide.with(getActivity()).load(data.getUser_profile().getCover_img_url()).into(ivProfileCover);
+                                ivProfileCover.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY);
                             }
                         }
                     });
@@ -292,14 +297,12 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
                 expireFingoToken();
                 break;
 
-            // TODO 추가기능버튼 구현
             case R.id.button_mypage_add:
                 openSettingMenu(v);
                 break;
 
             // 프로필 이미지
             case R.id.image_profile:
-                //setRuntimePermission();
                 editProfileImage(v);
                 break;
 
@@ -364,10 +367,13 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
 
         String menuTitle;
 
-        if (view.getId() == R.id.image_profile)
+        if (view.getId() == R.id.image_profile) {
             menuTitle = "Profile Options";
-        else
+            upload_type = UPLOAD_PROFILE;
+        } else {
             menuTitle = "Cover Image Options";
+            upload_type = UPLOAD_COVER;
+        }
 
         new BottomSheet.Builder(this.getActivity())
                 .title(menuTitle)
@@ -379,10 +385,13 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
                         switch (which) {
 
                             case R.id.menu_takePhoto:
+                                setRuntimePermission();
+                                Log.e("CHECK TYPE", upload_type + "");
                                 takePhoto();
                                 break;
 
                             case R.id.menu_getGallery:
+                                Log.e("CHECK TYPE", upload_type + "");
                                 getGallery();
                                 break;
 
@@ -406,22 +415,20 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
         try {
             if (data != null && resultCode == Activity.RESULT_OK) {
 
-                Uri uri = data.getData();
                 String filePath = "";
                 File file = null;
                 Bitmap image_bitmap = null;
+                String type;
 
                 switch (requestCode) {
 
                     case REQ_CODE_TAKE_PHOTO:
-                        image_bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
-
-                        Log.e("CHECK URI", ">>>>>>>>>>" + filePath);
-                        ivProfile.setImageBitmap(image_bitmap);
+                        image_bitmap = (Bitmap) data.getExtras().get("data");
+                        type = data.getStringExtra("Type");
+                        Log.e("CHECK TYPE", type + "");
 
                         imageUri = getImageUri(getActivity(), image_bitmap);
                         filePath = getRealPathFromURI(imageUri);
-                        Log.e("CHECK URI", ">>>>>>>>>>" + filePath);
 
                         file = new File(filePath);
                         sendImage(file);
@@ -429,14 +436,12 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
                         break;
 
                     case REQ_CODE_SELECT_IMAGE:
-                        image_bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
 
-                        //배치해놓은 ImageView에 set
-                        ivProfile.setImageBitmap(image_bitmap);
+                        type = data.getStringExtra("Type");
+                        Log.e("CHECK TYPE", type + "");
 
                         // Uri에서 이미지 이름을 얻어온다.
                         filePath = getRealPathFromURI(data.getData());
-                        Log.e("CHECK", ">>>>>>?????" + filePath);
 
                         // 서버에 전송 할 multipart form data 를 생성
                         file = new File(filePath);
@@ -445,7 +450,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
                         break;
                 }
             } else
-                Log.e("FAIL", "//////");
+                Log.e("FAIL", "Fail to send image");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -458,8 +463,8 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
         // 사진 촬영을 할 때, 런타임 권한 요청을 하도록 설정
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Environment.getExternalStorageDirectory());
         // requestCode지정해서 인텐트 실행
+        intent.putExtra("Type", "COVER");
         startActivityForResult(intent, REQ_CODE_TAKE_PHOTO);
 
     }
@@ -469,6 +474,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
 
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*"); // 이미지만 필터링
+        intent.putExtra("Type", "COVER");
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQ_CODE_SELECT_IMAGE);
 
     }
@@ -476,8 +482,8 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
     @Override
     public void getFacebookImage() {
 
-        if(AccessToken.getCurrentAccessToken().isExpired()==false){
-            Log.e("아아아","끝이났다 왜 만료되는거냐아");
+        if (AccessToken.getCurrentAccessToken().isExpired() == false) {
+            Log.e("아아아", "끝이났다 왜 만료되는거냐아");
         }
 
         new GraphRequest(AccessToken.getCurrentAccessToken()    // 최근 Accesstoken 을 가져온다
@@ -488,7 +494,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
                 , new GraphRequest.Callback() {
             public void onCompleted(GraphResponse response) {
 
-                Log.e("CHECK Response", "User_Cover_image : "+response.getError());
+                Log.e("CHECK Response", "User_Cover_image : " + response.getError());
             }
         }
         ).executeAsync();
@@ -507,23 +513,42 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
         Log.e("send Image", "+++++++++" + file.getAbsolutePath());
 
         RequestBody reqFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("user_img", file.getName(), reqFile);
 
-        Call<ResponseBody> uploadImageCall = AppController.getFingoService().uploadImage(AppController.getToken(), body);
-        uploadImageCall.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    Log.e("CHECK API", response.message());
-                    Log.e("http", response.code() + "");
+        if (upload_type == UPLOAD_PROFILE) {
+            MultipartBody.Part body = MultipartBody.Part.createFormData("user_img", file.getName(), reqFile);
+            Call<ResponseBody> uploadImageCall = AppController.getFingoService().uploadImage(AppController.getToken(), body);
+            uploadImageCall.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        Log.e("CHECK API", response.message());
+                        Log.e("http", response.code() + "");
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+        } else if (upload_type == UPLOAD_COVER) {
+            MultipartBody.Part body = MultipartBody.Part.createFormData("cover_img", file.getName(), reqFile);
+            Call<ResponseBody> uploadImageCall = AppController.getFingoService().uploadImage(AppController.getToken(), body);
+            uploadImageCall.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        Log.e("CHECK API", response.message());
+                        Log.e("http", response.code() + "");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+        }
     }
 
     @Override

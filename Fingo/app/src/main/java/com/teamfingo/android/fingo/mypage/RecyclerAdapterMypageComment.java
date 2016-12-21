@@ -24,6 +24,7 @@ import com.kakao.kakaolink.KakaoTalkLinkMessageBuilder;
 import com.kakao.util.KakaoParameterException;
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.common.ActivityCorrectComment;
+import com.teamfingo.android.fingo.common.ActivityMovieDetail;
 import com.teamfingo.android.fingo.model.UserComments;
 import com.teamfingo.android.fingo.utils.AppController;
 
@@ -87,7 +88,7 @@ public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerA
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
-        UserComments.Movie movie_data = mUserComments.get(position).getMovie();
+        final UserComments.Movie movie_data = mUserComments.get(position).getMovie();
         UserComments.User user_data = mUserComments.get(position).getUser();
         UserComments.Results comment_data = mUserComments.get(position);
 
@@ -95,6 +96,7 @@ public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerA
             Glide.with(mActivity).load(mUserComments.get(position).getUser().getUser_img_url()).into(holder.imgUserProfile);
         else
             Glide.with(mActivity).load(R.drawable.com_facebook_profile_picture_blank_portrait).into(holder.imgUserProfile);
+
         holder.tvUserName.setText(user_data.getNickname());
         holder.rbUserScore.setRating(comment_data.getScore());
         holder.tvCommentDate.setText(comment_data.getActivity_time());
@@ -103,6 +105,14 @@ public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerA
 
         Glide.with(mContext).load(movie_data.getStillcut()[0].getImg()).into(holder.imgMovieStilcut);
         holder.imgMovieStilcut.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY);
+        holder.imgMovieStilcut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ActivityMovieDetail.class);
+                intent.putExtra("movieId", movie_data.getId());
+                mContext.startActivity(intent);
+            }
+        });
 
         holder.btnModify.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,12 +121,14 @@ public class RecyclerAdapterMypageComment extends RecyclerView.Adapter<RecyclerA
             }
         });
 
+
     }
 
     @Override
     public int getItemCount() {
         return mUserComments.size();
     }
+
 
     public void openModifyMenu(View view, int position) {
 
