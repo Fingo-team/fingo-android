@@ -5,49 +5,76 @@
     android:layout_height="match_parent"
     tools:context="com.teamfingo.android.fingo.category.FragmentCategory">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/relativeLayout_category"
-        android:layout_marginTop="10dp"
+        android:orientation="vertical"
         android:background="@color/colorWhite">
-
-        <TextView
-            android:id="@+id/textView_ranking"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:text="랭킹"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            android:layout_margin="10dp"/>
-
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textView_ranking">
-
+            android:layout_height="match_parent"
+            android:layout_weight="1">
             <ImageView
-                android:id="@+id/imageView_category"
+                android:id="@+id/imageView_boxOffice"
                 android:layout_width="match_parent"
-                android:layout_height="230dp"
-                android:scaleType="fitXY"
-                android:layout_centerHorizontal="true">
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop">
             </ImageView>
-
             <TextView
-                android:id="@+id/textView15"
+                android:id="@+id/textView_boxOffice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_alignBottom="@id/imageView_category"
+                android:layout_alignParentBottom="true"
                 android:layout_margin="15dp"
-                android:text="영화 박스오피스 랭킹"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold"
                 android:textSize="30dp"/>
-
         </RelativeLayout>
 
-    </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <ImageView
+                android:id="@+id/imageView_month"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop">
+            </ImageView>
+            <TextView
+                android:id="@+id/textView_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="15dp"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold"
+                android:textSize="30dp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <ImageView
+                android:id="@+id/imageView_genre"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop">
+            </ImageView>
+            <TextView
+                android:id="@+id/textView_genre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="15dp"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold"
+                android:textSize="30dp"/>
+        </RelativeLayout>
+    </LinearLayout>
 </FrameLayout>

@@ -47,6 +47,7 @@
 
         <activity android:name=".login.ActivityLogin" />
         <activity android:name=".search.ActivitySearch" />
+        <activity android:name=".category.ActivityMovieList" />
         <activity android:name=".common.ActivityMovieDetail" />
 
         <activity android:name=".mypage.ActivityMyPage" />

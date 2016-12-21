@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Created by Jaemin on 2016. 12. 17..
  */
 
-public class RandomMovie
+public class MovieWrapper
 {
     private ArrayList<Movie> data = new ArrayList<>();
 

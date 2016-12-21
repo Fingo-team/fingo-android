@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.teamfingo.android.fingo.category.ActivityMovieList">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/movie_list_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:titleTextColor="#161616"
+        android:background="@color/colorWhite"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true">
+        <TextView
+            android:id="@+id/textView_toolbar"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textSize="16dp"/>
+    </android.support.v7.widget.Toolbar>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefresh_movie_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp">
+        <ListView
+            android:id="@+id/movie_list_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>

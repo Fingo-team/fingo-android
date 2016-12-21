@@ -229,70 +229,8 @@ public class Movie
         }
     }
 
-    public class Actor
-    {
-        private String name;
+    public class Actor extends Person { }
 
-        private String img;
-
-        public String getName ()
-        {
-            return name;
-        }
-
-        public void setName (String name)
-        {
-            this.name = name;
-        }
-
-        public String getImg ()
-        {
-            return img;
-        }
-
-        public void setImg (String img)
-        {
-            this.img = img;
-        }
-
-        @Override
-        public String toString()
-        {
-            return "[name = "+name+", img = "+img+"]";
-        }
-    }
-
-    public class Director
-    {
-        private String name;
-
-        private String img;
-
-        public String getName ()
-        {
-            return name;
-        }
-
-        public void setName (String name)
-        {
-            this.name = name;
-        }
-
-        public String getImg ()
-        {
-            return img;
-        }
-
-        public void setImg (String img)
-        {
-            this.img = img;
-        }
-
-        @Override
-        public String toString()
-        {
-            return "[name = "+name+", img = "+img+"]";
-        }
-    }
+    public class Director extends Person { }
 
 }
