@@ -375,6 +375,8 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
             upload_type = UPLOAD_COVER;
         }
 
+        setRuntimePermission();
+
         new BottomSheet.Builder(this.getActivity())
                 .title(menuTitle)
                 .sheet(R.menu.item_profile_image)
@@ -385,7 +387,6 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
                         switch (which) {
 
                             case R.id.menu_takePhoto:
-                                setRuntimePermission();
                                 Log.e("CHECK TYPE", upload_type + "");
                                 takePhoto();
                                 break;
@@ -424,8 +425,8 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
 
                     case REQ_CODE_TAKE_PHOTO:
                         image_bitmap = (Bitmap) data.getExtras().get("data");
-                        type = data.getStringExtra("Type");
-                        Log.e("CHECK TYPE", type + "");
+//                        type = data.getStringExtra("Type");
+//                        Log.e("CHECK TYPE", type + "");
 
                         imageUri = getImageUri(getActivity(), image_bitmap);
                         filePath = getRealPathFromURI(imageUri);
@@ -436,9 +437,9 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
                         break;
 
                     case REQ_CODE_SELECT_IMAGE:
-
-                        type = data.getStringExtra("Type");
-                        Log.e("CHECK TYPE", type + "");
+//
+//                        type = data.getStringExtra("Type");
+//                        Log.e("CHECK TYPE", type + "");
 
                         // Uri에서 이미지 이름을 얻어온다.
                         filePath = getRealPathFromURI(data.getData());
@@ -464,7 +465,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // requestCode지정해서 인텐트 실행
-        intent.putExtra("Type", "COVER");
+//        intent.putExtra("Type", "COVER");
         startActivityForResult(intent, REQ_CODE_TAKE_PHOTO);
 
     }
@@ -474,7 +475,7 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
 
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*"); // 이미지만 필터링
-        intent.putExtra("Type", "COVER");
+//        intent.putExtra("Type", "COVER");
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQ_CODE_SELECT_IMAGE);
 
     }
