@@ -21,7 +21,8 @@
     <!-- Recommend 화면의 Statistics -->
     <string name="score_distribution">별점분표</string>
     <string name="prefer_actor_top3">선호배우 TOP3</string>
-    <string name="prefer_director_top3">선호삼독 TOP3</string>
+    <string name="prefer_director_top3">선호감독 TOP3</string>
+    <string name="score">점수</string>
 
     <!-- ActivitySearch -->
     <string name="menu_search">검색</string>

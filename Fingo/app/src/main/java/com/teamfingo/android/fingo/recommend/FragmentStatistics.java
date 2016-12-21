@@ -56,14 +56,9 @@ public class FragmentStatistics extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_statistics, container, false);
 
-
-
         initView(view);
 
         loadData();
-
-        //graphView(view);
-
 
         return view;
     }
@@ -134,30 +129,27 @@ public class FragmentStatistics extends Fragment {
                         scores[8] = Double.parseDouble(statistics.getScores().getFour_point_five());
                         scores[9] = Double.parseDouble(statistics.getScores().getFive());
 
-                        Log.e("log", "loaddata() scores[0] ==== "+ scores[0]);
-
-
                         Statistics.Actors[] actors = statistics.getActors();
                         Glide.with(getContext()).load(actors[0].getActor().getImg()).into(ivPreferActor1);
                         tvActorName1.setText(actors[0].getActor().getName());
-                        tvActorScore1.setText(actors[0].getCount());
+                        tvActorScore1.setText(" / " + getString(R.string.score) + " " + actors[0].getCount());
                         Glide.with(getContext()).load(actors[1].getActor().getImg()).into(ivPreferActor2);
                         tvActorName2.setText(actors[1].getActor().getName());
-                        tvActorScore2.setText(actors[1].getCount());
+                        tvActorScore2.setText(" / " + getString(R.string.score) + " " + actors[1].getCount());
                         Glide.with(getContext()).load(actors[2].getActor().getImg()).into(ivPreferActor3);
                         tvActorName3.setText(actors[2].getActor().getName());
-                        tvActorScore3.setText(actors[2].getCount());
+                        tvActorScore3.setText(" / " + getString(R.string.score) + " " + actors[2].getCount());
 
                         Statistics.Directors[] directors = statistics.getDirectors();
                         Glide.with(getContext()).load(directors[0].getDirector().getImg()).into(ivPreferDirector1);
                         tvDirectorName1.setText(directors[0].getDirector().getName());
-                        tvDirectorScore1.setText(directors[0].getCount());
+                        tvDirectorScore1.setText(" / " + getString(R.string.score) + " " + directors[0].getCount());
                         Glide.with(getContext()).load(directors[1].getDirector().getImg()).into(ivPreferDirector2);
                         tvDirectorName2.setText(directors[1].getDirector().getName());
-                        tvDirectorScore2.setText(directors[1].getCount());
+                        tvDirectorScore2.setText(" / " + getString(R.string.score) + " " + directors[1].getCount());
                         Glide.with(getContext()).load(directors[2].getDirector().getImg()).into(ivPreferDirector3);
                         tvDirectorName3.setText(directors[2].getDirector().getName());
-                        tvDirectorScore3.setText(directors[2].getCount());
+                        tvDirectorScore3.setText(" / " + getString(R.string.score) + " " + directors[2].getCount());
 
                     } else { // User가 평가한 영화가 5개 미만일 때에는 5개 이상 평가해 달라는 화면을 보여준다
                         rlNoData.setVisibility(View.VISIBLE);
@@ -214,7 +206,7 @@ public class FragmentStatistics extends Fragment {
         series.setDataPointsRadius(10);
         series.setDrawDataPoints(true);
         series.setThickness(8);
-        series.setColor(Color.MAGENTA);
+        series.setColor(Color.parseColor("#FFFF69B4"));
 
         graphView.addSeries(series);
         graphView.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.BOTH);
