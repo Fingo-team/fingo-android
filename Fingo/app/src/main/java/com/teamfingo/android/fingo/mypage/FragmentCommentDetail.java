@@ -3,6 +3,7 @@ package com.teamfingo.android.fingo.mypage;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -28,6 +29,8 @@ import retrofit2.Response;
  * A simple {@link Fragment} subclass.
  */
 public class FragmentCommentDetail extends Fragment{
+
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     RecyclerView mRecyclerView;
     RecyclerAdapterCommentDetail mAdapter;
@@ -57,13 +60,24 @@ public class FragmentCommentDetail extends Fragment{
         View view = inflater.inflate(R.layout.fragment_comment_detail, container, false);
 
         initView(view);
-        callFingoUserComments(INIT_PAGE, "");
+        callFingoUserComments(INIT_PAGE, "activity_time");
+
         initRecyclerView(view);
 
         return view;
     }
 
     private void initView(View view){
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh_commentDetail);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mUserComments.clear();
+                callFingoUserComments(INIT_PAGE, "activity_time");
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         String[] str = getResources().getStringArray(R.array.movie_sorting);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, str);
@@ -141,5 +155,10 @@ public class FragmentCommentDetail extends Fragment{
                 callFingoUserComments(INIT_PAGE, "score");
                 break;
         }
+    }
+
+    private void actions(){
+
+
     }
 }
