@@ -68,7 +68,7 @@ public class RecyclerAdapterRandomMovie extends RecyclerView.Adapter<RecyclerAda
         Glide.with(mContext).load(mRandomMovies.get(position).getImg()).into(holder.ivMoviePoster);
         holder.tvMovieTitle.setText(mRandomMovies.get(position).getTitle());
         holder.tvMovieDate.setText(mRandomMovies.get(position).getFirst_run_date());
-        holder.rbScore.setRating(Float.parseFloat(mRandomMovies.get(position).getScore()));
+        holder.rbScore.setRating(0.0f);
         holder.rbScore.setTag(position);
         Log.e("log", "score1 === "+ mRandomMovies.get(position).getScore());
         Log.e("log","score set");
