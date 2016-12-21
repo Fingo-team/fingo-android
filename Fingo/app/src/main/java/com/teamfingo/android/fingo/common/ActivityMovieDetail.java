@@ -39,8 +39,8 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
     TextView tvMovieTitle, tvMovieScore;
     Button btnWishMovie, btnRate, btnComment, btnShare;
     TextView tvMovieDate, tvMovieGenre, tvMovieStory;
-    ImageView ivStillCut1, ivStillCut2, ivStillCut3, ivStillCut4, ivStillCut5;
-    LinearLayout llDirectorandActor;
+    //ImageView ivStillCut1, ivStillCut2, ivStillCut3, ivStillCut4, ivStillCut5;
+    LinearLayout llStillCut, llDirectorandActor;
 
     LinearLayout.LayoutParams mLayoutParams;
 
@@ -89,7 +89,6 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
     }
 
     public void initMovieDetailView() {
-
         ivMovieBackgroundStillCut = (ImageView) findViewById(R.id.imageView_movie_detail_backgroundStillcut);
         ivMoviePoster = (ImageView) findViewById(R.id.imageView_movie_detail_movie_post);
         tvMovieTitle = (TextView) findViewById(R.id.textView_movie_detail_movie_title);
@@ -101,11 +100,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
         tvMovieDate = (TextView) findViewById(R.id.textView_date);
         tvMovieGenre = (TextView) findViewById(R.id.textView_genre);
         tvMovieStory = (TextView) findViewById(R.id.textView_story);
-        ivStillCut1 = (ImageView) findViewById(R.id.imageView_stillCut1);
-        ivStillCut2 = (ImageView) findViewById(R.id.imageView_stillCut2);
-        ivStillCut3 = (ImageView) findViewById(R.id.imageView_stillCut3);
-        ivStillCut4 = (ImageView) findViewById(R.id.imageView_stillCut4);
-        ivStillCut5 = (ImageView) findViewById(R.id.imageView_stillCut5);
+        llStillCut = (LinearLayout) findViewById(R.id.linearLayout_stillCut);
         llDirectorandActor = (LinearLayout) findViewById(R.id.linearLayout_director_and_actor);
     }
 
@@ -144,28 +139,30 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                     tvMovieGenre.setText(getString(R.string.genre) + " " + genre[0]);
                     tvMovieStory.setText(movie.getStory());
 
+                    mLayoutParams = new LinearLayout.LayoutParams(500, 300);
                     if (stillCutImg.length == 0) {
 
                     } else {
-                        Glide.with(ActivityMovieDetail.this).load(stillCutImg[0].getImg()).into(ivStillCut1);
-                        Glide.with(ActivityMovieDetail.this).load(stillCutImg[1].getImg()).into(ivStillCut2);
-                        Glide.with(ActivityMovieDetail.this).load(stillCutImg[2].getImg()).into(ivStillCut3);
-                        Glide.with(ActivityMovieDetail.this).load(stillCutImg[3].getImg()).into(ivStillCut4);
-                        Glide.with(ActivityMovieDetail.this).load(stillCutImg[4].getImg()).into(ivStillCut5);
+                        for (int i=0; i<stillCutImg.length; i++) {
+                            ImageView iv = new ImageView(ActivityMovieDetail.this);
+                            Glide.with(ActivityMovieDetail.this).load(stillCutImg[i].getImg()).into(iv);
+                            iv.setLayoutParams(mLayoutParams);
+                            iv.setLayoutParams(mLayoutParams);
+                            iv.setScaleType(ImageView.ScaleType.FIT_XY);
+                            mLayoutParams.setMargins(10,0,10,0);
+                            llStillCut.addView(iv);
+                        }
                     }
 
-                    mLayoutParams = new LinearLayout.LayoutParams(200, 200);
                     Movie.Director[] directors = movie.getDirector();
                     Movie.Actors[] actors = movie.getActors();
+                    mLayoutParams = new LinearLayout.LayoutParams(200, 200);
 
                     for (int i=0; i<directors.length; i++) {
                         CircleImageView civ = new CircleImageView(ActivityMovieDetail.this);
                         Glide.with(ActivityMovieDetail.this).load(directors[i].getImg()).into(civ);
                         civ.setLayoutParams(mLayoutParams);
                         mLayoutParams.setMargins(40,0,40,0);
-                        TextView tv = new TextView(ActivityMovieDetail.this);
-                        tv.setText(directors[i].getName());
-
                         llDirectorandActor.addView(civ);
                     }
 
@@ -217,6 +214,10 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                     Log.e("log", "response message ==== " + response.body());
 
                     score = movieScore.getScore();
+                    if (score == null) {
+                        score = "0.0";
+                    }
+                    Log.e("log", "score ========== "+score);
 
                     // 서버로부터 받아오는 값이 0.0이거나 0일 때에는 화면에 평가하기 아이콘이 바뀌지 않도록 처리
                     if (!(score.equals("0.0"))) {
@@ -431,14 +432,15 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
             public void onClick(DialogInterface dialog, int which) {
                 if (comment == null) { // 처음 코멘트를 쓰는 경우 -> POST로 코멘트를 서버로 보냄
                     String writtenComment = etComment.getText().toString();
+
                     if (writtenComment.equals("")) { // 아무 내용도 입력하지 않았을 때 토스트 메세지를 띄움
                         Toast.makeText(ActivityMovieDetail.this, "코멘트를 입력해주세요.", Toast.LENGTH_SHORT).show();
                     } else {
                         comment = writtenComment;
-                        Call<Void> postMovieComment = AppController.getFingoService()
+                        Call<Void> postMovieCommentCall = AppController.getFingoService()
                                 .postMovieComment(AppController.getToken(), movieId, writtenComment); // POST
 
-                        postMovieComment.enqueue(new Callback<Void>() {
+                        postMovieCommentCall.enqueue(new Callback<Void>() {
                             @Override
                             public void onResponse(Call<Void> call, Response<Void> response) {
                                 if (response.isSuccessful()) {
@@ -446,6 +448,7 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
 
                                     // 댓글이 써졌을 경우 코멘트 아이콘 색상 변경
                                     btnComment.setActivated(true);
+                                    Toast.makeText(ActivityMovieDetail.this, "입력되었습니다.", Toast.LENGTH_SHORT).show();
                                     Log.e("log", "Post 상태일 때 댓글 ==== " + btnComment.isActivated());
                                 } else {
                                     Log.e("log", "response message ==== " + response.message());
@@ -463,18 +466,19 @@ public class ActivityMovieDetail extends AppCompatActivity implements View.OnCli
                     String writtenComment = etComment.getText().toString();
 
                     if (writtenComment.equals("")) { // 아무 내용도 입력하지 않았을 때 토스트 메세지를 띄움
-                        Toast.makeText(ActivityMovieDetail.this, "코멘트를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ActivityMovieDetail.this, "2코멘트를 입력해주세요.", Toast.LENGTH_SHORT).show();
                     } else {
                         comment = writtenComment;
-                        Call<Void> patchMovieComment = AppController.getFingoService()
+                        Call<Void> patchMovieCommentCall = AppController.getFingoService()
                                 .patchMovieComment(AppController.getToken(), movieId, writtenComment); // POST
 
-                        patchMovieComment.enqueue(new Callback<Void>() {
+                        patchMovieCommentCall.enqueue(new Callback<Void>() {
                             @Override
                             public void onResponse(Call<Void> call, Response<Void> response) {
                                 if (response.isSuccessful()) {
                                     Log.e("log", "response message ==== " + response.message());
 
+                                    Toast.makeText(ActivityMovieDetail.this, "patch입력되었습니다.", Toast.LENGTH_SHORT).show();
                                     // 댓글이 써졌을 경우 코멘트 아이콘 색상 변경
                                     btnComment.setActivated(true);
                                 } else {
