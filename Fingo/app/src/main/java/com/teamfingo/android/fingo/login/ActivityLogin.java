@@ -38,10 +38,10 @@ public class ActivityLogin extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Freagment Login Main 이 생성되기 이전에 facebook SDK 를 초기화 함.
+        // 1. Freagment Login Main 이 생성되기 이전에 facebook SDK 를 초기화 함.
         FacebookSdk.sdkInitialize(getApplicationContext());
 
-        // ActivityLogin 의 첫 화면을 FragmentLoginMain 으로 보여 준다.
+        // 2. ActivityLogin 의 첫 화면을 FragmentLoginMain 으로 보여 준다.
         fragmentLoginMain = new FragmentLoginMain();
         replaceFragment(fragmentLoginMain);
 
