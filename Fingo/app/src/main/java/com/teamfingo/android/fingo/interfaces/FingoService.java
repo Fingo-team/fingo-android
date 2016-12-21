@@ -6,7 +6,7 @@ import com.teamfingo.android.fingo.model.Movie;
 import com.teamfingo.android.fingo.model.MovieComment;
 import com.teamfingo.android.fingo.model.MovieScore;
 import com.teamfingo.android.fingo.model.MovieWish;
-import com.teamfingo.android.fingo.model.RandomMovie;
+import com.teamfingo.android.fingo.model.MovieWrapper;
 import com.teamfingo.android.fingo.model.SearchList;
 import com.teamfingo.android.fingo.model.SearchMovie;
 import com.teamfingo.android.fingo.model.Statistics;
@@ -81,7 +81,7 @@ public interface FingoService {
 
     // Recommend화면의 영화 평가 늘리기 - 영화 30개를 랜덤으로 불러오는 API
     @GET("/api/v1.0/movie/random/")
-    Call<RandomMovie> getRandomMovie(@Header("Authorization") String authorization);
+    Call<MovieWrapper> getRandomMovie(@Header("Authorization") String authorization);
 
     // SignUp function
     @FormUrlEncoded

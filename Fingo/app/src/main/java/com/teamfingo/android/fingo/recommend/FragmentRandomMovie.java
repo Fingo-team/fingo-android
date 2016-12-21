@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.teamfingo.android.fingo.R;
 import com.teamfingo.android.fingo.model.Movie;
-import com.teamfingo.android.fingo.model.RandomMovie;
+import com.teamfingo.android.fingo.model.MovieWrapper;
 import com.teamfingo.android.fingo.utils.AppController;
 
 import java.util.ArrayList;
@@ -74,13 +74,13 @@ public class FragmentRandomMovie extends Fragment {
 
         mRandomMovies.clear();
 
-        Call<RandomMovie> getRandomMovieCall = AppController.getFingoService()
+        Call<MovieWrapper> getRandomMovieCall = AppController.getFingoService()
                 .getRandomMovie(AppController.getToken());
-        getRandomMovieCall.enqueue(new Callback<RandomMovie>() {
+        getRandomMovieCall.enqueue(new Callback<MovieWrapper>() {
             @Override
-            public void onResponse(Call<RandomMovie> call, Response<RandomMovie> response) {
+            public void onResponse(Call<MovieWrapper> call, Response<MovieWrapper> response) {
                 if (response.isSuccessful()) {
-                    RandomMovie randomMovie = response.body();
+                    MovieWrapper randomMovie = response.body();
 
                     mRandomMovies.addAll(randomMovie.getData());
                     mRecyclerAdapterRandomMovie.notifyDataSetChanged();
@@ -89,7 +89,7 @@ public class FragmentRandomMovie extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<RandomMovie> call, Throwable t) {
+            public void onFailure(Call<MovieWrapper> call, Throwable t) {
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
