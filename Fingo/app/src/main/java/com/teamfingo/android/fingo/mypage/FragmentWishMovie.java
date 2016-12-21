@@ -76,7 +76,7 @@ public class FragmentWishMovie extends Fragment implements InterfaceFragmentMypa
         View view = inflater.inflate(R.layout.fragement_wish_movie, container, false);
 
         initView(view);
-        loadData(INIT_PAGE,"activity_time");
+        loadData(INIT_PAGE,"");
         initRecyclerView(view);
         setActions();
 

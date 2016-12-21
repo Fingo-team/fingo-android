@@ -75,7 +75,7 @@ public class FragmentWatchedMovie extends Fragment implements InterfaceFragmentM
         View view = inflater.inflate(R.layout.fragment_watched_movie, container, false);
 
         initView(view);
-        loadData(INIT_PAGE, "activity_time");
+        loadData(INIT_PAGE, "");
         initRecyclerView(view);
         setActions();
 

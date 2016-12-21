@@ -76,7 +76,7 @@ public class FragmentCommentDetail extends Fragment implements InterfaceFragment
         View view = inflater.inflate(R.layout.fragment_comment_detail, container, false);
 
         initView(view);
-        loadData(INIT_PAGE, "activity_time");
+        loadData(INIT_PAGE, "");
         initRecyclerView(view);
         setActions();
 
