@@ -1,6 +1,7 @@
 package com.teamfingo.android.fingo.interfaces;
 
 import com.teamfingo.android.fingo.model.BoxOfficeRanking;
+import com.teamfingo.android.fingo.model.Category;
 import com.teamfingo.android.fingo.model.FingoAccessToken;
 import com.teamfingo.android.fingo.model.Movie;
 import com.teamfingo.android.fingo.model.MovieComment;
@@ -35,9 +36,17 @@ import retrofit2.http.Query;
 
 public interface FingoService {
 
+    // Movie Category Main
+    @GET("/api/v1.0/movie/main/")
+    Call<Category> getCategoryMain(@Header("Authorization") String authorization);
+
     // Box Office Movie List
     @GET("/api/v1.0/movie/boxoffice/")
     Call<BoxOfficeRanking> getBoxOfficeRanking(@Header("Authorization") String authorization);
+
+    // Movie List
+    @GET("/api/v1.0/movie/{type}/")
+    Call<MovieWrapper> getMovieList(@Header("Authorization") String authorization, @Path("type") String type, @Query("genre") String genre);
 
     // Movie Detail Information
     @GET("/api/v1.0/movie/detail/{id}/")
