@@ -17,7 +17,15 @@ import com.teamfingo.android.fingo.model.UserMovies;
 import java.util.ArrayList;
 
 /**
- * Created by taewon on 2016-12-08.
+ *
+ * 작성자 : 김태원
+ * 소속 : fastcampus
+ * 작성일 : 2016-12-07
+ *
+ * == Recycler Adapter Comment Detail ==
+ *
+ * # Fragment wish / watched movie 에 필요한 Recycler Adapter 입니다.
+ *
  */
 
 public class RecyclerAdapterMovie extends RecyclerView.Adapter<RecyclerAdapterMovie.ViewHolder> {
@@ -61,19 +69,25 @@ public class RecyclerAdapterMovie extends RecyclerView.Adapter<RecyclerAdapterMo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
+        // 1. 서버로 부터 영화 정보를 가져 옵니다.
         final UserMovies.Results movieData = mMovies.get(position);
 
+        // 2. 영화 포스터를 가져 옵니다.
         Glide.with(mContext).load(movieData.getMovie().getImg()).into(holder.imgMoviePoster);
+        // 2.1 영화 포스터를 클릭 했을 때, 해당 영화의 상세 정보 페이지로 넘어가도록 합니다.
         holder.imgMoviePoster.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // 2.1.1 ActivityMovieDetail 호출
                 Intent intent = new Intent(mContext, ActivityMovieDetail.class);
                 intent.putExtra("movieId", movieData.getMovie().getId());
                 mContext.startActivity(intent);
             }
         });
 
-        // 영화 제목이 8자 이상일땐 제목을 자른다
+        // 3. 가져온 텍스트 데이터들에 대한 후처리를 진행합니다.
+        // 3.1 영화 제목이 8자 이상일땐 제목을 자릅니다.
         String title = movieData.getMovie().getTitle();
         if (title.length() >= 8) {
             // 다섯번째 글자까지 표시 한 후,
@@ -83,9 +97,9 @@ public class RecyclerAdapterMovie extends RecyclerView.Adapter<RecyclerAdapterMo
         } else
             holder.tvMovieTitle.setText(title);
 
-        // 평점을 소수점 둘째 자리까지 표시
+        // 3.2 평점을 소수점 첫째 자리까지 표시합니다.
         float temp = Float.parseFloat(movieData.getMovie().getScore());
-        String score = String.format("%.2f", temp);
+        String score = String.format("%.1f", temp);
         holder.tvMovieRating.setText(score);
 
     }

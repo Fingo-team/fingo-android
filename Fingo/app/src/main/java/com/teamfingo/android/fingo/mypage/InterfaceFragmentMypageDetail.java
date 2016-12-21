@@ -8,13 +8,15 @@ import android.view.View;
  * 소속 : fastcampus
  * 작성일 : 2016-12-07
  *
- * == Fragment Comment Detail Presenter ==
+ * == Fragment Mypage Detail Presenter ==
  *
- * Fragment Comment Detail 의 View 연결과 비지니스 로직 정의
+ * MyPage 에서 제공하는 서비스인 '코멘트', '보고싶어요', '봤어요' 기능에 필요한 Presenter Interface 입니다.
+ *
+ * FragmentCommentDetail, FragmentWishMovie, FragmentWatchedMovie 에 적용되는 인터페이스 입니다.
  *
  */
 
-public interface FragmentWishMoviePresenter {
+public interface InterfaceFragmentMypageDetail {
 
     // 기본 레이아웃 세팅
     // parameter    : view - fragment inflating 을 위한 view 를 전달
@@ -34,4 +36,5 @@ public interface FragmentWishMoviePresenter {
 
     // role         : 레이아웃 내 세부 아이템 액션 정의
     void setActions();
+
 }

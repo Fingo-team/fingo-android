@@ -36,7 +36,7 @@ import retrofit2.Response;
  *
  */
 
-public class FragmentWishMovie extends Fragment implements FragmentMypageDetailPresenter {
+public class FragmentWishMovie extends Fragment implements InterfaceFragmentMypageDetail {
 
     // 레이아웃 구성
     // 화면 새로고침을 위한 layout

@@ -35,7 +35,7 @@ import retrofit2.Response;
  * 이에 대한 영화 목록을 보여주는 fragment
  */
 
-public class FragmentWatchedMovie extends Fragment implements FragmentMypageDetailPresenter {
+public class FragmentWatchedMovie extends Fragment implements InterfaceFragmentMypageDetail {
 
     // 레이아웃 구성
     // 화면 새로고침을 위한 layout
