@@ -18,7 +18,12 @@
     <string name="movie_detail_director_and_actor">배우 / 제작진</string>
     <string name="star_score">별점</string>
 
-    <!-- ActivitySearch에 쓰이는 strings -->
+    <!-- Recommend 화면의 Statistics -->
+    <string name="score_distribution">별점분표</string>
+    <string name="prefer_actor_top3">선호배우 TOP3</string>
+    <string name="prefer_director_top3">선호삼독 TOP3</string>
+
+    <!-- ActivitySearch -->
     <string name="menu_search">검색</string>
     <string name="editText_hint">영화 제목을 입력하세요</string>
 

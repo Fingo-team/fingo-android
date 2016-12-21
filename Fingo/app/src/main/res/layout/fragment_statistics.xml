@@ -1,13 +1,194 @@
-<FrameLayout
+<android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context="com.teamfingo.android.fingo.recommend.FragmentStatistics">
 
-    <com.jjoe64.graphview.GraphView
-        android:id="@+id/graphView"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"/>
+        android:layout_height="wrap_content">
+        <!-- User가 평가한 영화 개수가 5개 미만을 경우 나타나는 화면 -->
+        <RelativeLayout
+            android:id="@+id/relativeLayout_no_data"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="평가된 영화의 개수가 5개 이상일 때부터"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="통계 화면이 보입니다."/>
+        </RelativeLayout>
 
-</FrameLayout>
+        <!-- User가 평가한 영화 개수가 5개 이상일 때부터 나타나는 화면 -->
+        <RelativeLayout
+            android:id="@+id/relativeLayout_statistics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/relativeLayout_no_data"
+            android:visibility="gone">
+            <!-- 별점 분포 -->
+            <LinearLayout
+                android:id="@+id/linearLayout_scores"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/textView_score_distribution"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/score_distribution"/>
+                <com.jjoe64.graphview.GraphView
+                    android:id="@+id/graphView"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"/>
+            </LinearLayout>
+
+            <!-- 선호배우 TOP3 -->
+            <LinearLayout
+                android:id="@+id/linearLayout_actors"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@id/linearLayout_scores">
+                <TextView
+                    android:id="@+id/textView_prefer_actors"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prefer_actor_top3"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:id="@+id/imageView_actor1"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@color/colorLightGray"
+                        android:scaleType="fitXY"/>
+                    <TextView
+                        android:id="@+id/textView_actor1_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/textView_actor1_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:id="@+id/imageView_actor2"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@color/colorLightGray"
+                        android:scaleType="fitXY"/>
+                    <TextView
+                        android:id="@+id/textView_actor2_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/textView_actor2_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:id="@+id/imageView_actor3"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@color/colorLightGray"
+                        android:scaleType="fitXY"/>
+                    <TextView
+                        android:id="@+id/textView_actor3_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/textView_actor3_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 선호감독 TOP3 -->
+            <LinearLayout
+                android:id="@+id/linearLayout_directors"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@id/linearLayout_actors">
+                <TextView
+                    android:id="@+id/textView_prefer_directors"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prefer_director_top3"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:id="@+id/imageView_director1"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@color/colorLightGray"
+                        android:scaleType="fitXY"/>
+                    <TextView
+                        android:id="@+id/textView_director1_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/textView_director1_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:id="@+id/imageView_director2"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@color/colorLightGray"
+                        android:scaleType="fitXY"/>
+                    <TextView
+                        android:id="@+id/textView_director2_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/textView_director2_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:id="@+id/imageView_director3"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@color/colorLightGray"
+                        android:scaleType="fitXY"/>
+                    <TextView
+                        android:id="@+id/textView_director3_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/textView_director3_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+</android.support.v4.widget.NestedScrollView>
