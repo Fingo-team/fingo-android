@@ -14,7 +14,7 @@ import android.view.View;
  *
  */
 
-public interface FragmentCommentDetailPresenter{
+public interface FragmentWishMoviePresenter {
 
     // 기본 레이아웃 세팅
     // parameter    : view - fragment inflating 을 위한 view 를 전달
@@ -34,5 +34,4 @@ public interface FragmentCommentDetailPresenter{
 
     // role         : 레이아웃 내 세부 아이템 액션 정의
     void setActions();
-
 }

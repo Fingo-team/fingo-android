@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +35,8 @@ import retrofit2.Response;
  * 코멘트 세부 정보를 볼 수 있는 fragment
  *
  */
-public class FragmentCommentDetail extends Fragment implements FragmentCommentDetailPresenter{
+
+public class FragmentCommentDetail extends Fragment implements FragmentMypageDetailPresenter {
 
     // 레이아웃 구성
     // 화면 새로고침을 위한 layout
@@ -120,7 +120,7 @@ public class FragmentCommentDetail extends Fragment implements FragmentCommentDe
                         mUserComments.add(comment);
                     }
                 }
-                // 이후 데이터 셋에 변경 사항이 생겼을 때, 이를 적용하기 위한 리스너 부착
+                // 2.1.2 이후 데이터 셋에 변경 사항이 생겼을 때, 이를 적용하기 위한 리스너 부착
                 mAdapter.notifyDataSetChanged();
             }
 
