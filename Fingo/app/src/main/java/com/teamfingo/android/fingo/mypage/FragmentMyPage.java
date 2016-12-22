@@ -35,6 +35,7 @@ import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -145,7 +146,6 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
         ivProfileCover.setOnClickListener(this);
 
         tvUserName = (TextView) view.findViewById(R.id.textView_user_nickname);
-        tvUserIntroduce = (TextView) view.findViewById(R.id.textView_user_introduce);
 
         btnComment = (Button) view.findViewById(R.id.button_comment);
         btnComment.setOnClickListener(this);
@@ -505,26 +505,26 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
 
         } else if (upload_type == UPLOAD_PROFILE) {
 
-            GraphRequest request = GraphRequest.newGraphPathRequest(
-                    AccessToken.getCurrentAccessToken(),
-                    "/me/picture",
+            Bundle params = new Bundle();
+            params.putString("fields", "id,email,gender,cover,picture.type(large)");
+            new GraphRequest(AccessToken.getCurrentAccessToken(), "me", params, HttpMethod.GET,
                     new GraphRequest.Callback() {
                         @Override
                         public void onCompleted(GraphResponse response) {
-                            JSONObject data = response.getJSONObject();
-                            String mFacebookUrl = null;
-                            try {
-                                mFacebookUrl = data.getJSONObject("picture").getJSONObject("data").getString("url");
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                            if (response != null) {
+                                try {
+                                    JSONObject data = response.getJSONObject();
+                                    if (data.has("picture")) {
+                                        String mFacebookUrl = data.getJSONObject("picture").getJSONObject("data").getString("url");
+                                        sendFacebookImage(mFacebookUrl);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
-                            Log.e("CHECK IMAGE", "++++++++++++++++++++++" + mFacebookUrl);
-                            sendFacebookImage(mFacebookUrl);
                         }
-                    });
-            request.executeAsync();
+                    }).executeAsync();
         }
-//        mFacebookLoginManager
 
     }
 
@@ -626,14 +626,11 @@ public class FragmentMyPage extends Fragment implements View.OnClickListener, se
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 
             cursor.moveToFirst();
-            cursor.close();
             return cursor.getString(column_index);
         } catch (Exception e) {
 
             e.printStackTrace();
             return contentUri.getPath();
-        }finally{
-            cursor.close();
         }
     }
 

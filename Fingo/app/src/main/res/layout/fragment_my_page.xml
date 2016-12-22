@@ -89,16 +89,6 @@
                         android:textColor="@color/cardview_light_background"
                         android:textSize="20sp" />
 
-                    <TextView
-                        android:id="@+id/textView_user_introduce"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="User Introduce"
-                        android:textAlignment="center"
-                        android:textColor="@color/cardview_light_background"
-                        android:textSize="10sp"
-                        android:layout_marginTop="10dp" />
-
                 </LinearLayout>
 
                 <LinearLayout
