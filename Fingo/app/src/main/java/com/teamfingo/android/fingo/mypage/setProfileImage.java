@@ -16,6 +16,8 @@ public interface setProfileImage {
     void deleteImage();
 
     void sendImage(File file);
+    void sendFacebookImage(String url);
+
     String getRealPathFromURI(Uri contentUri);
 
 }
